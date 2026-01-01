@@ -10,6 +10,28 @@ applyTo: '**/*.test.{ts,tsx}'
 - **Supertest** for API endpoint testing
 - **70%+ coverage** target for all code
 
+## Jest-DOM Configuration with @jest/globals
+
+**Critical Pattern**: When using `@jest/globals` imports, you MUST use the special jest-dom import variant:
+
+```typescript
+// jest.setup.ts
+import '@testing-library/jest-dom/jest-globals'; // ← NOT the standard import!
+
+// Standard import will cause TypeScript errors:
+// import '@testing-library/jest-dom'; // ❌ Will fail with @jest/globals
+```
+
+**Why**: The `@jest/globals` pattern requires explicit imports (`import { describe, it, expect }`), which creates a different matcher type system. The `/jest-globals` variant properly extends these types.
+
+**Symptoms of incorrect import**:
+
+- TypeScript error: "Property 'toBeInTheDocument' does not exist on type 'Matchers<...>'"
+- Tests pass at runtime but show red squiggles in editor
+- `tsc --noEmit` reports matcher type errors
+
+**Solution**: Always use `/jest-globals` suffix when project uses `@jest/globals` imports.
+
 ## Test Structure - AAA Pattern
 
 ```typescript
@@ -267,6 +289,47 @@ it('should display error message on failure', async () => {
 - Tests are fast (< 5 seconds total)
 - No console errors or warnings
 - Mock cleanup properly handled
+- **Zero TypeScript errors**: Run `npm run typecheck` before committing
+
+## Testability Categories
+
+Different code types have different testability characteristics:
+
+### High Testability (Target: 100%)
+
+- **Pure functions**: Utilities, formatters, parsers, validators
+- **React components**: UI logic with Testing Library
+- **Hooks**: Custom React hooks with `renderHook`
+- **API utilities**: Functions that process data
+
+### Medium Testability (Target: 80%+)
+
+- **Components with side effects**: API calls, localStorage
+- **Event handlers**: User interactions with async behavior
+- **State management**: Complex useState/useReducer logic
+
+### Lower Testability (Target: 60%+, Document Why)
+
+- **Browser-specific APIs**: `window.location.reload()`, `window.open()`
+- **Environment detection**: `import.meta.env` checks
+- **Error boundaries**: React error handling components
+
+**Best Practice**: For lower testability code, document why in comments and ensure critical paths have integration/E2E tests.
+
+## Coverage vs. Quality
+
+**Coverage is not the goal** - it's a metric to find untested code:
+
+- ✅ **High coverage + high quality**: Tests verify behavior, edge cases handled
+- ⚠️ **High coverage + low quality**: Tests check implementation details, brittle
+- ❌ **Low coverage**: Missing tests, unknown behavior
+
+Focus on:
+
+1. **User-facing behavior**: What users see and interact with
+2. **Critical paths**: Authentication, data mutations, business logic
+3. **Edge cases**: Error states, empty data, boundary conditions
+4. **Integration points**: API calls, localStorage, routing
 
 ---
 
