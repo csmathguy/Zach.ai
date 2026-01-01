@@ -1,0 +1,8 @@
+# CODEOWNERS
+# Update owners below to enforce reviews on changes.
+
+* @csmat
+
+# Example: assign frontend vs backend when directories exist
+# /frontend/ @frontend-team
+# /backend/ @backend-team

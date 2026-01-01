@@ -1,0 +1,120 @@
+# ===================================
+# Local Development & Personal Files
+# ===================================
+# Ideas folder (local brainstorming only)
+ideas/
+
+# ===================================
+# Dependencies
+# ===================================
+node_modules/
+jspm_packages/
+bower_components/
+
+# ===================================
+# Build Outputs & Distribution
+# ===================================
+dist/
+build/
+.dist/
+out/
+deploy/
+*.tsbuildinfo
+
+# ===================================
+# Environment Variables
+# ===================================
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# ===================================
+# Logs
+# ===================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# ===================================
+# Testing & Coverage
+# ===================================
+.coverage
+coverage/
+*.lcov
+.nyc_output
+lib-cov
+
+# ===================================
+# Caches
+# ===================================
+.npm
+.eslintcache
+.stylelintcache
+.cache
+.parcel-cache
+.node_repl_history
+
+# ===================================
+# PM2
+# ===================================
+.pm2
+pm2-*.log
+
+# ===================================
+# OS Files
+# ===================================
+.DS_Store
+Thumbs.db
+*.swp
+*~
+._*
+.Spotlight-V100
+.Trashes
+
+# ===================================
+# Editor & IDE
+# ===================================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# ===================================
+# Python (if used)
+# ===================================
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# ===================================
+# Miscellaneous
+# ===================================
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+lib-cov
+
+# Optional packages
+.yarn-integrity
+*.tgz
+
+# Temporary files
+*.tmp
+*.temp
+
+# Copilot/agents cache
+.copilot/

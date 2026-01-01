@@ -1,0 +1,16 @@
+{
+  // Example MCP server configuration (comment or remove servers not in use)
+  "servers": [
+    {
+      "name": "example-stdio",
+      "command": "example-mcp-server",
+      "args": [],
+      "env": {}
+    }
+    // {
+    //   "name": "example-http",
+    //   "url": "https://mcp.example.com",
+    //   "headers": { "Authorization": "Bearer <token>" }
+    // }
+  ]
+}

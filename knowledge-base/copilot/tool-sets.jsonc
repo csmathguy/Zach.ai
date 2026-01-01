@@ -1,0 +1,34 @@
+{
+  // Example Tool Sets for Zach.ai — group related tools for quick enabling
+  // Store this in `.github/tool-sets.jsonc` in a real project. This KB copy is for reference.
+
+  "reader": {
+    "tools": ["changes", "codebase", "problems", "usages"],
+    "description": "Read-only tools for gathering context",
+    "icon": "book",
+  },
+
+  "editor": {
+    "tools": ["edit", "rewrite", "refactor"],
+    "description": "Editing tools for code changes",
+    "icon": "edit",
+  },
+
+  "search": {
+    "tools": ["search", "symbolSearch"],
+    "description": "Search tools (project and symbols)",
+    "icon": "search",
+  },
+
+  "web": {
+    "tools": ["fetch", "githubRepo"],
+    "description": "Web and GitHub retrieval tools",
+    "icon": "globe",
+  },
+
+  "tests": {
+    "tools": ["problems", "edit"],
+    "description": "Testing helpers (fix issues, propose edits)",
+    "icon": "beaker",
+  },
+}

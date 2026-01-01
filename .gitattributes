@@ -1,0 +1,16 @@
+* text=auto
+
+# Enforce LF for scripts
+*.sh eol=lf
+*.bash eol=lf
+*.py eol=lf
+*.js eol=lf
+*.ts eol=lf
+*.tsx eol=lf
+
+# Treat certain files as binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary

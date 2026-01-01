@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  node-ts:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - name: Install dependencies
+        run: npm install
+
+      - name: Typecheck (frontend + backend)
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Unit tests (frontend + backend)
+        run: npm test
+
+      - name: Install Playwright browsers (Chromium only)
+        if: matrix.node-version == '20.x'
+        run: npx playwright install chromium --with-deps
+
+      - name: E2E tests (Playwright)
+        if: matrix.node-version == '20.x'
+        run: npm run test:e2e

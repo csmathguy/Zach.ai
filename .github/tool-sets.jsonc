@@ -1,0 +1,18 @@
+{
+  // Starter tool sets used by prompts and agents
+  "reader": {
+    "tools": ["search", "fetch", "usages"],
+    "description": "Read-only exploration and discovery",
+    "icon": "book",
+  },
+  "editor": {
+    "tools": ["edit", "browse"],
+    "description": "Make safe, minimal edits",
+    "icon": "pencil",
+  },
+  "tests": {
+    "tools": ["terminal"],
+    "description": "Run tests and show results",
+    "icon": "beaker",
+  },
+}

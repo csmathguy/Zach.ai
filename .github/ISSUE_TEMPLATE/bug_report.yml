@@ -1,0 +1,33 @@
+name: Bug report
+description: Report a bug to help us improve
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the bug and expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List precise steps to reproduce the issue
+      placeholder: |
+        1. Go to ...
+        2. Click on ...
+        3. See error
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, versions, and relevant configs
+      placeholder: Windows 11, Node 18, Python 3.10
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Paste relevant error logs or screenshots
