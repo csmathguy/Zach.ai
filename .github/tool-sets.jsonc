@@ -1,18 +1,28 @@
 {
-  // Starter tool sets used by prompts and agents
-  "reader": {
-    "tools": ["search", "fetch", "usages"],
-    "description": "Read-only exploration and discovery",
+  // Tool sets aligned with the feature workflow (Plan → Tests → Dev → Retro)
+  "researcher": {
+    "tools": ["search", "fetch", "read_file", "usages"],
+    "description": "Gather product context and external references without editing",
     "icon": "book",
   },
-  "editor": {
-    "tools": ["edit", "browse"],
-    "description": "Make safe, minimal edits",
-    "icon": "pencil",
+  "planner": {
+    "tools": ["search", "fetch", "read_file", "edit"],
+    "description": "Author APRs/PRDs and planning artifacts (minimal edits only)",
+    "icon": "note",
   },
-  "tests": {
-    "tools": ["terminal"],
-    "description": "Run tests and show results",
+  "tester": {
+    "tools": ["terminal", "problems", "tests"],
+    "description": "Run commands, inspect failures, and summarize validation status",
     "icon": "beaker",
+  },
+  "developer": {
+    "tools": ["edit", "terminal", "search", "read_file"],
+    "description": "Implement code changes with access to editing and terminal tools",
+    "icon": "code",
+  },
+  "retro": {
+    "tools": ["search", "fetch", "read_file"],
+    "description": "Review chat/code history and reference docs for retrospectives",
+    "icon": "history",
   },
 }

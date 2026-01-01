@@ -10,6 +10,7 @@ Sections:
 - references.md — Topic → link map to authoritative docs.
 - structure.md — Recommended `.github` folder layout for agents/prompts/tool sets.
 - agent-skills.md — Create and use portable Agent Skills across Copilot.
+- workflows-apr-retro.md — APR/PRD structure and retrospective best practices used by agents.
 - agents/ — Custom agents (.agent.md), handoffs, usage patterns.
 - prompts/ — Prompt files (.prompt.md), tips, examples.
 - tools/ — Built-in, extension, and MCP tools used by Copilot.
