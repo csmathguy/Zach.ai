@@ -1,4 +1,8 @@
 # Deploy built artifacts to snapshot directory and reload PM2
+# TODO: Add optional coverage generation before deploy
+#   - Add -GenerateCoverage switch parameter
+#   - Call generate-coverage.ps1 -Project all before build
+#   - Ensure coverage files are included in frontend build
 param()
 
 Push-Location (Split-Path $PSScriptRoot)

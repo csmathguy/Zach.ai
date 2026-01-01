@@ -21,11 +21,11 @@
 
 **New features follow a structured lifecycle**: Plan → Tests → Dev → Retro
 
-- **Planning**: Use `planner` agent or `/apr` prompt to draft APR in `features/<branch>/plan/apr.md`
+- **Planning**: Use `planner` agent or `/apr` prompt to draft APR in `work-items/<branch>/plan/apr.md`
 - **Branch First**: Create feature branch (`git checkout -b feat/<name>`) immediately after APR approval, before any code edits
-- **Test Strategy**: Use `tester` agent to design tests in `features/<branch>/tests/test-plan.md`
-- **Implementation**: Use `developer` agent; track decisions in `features/<branch>/dev/implementation-notes.md`
-- **Retrospective**: Use `retro` agent or `/retro` prompt to complete `features/<branch>/retro/retrospective.md`
+- **Test Strategy**: Use `tester` agent to design tests in `work-items/<branch>/tests/test-plan.md`
+- **Implementation**: Use `developer` agent; track decisions in `work-items/<branch>/dev/implementation-notes.md`
+- **Retrospective**: Use `retro` agent or `/retro` prompt to complete `work-items/<branch>/retro/retrospective.md`
 
 **Agents**: `planner`, `tester`, `developer`, `retro` (hand off between phases)
 **Skills**: `feature-workflow`, `apr-planning`, `retrospective`, `webapp-testing`

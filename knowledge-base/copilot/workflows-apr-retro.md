@@ -20,7 +20,7 @@ Key sections to include in every APR:
 
 Implementation notes:
 
-- Capture links to the per-feature workspace (e.g., `features/<branch>/plan/apr.md`).
+- Capture links to the per-feature workspace (e.g., `work-items/<branch>/plan/apr.md`).
 - End APR planning by creating/switching to the dedicated Git branch before any code edits.
 - Reference this document from Copilot prompts/agents so the APR checklist stays consistent.
 
@@ -36,7 +36,7 @@ Core principles:
 - Emphasize team **reflexivity**—collective reflection on goals, strategy, and process to adapt faster.
 - Produce concrete action items with owners and due dates; follow up in the next retro.
 
-Recommended retrospective template sections (mirrors `features/_template/.../retro/retrospective.md`):
+Recommended retrospective template sections (mirrors `work-items/_template/.../retro/retrospective.md`):
 
 1. Quick summary (outcome, dates, participants).
 2. Wins (what went well).
