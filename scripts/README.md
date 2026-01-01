@@ -35,9 +35,50 @@ Build the frontend and backend, copy artifacts to a snapshot directory (`deploy/
 - Reloads `zach-main` via PM2 so it picks up the new snapshot.
 - Saves PM2 process list.
 
+**TODO (Future Enhancement):** Add optional `-GenerateCoverage` flag to automatically run test coverage and include reports in deployment.
+
 **Access main:**
 
 - http://localhost:8080
+
+### `generate-coverage.ps1`
+
+Generate Jest test coverage and automatically copy coverage JSON files to frontend/public/coverage/ for display in the Codebase Analysis Dashboard.
+
+```powershell
+# Generate coverage for frontend only
+./scripts/generate-coverage.ps1 -Project frontend
+
+# Generate coverage for backend only
+./scripts/generate-coverage.ps1 -Project backend
+
+# Generate coverage for both projects
+./scripts/generate-coverage.ps1 -Project all
+```
+
+**What it does:**
+
+1. Runs `npm run test:coverage` in specified project(s)
+2. Copies `{project}/coverage/coverage-summary.json` to `frontend/public/coverage/{project}-coverage-summary.json`
+3. Makes coverage data available at `/coverage/{project}-coverage-summary.json` route
+
+**View Results:**
+
+- Navigate to http://localhost:5173/codebase-analysis (dev) or http://localhost:8080/codebase-analysis (production)
+- Select Coverage tab
+- Toggle between Frontend/Backend sub-tabs
+
+**npm Shortcuts:**
+
+```bash
+# From root
+npm run coverage:generate      # Generate all
+npm run coverage:frontend      # Frontend only
+npm run coverage:backend       # Backend only
+
+# From project directory
+npm run test:coverage:export   # Generate and export to dashboard
+```
 
 ### `main-start.ps1`
 

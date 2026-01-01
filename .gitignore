@@ -7,10 +7,10 @@ ideas/
 # ===================================
 # Feature Artifacts (per-branch)
 # ===================================
-/features/*
-!/features/README.md
-!/features/_template/
-!/features/_template/**
+/work-items/*
+!/work-items/README.md
+!/work-items/_template/
+!/work-items/_template/**
 
 # ===================================
 # Dependencies
@@ -55,7 +55,11 @@ pids
 # Testing & Coverage
 # ===================================
 .coverage
-coverage/
+**/coverage/coverage-*.json
+**/coverage/*.info
+**/coverage/lcov-report/
+frontend/coverage/
+backend/coverage/
 *.lcov
 .nyc_output
 lib-cov

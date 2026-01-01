@@ -12,6 +12,7 @@ Zach.ai/
 ├── frontend/              # Vite frontend (React + TypeScript)
 ├── deploy/                # Production snapshot directory
 ├── knowledge-base/        # Consolidated documentation
+├── work-items/            # Feature planning and tracking (APRs, retros, etc.)
 ├── scripts/               # PowerShell automation scripts
 ├── .gitignore             # Git ignore patterns (comprehensive)
 ├── .prettierrc            # Prettier configuration

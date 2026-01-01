@@ -35,8 +35,10 @@ jobs:
       - name: Format check
         run: npm run format:check
 
-      - name: Unit tests (frontend + backend)
-        run: npm test
+      - name: Unit tests with coverage (frontend + backend)
+        run: |
+          npm run test:coverage --prefix frontend
+          npm run test:coverage --prefix backend
 
       - name: Install Playwright browsers (Chromium only)
         if: matrix.node-version == '20.x'
