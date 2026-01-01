@@ -23,7 +23,7 @@ In Zach.ai:
 - Packages are installed in the frontend (see [frontend/package.json](../../frontend/package.json)).
 - Jest is configured with jsdom in [frontend/jest.config.js](../../frontend/jest.config.js).
 - Global Testing Library setup lives in [frontend/jest.setup.ts](../../frontend/jest.setup.ts).
-- Our first React test is [frontend/src/__tests__/App.test.tsx](../../frontend/src/__tests__/App.test.tsx).
+- Our first React test is [frontend/src/**tests**/App.test.tsx](../../frontend/src/__tests__/App.test.tsx).
 
 The goal is for all React UI tests to:
 
@@ -41,7 +41,7 @@ Testing Library is a natural fit with React, Jest, and our TypeScript setup beca
 - Promotes **accessibility-aligned queries** (roles, labels, visible text) which improves both tests and UI a11y.
 - Works seamlessly with **jsdom + Jest** and our existing TypeScript tooling.
 
-We follow Testing Library’s guiding principle: *“The more your tests resemble the way your software is used, the more confidence they can give you.”*
+We follow Testing Library’s guiding principle: _“The more your tests resemble the way your software is used, the more confidence they can give you.”_
 
 ---
 
@@ -92,7 +92,7 @@ Most tests follow this pattern:
 2. **Query**: Find elements the way a user would (roles, labels, visible text).
 3. **Assert**: Use Jest + jest-dom matchers to assert on state and behavior.
 
-Example from [frontend/src/__tests__/App.test.tsx](../../frontend/src/__tests__/App.test.tsx):
+Example from [frontend/src/**tests**/App.test.tsx](../../frontend/src/__tests__/App.test.tsx):
 
 - `render(<App />);`
 - `screen.getByRole('heading', { level: 1, name: /zach.ai/i });`
@@ -244,17 +244,17 @@ Each new pattern should be documented here with a short example and a link to th
 ## Anti-Patterns to Avoid
 
 - **Testing implementation details**:
-	- Avoid asserting on internal state, private methods, or hook calls.
-	- Prefer checking rendered output and user-visible behavior.
+  - Avoid asserting on internal state, private methods, or hook calls.
+  - Prefer checking rendered output and user-visible behavior.
 
 - **Overusing test IDs**:
-	- `data-testid` should be a last resort; prefer roles, labels, and text.
+  - `data-testid` should be a last resort; prefer roles, labels, and text.
 
 - **Brittle selectors**:
-	- Do not query by CSS class names, tag names, or DOM structure unless absolutely necessary.
+  - Do not query by CSS class names, tag names, or DOM structure unless absolutely necessary.
 
 - **Over-mocking React or browser APIs**:
-	- Mock only what you must (e.g., network calls), and keep mocks close to tests or in focused helpers.
+  - Mock only what you must (e.g., network calls), and keep mocks close to tests or in focused helpers.
 
 ---
 
@@ -262,9 +262,9 @@ Each new pattern should be documented here with a short example and a link to th
 
 - **Next Review Due**: 2026-03-31
 - **Known Gaps**:
-	- Only a small number of React tests exist (currently App-level); feature-level tests for the dashboard and future components still need to be added.
-	- No shared `renderWithProviders` helper yet; introduce one if we add global providers (router, context, etc.).
+  - Only a small number of React tests exist (currently App-level); feature-level tests for the dashboard and future components still need to be added.
+  - No shared `renderWithProviders` helper yet; introduce one if we add global providers (router, context, etc.).
 - **Enhancement Ideas**:
-	- Add concrete examples for `user-event` usage once interactive components are created.
-	- Cross-link specific patterns to real test files as the test suite grows.
-	- Consider adding basic accessibility checks to enforce good ARIA usage alongside Testing Library’s best practices.
+  - Add concrete examples for `user-event` usage once interactive components are created.
+  - Cross-link specific patterns to real test files as the test suite grows.
+  - Consider adding basic accessibility checks to enforce good ARIA usage alongside Testing Library’s best practices.

@@ -51,7 +51,7 @@ TypeScript is a statically typed superset of JavaScript that compiles to plain J
 
 In Zach.ai, TypeScript is used for:
 
-- The backend Express API in [backend/src](../../backend/src).  
+- The backend Express API in [backend/src](../../backend/src).
 - The Vite-powered frontend in [frontend/src](../../frontend/src).
 
 The compiler is configured to run in **strict mode** across both projects, enforcing a high level of type safety.
@@ -61,8 +61,8 @@ The compiler is configured to run in **strict mode** across both projects, enfor
 - **Strict type checking**: `strict: true` in both backend and frontend `tsconfig.json`.
 - **Modern ECMAScript targets**: `target: "ES2020"` to use async/await, optional chaining, etc.
 - **Module systems** that match our runtimes:
-	- Backend: CommonJS output (`module: "CommonJS"`) for Node-style `require`/`module.exports` under the hood.
-	- Frontend: ES modules (`module: "ESNext"`, `moduleResolution: "Bundler"`) for Vite.
+  - Backend: CommonJS output (`module: "CommonJS"`) for Node-style `require`/`module.exports` under the hood.
+  - Frontend: ES modules (`module: "ESNext"`, `moduleResolution: "Bundler"`) for Vite.
 - **Type definitions for libraries** via `@types/*` packages.
 - **Isolated modules** on the frontend to align with Vite's per-file compilation.
 
@@ -93,14 +93,14 @@ Zach.ai is intended to be a long-lived codebase maintained by multiple developer
 ### Alternatives Considered
 
 - **Plain JavaScript**:
-	- Pros: Less upfront syntax, no compilation step.
-	- Cons: No static safety, weaker tooling, easier to introduce regressions.
-	- Decision: Rejected in favor of stronger guarantees and clearer APIs.
+  - Pros: Less upfront syntax, no compilation step.
+  - Cons: No static safety, weaker tooling, easier to introduce regressions.
+  - Decision: Rejected in favor of stronger guarantees and clearer APIs.
 
 - **Flow**:
-	- Pros: Also provides static typing for JS.
-	- Cons: Smaller ecosystem, less active community, weaker editor support compared to TypeScript.
-	- Decision: Rejected; TypeScript has become the industry standard.
+  - Pros: Also provides static typing for JS.
+  - Cons: Smaller ecosystem, less active community, weaker editor support compared to TypeScript.
+  - Decision: Rejected; TypeScript has become the industry standard.
 
 ### Decision Factors
 
@@ -117,27 +117,27 @@ Use these as the canonical reference for language behavior and compiler options:
 ### Primary Documentation
 
 - **Main Docs** – https://www.typescriptlang.org/docs/  
-	High-level guides, reference docs, and deep dives into the type system.
+  High-level guides, reference docs, and deep dives into the type system.
 
 - **TypeScript Handbook** – https://www.typescriptlang.org/docs/handbook/intro.html  
-	Progressive introduction to core language features and patterns.
+  Progressive introduction to core language features and patterns.
 
 - **TSConfig Reference** – https://www.typescriptlang.org/tsconfig  
-	Canonical reference for all compiler options, their defaults, and interactions.
+  Canonical reference for all compiler options, their defaults, and interactions.
 
 - **Release Notes (5.6)** – https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-6.html  
-	Details on new features, breaking changes, and deprecations in 5.6.
+  Details on new features, breaking changes, and deprecations in 5.6.
 
 - **GitHub Repository** – https://github.com/microsoft/TypeScript  
-	Source code, issue tracker, and discussions.
+  Source code, issue tracker, and discussions.
 
 ### Community & Support
 
 - **Stack Overflow** – https://stackoverflow.com/questions/tagged/typescript  
-	Search for specific error messages and common patterns.
+  Search for specific error messages and common patterns.
 
 - **TypeScript Discord** – Linked from the official community page.  
-	Real-time chat and questions.
+  Real-time chat and questions.
 
 ### When to Use What
 
@@ -187,13 +187,13 @@ See [Maintenance Notes](#maintenance-notes) for the review cadence.
 
 ### Where TypeScript Is Installed
 
-- Root: Development tooling (ESLint integration, shared scripts).  
+- Root: Development tooling (ESLint integration, shared scripts).
 - Backend: `typescript` in [backend/package.json](../../backend/package.json) with scripts:
-	- `typecheck`: `tsc --noEmit`
-	- `build`: `tsc -p tsconfig.json`
+  - `typecheck`: `tsc --noEmit`
+  - `build`: `tsc -p tsconfig.json`
 - Frontend: `typescript` in [frontend/package.json](../../frontend/package.json) with scripts:
-	- `typecheck`: `tsc --noEmit`
-	- `build`: `vite build` (Vite handles transpilation; TypeScript does type-checking only).
+  - `typecheck`: `tsc --noEmit`
+  - `build`: `vite build` (Vite handles transpilation; TypeScript does type-checking only).
 
 ### Global Workflow
 
@@ -210,17 +210,17 @@ Located at [backend/tsconfig.json](../../backend/tsconfig.json):
 
 ```jsonc
 {
-	"compilerOptions": {
-		"target": "ES2020",
-		"module": "CommonJS",
-		"outDir": "dist",
-		"rootDir": "src",
-		"strict": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"skipLibCheck": true
-	},
-	"include": ["src"]
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+  },
+  "include": ["src"],
 }
 ```
 
@@ -230,19 +230,19 @@ Located at [frontend/tsconfig.json](../../frontend/tsconfig.json):
 
 ```jsonc
 {
-	"compilerOptions": {
-		"target": "ES2020",
-		"useDefineForClassFields": true,
-		"module": "ESNext",
-		"lib": ["ES2020", "DOM"],
-		"moduleResolution": "Bundler",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"noEmit": true,
-		"strict": true,
-		"skipLibCheck": true
-	},
-	"include": ["src"]
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM"],
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+  },
+  "include": ["src"],
 }
 ```
 
@@ -261,8 +261,8 @@ This section gives a brief overview of the TypeScript features we rely on heavil
 
 ```ts
 interface Metrics {
-	uptimeMs: number;
-	averageResponseTimeMs: number;
+  uptimeMs: number;
+  averageResponseTimeMs: number;
 }
 
 type Nullable<T> = T | null;
@@ -279,19 +279,19 @@ Union types allow values to be one of several types. We use **narrowing** (via `
 
 ```ts
 type ResponseState =
-	| { status: "loading" }
-	| { status: "success"; data: string }
-	| { status: "error"; message: string };
+  | { status: 'loading' }
+  | { status: 'success'; data: string }
+  | { status: 'error'; message: string };
 
 function getMessage(state: ResponseState): string {
-	switch (state.status) {
-		case "loading":
-			return "Loading";
-		case "success":
-			return state.data;
-		case "error":
-			return state.message;
-	}
+  switch (state.status) {
+    case 'loading':
+      return 'Loading';
+    case 'success':
+      return state.data;
+    case 'error':
+      return state.message;
+  }
 }
 ```
 
@@ -301,10 +301,10 @@ Generics allow us to write reusable, type-safe functions and data structures.
 
 ```ts
 function identity<T>(value: T): T {
-	return value;
+  return value;
 }
 
-const name = identity("Zach"); // T is string
+const name = identity('Zach'); // T is string
 const count = identity(42); // T is number
 ```
 
@@ -317,7 +317,7 @@ We use **ES module syntax** (`import`/`export`) in both backend and frontend. Ty
 ```ts
 // backend/src/utils/metrics.ts
 export function calculateUptime(startTimeMs: number): number {
-	return Date.now() - startTimeMs;
+  return Date.now() - startTimeMs;
 }
 ```
 
@@ -374,19 +374,19 @@ This section complements `.github/instructions/typescript.instructions.md` and f
 
 ```ts
 function parseJson(value: string): unknown {
-	return JSON.parse(value);
+  return JSON.parse(value);
 }
 
 function useConfig(raw: unknown) {
-	if (
-		typeof raw === "object" &&
-		raw !== null &&
-		"baseUrl" in raw &&
-		typeof (raw as { baseUrl: unknown }).baseUrl === "string"
-	) {
-		const baseUrl = (raw as { baseUrl: string }).baseUrl;
-		// safe to use baseUrl here
-	}
+  if (
+    typeof raw === 'object' &&
+    raw !== null &&
+    'baseUrl' in raw &&
+    typeof (raw as { baseUrl: unknown }).baseUrl === 'string'
+  ) {
+    const baseUrl = (raw as { baseUrl: string }).baseUrl;
+    // safe to use baseUrl here
+  }
 }
 ```
 
@@ -408,11 +408,11 @@ function useConfig(raw: unknown) {
 
 ```ts
 try {
-	// ...
+  // ...
 } catch (error: unknown) {
-	if (error instanceof Error) {
-		// handle
-	}
+  if (error instanceof Error) {
+    // handle
+  }
 }
 ```
 
@@ -427,16 +427,14 @@ Even though the current codebase is small, there are patterns we want to standar
 Use discriminated unions to model operations that can succeed or fail:
 
 ```ts
-type Result<T> =
-	| { ok: true; value: T }
-	| { ok: false; error: string };
+type Result<T> = { ok: true; value: T } | { ok: false; error: string };
 
 function safeParseInt(value: string): Result<number> {
-	const parsed = Number.parseInt(value, 10);
-	if (Number.isNaN(parsed)) {
-		return { ok: false, error: "Invalid integer" };
-	}
-	return { ok: true, value: parsed };
+  const parsed = Number.parseInt(value, 10);
+  if (Number.isNaN(parsed)) {
+    return { ok: false, error: 'Invalid integer' };
+  }
+  return { ok: true, value: parsed };
 }
 ```
 
@@ -446,12 +444,12 @@ Leverage built-in utility types like `Partial`, `Pick`, `Omit`, `Readonly`, and 
 
 ```ts
 interface User {
-	id: string;
-	name: string;
-	email: string;
+  id: string;
+  name: string;
+  email: string;
 }
 
-type UserUpdate = Partial<Pick<User, "name" | "email">>;
+type UserUpdate = Partial<Pick<User, 'name' | 'email'>>;
 ```
 
 ### Domain Models
@@ -488,10 +486,10 @@ TypeScript is a foundational dependency for several other tools in this repo.
 - Handlers should use the `Request`, `Response`, and `NextFunction` types for clarity:
 
 ```ts
-import type { Request, Response } from "express";
+import type { Request, Response } from 'express';
 
 export function healthHandler(req: Request, res: Response): void {
-	res.json({ status: "ok", timestamp: Date.now() });
+  res.json({ status: 'ok', timestamp: Date.now() });
 }
 ```
 
@@ -570,7 +568,7 @@ Fix:
 
 ```ts
 if (!config) {
-	throw new Error("Config not loaded");
+  throw new Error('Config not loaded');
 }
 useConfig(config);
 ```
@@ -603,7 +601,7 @@ Fix:
 
 ```ts
 function formatName(name: string): string {
-	return name.trim();
+  return name.trim();
 }
 ```
 
@@ -678,11 +676,11 @@ As you learn, favor patterns that match the simplicity and clarity goals in [dev
 
 - **Next Review Due**: 2026-03-31
 - **Known Gaps**:
-	- This document should be updated once React components are added to show concrete `.tsx` examples.
-	- More real-world examples from `backend/src` and `frontend/src` can be inlined as the codebase grows.
+  - This document should be updated once React components are added to show concrete `.tsx` examples.
+  - More real-world examples from `backend/src` and `frontend/src` can be inlined as the codebase grows.
 - **Enhancement Ideas**:
-	- Add a `quick-reference.md` with command snippets and common patterns.
-	- Add explicit links to example types and functions once more domain logic exists.
+  - Add a `quick-reference.md` with command snippets and common patterns.
+  - Add explicit links to example types and functions once more domain logic exists.
 
 During each quarterly documentation review (see [creation-guide.md](../guidelines/creation-guide.md)), verify that:
 

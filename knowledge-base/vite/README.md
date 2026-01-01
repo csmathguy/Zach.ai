@@ -66,12 +66,12 @@ Vite meets these needs by leveraging native ES modules in development and Rollup
 ### Alternatives Considered
 
 - **Webpack**:
-	- Pros: Very flexible, massive ecosystem.
-	- Cons: More complex configuration; slower cold starts compared to Vite.
+  - Pros: Very flexible, massive ecosystem.
+  - Cons: More complex configuration; slower cold starts compared to Vite.
 
 - **Create React App (CRA)**:
-	- Pros: Batteries-included React setup.
-	- Cons: Less flexible, slower builds, and de-emphasized in the React docs.
+  - Pros: Batteries-included React setup.
+  - Cons: Less flexible, slower builds, and de-emphasized in the React docs.
 
 Vite struck the right balance between flexibility, performance, and simplicity, especially for a TypeScript-first project.
 
@@ -151,13 +151,13 @@ Our Vite config is intentionally minimal and lives at [frontend/vite.config.ts](
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	server: {
-		port: 5173,
-		open: false,
-	},
-	preview: {
-		port: 5173,
-	},
+  server: {
+    port: 5173,
+    open: false,
+  },
+  preview: {
+    port: 5173,
+  },
 });
 ```
 
@@ -323,9 +323,9 @@ When looking for examples, prefer those using **TypeScript** and (eventually) **
 
 - **Next Review Due**: 2026-03-31
 - **Known Gaps**:
-	- This document will need updates when React is introduced and Vite plugins are added.
+  - This document will need updates when React is introduced and Vite plugins are added.
 - **Enhancement Ideas**:
-	- Add a `quick-reference.md` with common Vite commands and workflow tips.
-	- Document any non-default aliases or plugins once configured.
+  - Add a `quick-reference.md` with common Vite commands and workflow tips.
+  - Document any non-default aliases or plugins once configured.
 
 Review this file during quarterly knowledge base updates and whenever `vite.config.ts` changes.

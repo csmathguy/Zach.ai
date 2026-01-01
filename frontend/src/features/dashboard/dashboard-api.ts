@@ -32,7 +32,9 @@ interface MetricsData {
   timestamp: string;
 }
 
-const API_BASE = import.meta.env.DEV ? 'http://localhost:3000' : '';
+const isDevEnv =
+  typeof window !== 'undefined' && window.location && window.location.port === '5173';
+const API_BASE = isDevEnv ? 'http://localhost:3000' : '';
 const HEALTH_CHECK_INTERVAL = 5 * 60 * 1000; // 5 minutes
 let initialized = false;
 
@@ -126,12 +128,20 @@ async function fetchMetrics() {
   }
 }
 
+function getEnvironmentSummary() {
+  if (typeof window !== 'undefined' && window.location) {
+    const isDev = window.location.port === '5173';
+    return { isDev, mode: isDev ? 'development' : 'production' };
+  }
+
+  return { isDev: false, mode: 'production' };
+}
+
 function displayEnvironmentInfo() {
   const envEl = document.getElementById('environment-info');
   if (!envEl) return;
 
-  const isDev = import.meta.env.DEV;
-  const mode = import.meta.env.MODE;
+  const { isDev, mode } = getEnvironmentSummary();
 
   envEl.innerHTML = `
     <div class="info-grid">

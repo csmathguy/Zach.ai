@@ -19,7 +19,7 @@
 
 - Installed in the backend: [backend/package.json](../../backend/package.json).
 - Used in backend tests, for example:
-  - [backend/src/__tests__/server.test.ts](../../backend/src/__tests__/server.test.ts)
+  - [backend/src/**tests**/server.test.ts](../../backend/src/__tests__/server.test.ts)
 - Runs via the backend Jest scripts:
   - `npm test --prefix backend`
   - `npm run test:coverage --prefix backend`
@@ -45,7 +45,7 @@
   - JSON body: `expect(response.body).toEqual({...});`
 - Use Jest matchers like `expect.any(String)` for dynamic values (e.g. timestamps).
 
-See [backend/src/__tests__/server.test.ts](../../backend/src/__tests__/server.test.ts) for our current health-check tests.
+See [backend/src/**tests**/server.test.ts](../../backend/src/__tests__/server.test.ts) for our current health-check tests.
 
 ---
 

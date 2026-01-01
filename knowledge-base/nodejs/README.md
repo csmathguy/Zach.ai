@@ -181,7 +181,7 @@ For more on TypeScript configuration, see [knowledge-base/typescript/README.md](
 
 - Declared as a devDependency in [backend/package.json](../../backend/package.json).
 - Used in the backend `dev` script:
-	- `"dev": "ts-node-dev --respawn --transpile-only src/server.ts"`
+  - `"dev": "ts-node-dev --respawn --transpile-only src/server.ts"`
 
 ### How We Use It (MVP)
 
@@ -272,7 +272,7 @@ Favor resources that use modern JavaScript/TypeScript, async/await, and Express-
 
 - **Next Review Due**: 2026-03-31
 - **Known Gaps**:
-	- Exact production Node.js version should be documented in deployment notes.
+  - Exact production Node.js version should be documented in deployment notes.
 - **Enhancement Ideas**:
-	- Add PM2 integration notes and references to [knowledge-base/pm2/](../pm2/README.md).
-	- Add a quick-reference with common Node commands and version manager tips.
+  - Add PM2 integration notes and references to [knowledge-base/pm2/](../pm2/README.md).
+  - Add a quick-reference with common Node commands and version manager tips.

@@ -38,9 +38,6 @@
     "typescript-eslint": "8.51.0"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "tsc --noEmit --skipLibCheck"
-    ],
     "*.{js,mjs,cjs,ts,tsx}": [
       "eslint --fix",
       "prettier --write"

@@ -45,7 +45,6 @@ React is a component-based UI library for building interactive interfaces. Zach.
 - The application shell lives in [frontend/src/app/App.tsx](../../frontend/src/app/App.tsx) and composes feature slices.
 - The monitoring dashboard UI lives in [frontend/src/features/dashboard/Dashboard.tsx](../../frontend/src/features/dashboard/Dashboard.tsx).
 - Styling uses a mix of global CSS ([frontend/src/styles.css](../../frontend/src/styles.css)) and feature-level CSS Modules.
-  
 
 This document describes how we are starting to use React and how we plan to evolve that usage, aligned with our [react instructions](../../.github/instructions/react.instructions.md) and the official docs.
 
@@ -94,9 +93,9 @@ React has been added as a dependency of the frontend:
 React is now wired into the frontend:
 
 1. Dependencies in [frontend/package.json](../../frontend/package.json):
-	- `react`, `react-dom`
-	- `@types/react`, `@types/react-dom`
-	- `@vitejs/plugin-react`
+   - `react`, `react-dom`
+   - `@types/react`, `@types/react-dom`
+   - `@vitejs/plugin-react`
 2. [frontend/vite.config.ts](../../frontend/vite.config.ts) enables the React plugin.
 3. [frontend/src/main.tsx](../../frontend/src/main.tsx) renders the `App` component into a `root` div and imports global styles.
 4. [frontend/src/app/App.tsx](../../frontend/src/app/App.tsx) defines the initial UI shell using CSS Modules.
@@ -137,12 +136,12 @@ Concrete settings live in:
 The frontend uses a hybrid styling approach:
 
 - **Global base styles** in [frontend/src/styles.css](../../frontend/src/styles.css)
-	- Resets (`*`), `body` background, fonts, layout centering.
-	- Utility classes used by DOM-inserted HTML (`.status-badge`, `.info-grid`, `.metric-*`, `.loading`, `.error`).
+  - Resets (`*`), `body` background, fonts, layout centering.
+  - Utility classes used by DOM-inserted HTML (`.status-badge`, `.info-grid`, `.metric-*`, `.loading`, `.error`).
 - **CSS Modules for layout and structure**
-	- [frontend/src/app/App.module.css](../../frontend/src/app/App.module.css) – container, header, title, tagline, footer.
-	- [frontend/src/features/dashboard/Dashboard.module.css](../../frontend/src/features/dashboard/Dashboard.module.css) – cards grid and card styling for the three dashboard sections.
-	- Components import these modules and use `className={styles.foo}` to apply styles.
+  - [frontend/src/app/App.module.css](../../frontend/src/app/App.module.css) – container, header, title, tagline, footer.
+  - [frontend/src/features/dashboard/Dashboard.module.css](../../frontend/src/features/dashboard/Dashboard.module.css) – cards grid and card styling for the three dashboard sections.
+  - Components import these modules and use `className={styles.foo}` to apply styles.
 
 Guidelines:
 
@@ -194,7 +193,7 @@ For general TypeScript patterns and utilities, see [knowledge-base/typescript/RE
 
 We use Jest and Testing Library in the frontend. With React in place:
 
-- **React Testing Library** is used to test components via the DOM (see [frontend/src/__tests__/App.test.tsx](../../frontend/src/__tests__/App.test.tsx)).
+- **React Testing Library** is used to test components via the DOM (see [frontend/src/**tests**/App.test.tsx](../../frontend/src/__tests__/App.test.tsx)).
 - **jest-dom** provides additional DOM assertions via [frontend/jest.setup.ts](../../frontend/jest.setup.ts).
 
 ---
@@ -269,6 +268,6 @@ We will curate additional resources that match our patterns and stack as the Rea
 
 - **Next Review Due**: 2026-03-31
 - **Known Gaps**:
-	- React is not yet present in the codebase; all content is forward-looking.
+  - React is not yet present in the codebase; all content is forward-looking.
 - **Enhancement Ideas**:
-	- Add concrete examples and code references as soon as the first React components, hooks, and tests are implemented.
+  - Add concrete examples and code references as soon as the first React components, hooks, and tests are implemented.

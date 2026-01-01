@@ -13,24 +13,28 @@ This guide establishes best practices for creating comprehensive, maintainable, 
 ## Core Principles
 
 ### 1. Comprehensive Yet Accessible
+
 - Cover all essential topics without overwhelming readers
 - Use clear, jargon-free language where possible
 - Provide examples for abstract concepts
 - Balance depth with readability
 
 ### 2. Living Documentation
+
 - Designed for easy updates as technologies evolve
 - Include version numbers and "Last Updated" dates
 - Flag sections that need review when new versions release
 - Make enhancement opportunities obvious
 
 ### 3. Actionable Information
+
 - Focus on practical, immediately useful content
 - Include code examples that can be copied and adapted
 - Provide troubleshooting steps, not just problem descriptions
 - Link to solutions, not just identify issues
 
 ### 4. Single Source of Truth
+
 - Each technology has one authoritative documentation location
 - Cross-reference rather than duplicate content
 - Maintain consistency across all documentation
@@ -42,6 +46,7 @@ This guide establishes best practices for creating comprehensive, maintainable, 
 ### Phase 1: Discovery & Planning (30 minutes)
 
 #### 1.1 Identify the Technology
+
 ```markdown
 - Official name and current version
 - Purpose in our codebase (why we chose it)
@@ -50,6 +55,7 @@ This guide establishes best practices for creating comprehensive, maintainable, 
 ```
 
 #### 1.2 Gather Official Resources
+
 ```markdown
 Primary Sources:
 ✅ Official documentation site
@@ -66,6 +72,7 @@ Community Resources:
 ```
 
 #### 1.3 Identify Current Version Features
+
 ```markdown
 - What's new in current major version?
 - Breaking changes from previous versions
@@ -76,7 +83,9 @@ Community Resources:
 ### Phase 2: Content Research (60-90 minutes)
 
 #### 2.1 Best Practices Research
+
 Look for official and community-endorsed patterns:
+
 - Official style guides or recommendations
 - Conference talks and presentations
 - Well-regarded blog posts and tutorials
@@ -84,20 +93,25 @@ Look for official and community-endorsed patterns:
 - Discussions in GitHub issues about patterns
 
 **Key Questions to Answer:**
+
 - What are the most common mistakes developers make?
 - What patterns does the official team recommend?
 - What performance considerations exist?
 - What security concerns should we know about?
 
 #### 2.2 Integration Research
+
 Understand how the technology works with our stack:
+
 - TypeScript integration and type definitions
 - Testing strategies and tools
 - Build tool configuration
 - Common gotchas in our specific setup
 
 #### 2.3 Troubleshooting Research
+
 Collect solutions to common problems:
+
 - Browse GitHub issues (sort by reactions/comments)
 - Review Stack Overflow questions
 - Check official troubleshooting guides
@@ -106,28 +120,35 @@ Collect solutions to common problems:
 ### Phase 3: Documentation Creation (90-120 minutes)
 
 #### 3.1 Use the Standard Template
+
 Follow the structure defined in this guide (see Template section below)
 
 #### 3.2 Write for Multiple Skill Levels
+
 ```markdown
 Beginner Level:
+
 - What is this technology?
 - Why do we use it?
 - Basic concepts and terminology
 
 Intermediate Level:
+
 - How do we configure it?
 - Common patterns in our codebase
 - Integration with other tools
 
 Advanced Level:
+
 - Performance optimization
 - Advanced patterns and edge cases
 - Extending and customizing
 ```
 
 #### 3.3 Include Practical Examples
+
 Every major concept should have:
+
 - A real code example from our codebase (preferred)
 - Or a minimal reproducible example
 - Explanation of what the code does
@@ -136,6 +157,7 @@ Every major concept should have:
 ### Phase 4: Review & Enhancement (30 minutes)
 
 #### 4.1 Self-Review Checklist
+
 - [ ] All official links work and are current
 - [ ] Code examples are tested and functional
 - [ ] Version numbers are accurate
@@ -144,6 +166,7 @@ Every major concept should have:
 - [ ] No orphaned sections or incomplete thoughts
 
 #### 4.2 Feedback Integration
+
 - Mark sections as "Draft" or "In Review" if uncertain
 - Flag areas where expert review is needed
 - Note questions for future research
@@ -170,7 +193,7 @@ knowledge-base/<technology>/
 
 ### README.md Structure (Detailed)
 
-```markdown
+````markdown
 # <Technology Name>
 
 > Brief one-line description of what this technology does
@@ -218,6 +241,7 @@ knowledge-base/<technology>/
 Clear, accessible explanation of what the technology is and what problems it solves.
 
 **Key Features:**
+
 - Feature 1: Brief description
 - Feature 2: Brief description
 - Feature 3: Brief description
@@ -235,14 +259,17 @@ Be honest about limitations and better alternatives for certain use cases.
 ## Why We Use It
 
 **Our Specific Needs:**
+
 - Need 1: How this technology addresses it
 - Need 2: How this technology addresses it
 
 **Alternatives Considered:**
+
 - Alternative 1: Why we didn't choose it
 - Alternative 2: Why we didn't choose it
 
 **Decision Factors:**
+
 - Performance requirements
 - Developer experience
 - Community support
@@ -255,18 +282,21 @@ Be honest about limitations and better alternatives for certain use cases.
 ## Official Resources
 
 ### Primary Documentation
+
 - **Main Docs**: [Link] - What you'll find here
 - **API Reference**: [Link] - Complete API documentation
 - **GitHub**: [Link] - Source code and issues
 - **Release Notes**: [Link] - Version history and changes
 
 ### Community & Support
+
 - **Stack Overflow**: [Link] - Q&A tagged with [technology]
 - **Discord/Slack**: [Link] - Real-time help
 - **Twitter/X**: [Link] - Official updates and news
 - **Newsletter**: [Link] - If applicable
 
 ### Learning Resources
+
 - **Official Tutorial**: [Link] - Getting started guide
 - **Video Courses**: [Links] - Recommended courses
 - **Books**: [Links] - Recommended reading
@@ -281,14 +311,17 @@ Be honest about limitations and better alternatives for certain use cases.
 **Release Date**: YYYY-MM-DD
 
 **Major Features:**
+
 - Feature 1 description
 - Feature 2 description
 
 **Breaking Changes:**
+
 - Breaking change 1 and how to adapt
 - Breaking change 2 and how to adapt
 
 **Deprecated:**
+
 - Feature 1 (use X instead)
 - Feature 2 (use Y instead)
 
@@ -311,6 +344,7 @@ Step-by-step guide for upgrading from previous versions.
 - Other dependencies
 - System requirements
 ```
+````
 
 ### Installation
 
@@ -332,20 +366,22 @@ npm list <package>
 
 export default {
   option1: 'value', // Why we set this
-  option2: true,    // Why we enabled this
+  option2: true, // Why we enabled this
 };
 ```
 
 **Configuration Options Explained:**
+
 - `option1`: What it does, why we set it this way
 - `option2`: What it does, our reasoning
 
 ### Integration with Other Tools
 
 How this technology integrates with:
+
 - TypeScript
 - ESLint
-- Prettier  
+- Prettier
 - Jest
 - Our build process
 
@@ -362,6 +398,7 @@ Clear explanation of the concept.
 Practical importance in our codebase.
 
 **Example:**
+
 ```typescript
 // Practical code example
 // With comments explaining key points
@@ -389,7 +426,7 @@ Complete explanation of all configuration options we use:
   // Group 1: Basic settings
   option1: 'value',  // [default: 'other'] - What this controls
   option2: true,     // [default: false] - Why we enabled this
-  
+
   // Group 2: Advanced settings
   option3: {
     nested1: 'value',  // Purpose and implications
@@ -404,10 +441,14 @@ Differences between development, staging, and production:
 
 ```typescript
 // Development
-const devConfig = { /* ... */ };
+const devConfig = {
+  /* ... */
+};
 
 // Production
-const prodConfig = { /* ... */ };
+const prodConfig = {
+  /* ... */
+};
 ```
 
 ### Common Configuration Patterns
@@ -423,14 +464,17 @@ Frequently used setups for different scenarios.
 Practices recommended by the technology's creators:
 
 #### 1. Practice Name
+
 **Recommendation:** What to do  
 **Reasoning:** Why this matters  
 **Example:**
+
 ```typescript
 // Good example
 ```
 
 **Anti-pattern:**
+
 ```typescript
 // What NOT to do
 ```
@@ -440,9 +484,11 @@ Practices recommended by the technology's creators:
 Widely adopted patterns from the community:
 
 #### 1. Pattern Name
+
 **What:** Description  
 **When:** Use cases  
 **Example:**
+
 ```typescript
 // Implementation
 ```
@@ -452,6 +498,7 @@ Widely adopted patterns from the community:
 Specific patterns and conventions for our codebase:
 
 #### 1. Standard Name
+
 **Requirement:** Must/Should/Consider  
 **Rationale:** Why we enforce this  
 **Example:** Link to actual code in our project
@@ -467,6 +514,7 @@ Specific patterns and conventions for our codebase:
 **Trade-offs:** What to consider
 
 **Implementation:**
+
 ```typescript
 // Complete working example
 // With step-by-step comments
@@ -474,16 +522,17 @@ Specific patterns and conventions for our codebase:
 export function examplePattern() {
   // 1. Setup
   const setup = initialize();
-  
+
   // 2. Main logic
   const result = process(setup);
-  
+
   // 3. Cleanup
   return cleanup(result);
 }
 ```
 
 **Real Example in Our Codebase:**
+
 - Location: `path/to/file.ts:123`
 - Context: How we use this pattern
 
@@ -498,6 +547,7 @@ export function examplePattern() {
 ### Type Definitions
 
 How to get types:
+
 ```bash
 # Installation
 npm install --save-dev @types/<package>
@@ -519,12 +569,14 @@ function useFeature<T extends Constraint>(input: T): ReturnType {
 
 **Issue 1**: Description  
 **Solution**:
+
 ```typescript
 // How to fix it
 ```
 
 **Issue 2**: Description  
 **Solution**:
+
 ```typescript
 // How to fix it
 ```
@@ -550,6 +602,7 @@ type Smart<T> = T extends string ? StringHandler : OtherHandler;
 How we test code using this technology:
 
 **Unit Tests:**
+
 ```typescript
 import { feature } from '<package>';
 
@@ -557,10 +610,10 @@ describe('Feature', () => {
   it('should behave correctly', () => {
     // Arrange
     const input = setupTest();
-    
+
     // Act
     const result = feature(input);
-    
+
     // Assert
     expect(result).toBe(expected);
   });
@@ -568,6 +621,7 @@ describe('Feature', () => {
 ```
 
 **Integration Tests:**
+
 ```typescript
 // Testing with other parts of the system
 ```
@@ -584,6 +638,7 @@ jest.mock('<package>', () => ({
 ### Test Coverage
 
 What aspects to test:
+
 - [ ] Core functionality
 - [ ] Edge cases
 - [ ] Error handling
@@ -599,11 +654,13 @@ What aspects to test:
 Key performance factors to understand:
 
 #### Memory Usage
+
 - How this technology uses memory
 - When to be concerned
 - Optimization strategies
 
 #### CPU Impact
+
 - Computational cost
 - Async vs sync operations
 - Throttling and debouncing
@@ -611,8 +668,10 @@ Key performance factors to understand:
 ### Optimization Techniques
 
 #### Technique 1: [Name]
+
 **Problem:** What slow thing happens  
 **Solution:**
+
 ```typescript
 // Before (slow)
 const slow = inefficientApproach();
@@ -620,14 +679,17 @@ const slow = inefficientApproach();
 // After (fast)
 const fast = optimizedApproach();
 ```
+
 **Impact:** Quantifiable improvement
 
 #### Technique 2: [Name]
+
 [Repeat structure]
 
 ### Benchmarking
 
 How to measure performance:
+
 ```typescript
 // Benchmarking example
 console.time('operation');
@@ -638,6 +700,7 @@ console.timeEnd('operation');
 ### Performance Budget
 
 Our targets:
+
 - Metric 1: Target value
 - Metric 2: Target value
 
@@ -650,21 +713,26 @@ Our targets:
 Key security aspects:
 
 #### Authentication & Authorization
+
 How this technology handles auth concerns.
 
 #### Data Validation
+
 Input validation patterns:
+
 ```typescript
 // Secure validation example
 ```
 
 #### Common Vulnerabilities
+
 - Vulnerability 1: Description and prevention
 - Vulnerability 2: Description and prevention
 
 ### Security Best Practices
 
 From official security guides:
+
 1. Practice 1
 2. Practice 2
 3. Practice 3
@@ -687,12 +755,15 @@ From official security guides:
 #### Issue 1: [Error Message or Problem]
 
 **Symptoms:**
+
 - What you see/experience
 
 **Cause:**
+
 - Why this happens
 
 **Solution:**
+
 ```typescript
 // Step-by-step fix
 // 1. First step
@@ -713,8 +784,10 @@ How to avoid this in the future
 ### Debugging Techniques
 
 #### Technique 1: [Name]
+
 **When to Use:** Scenario  
 **How:**
+
 ```typescript
 // Debugging code example
 ```
@@ -725,7 +798,9 @@ How to avoid this in the future
 // VSCode launch.json or similar
 {
   "type": "node",
-  "configurations": [/* ... */]
+  "configurations": [
+    /* ... */
+  ]
 }
 ```
 
@@ -745,10 +820,12 @@ logger.debug('Context:', { data });
 ### Migrating from Version X to Y
 
 **Breaking Changes:**
+
 1. Change 1: Old way → New way
 2. Change 2: Old way → New way
 
 **Step-by-Step:**
+
 ```bash
 # 1. Update package
 npm install <package>@latest
@@ -758,6 +835,7 @@ npm install <package>@latest
 ```
 
 **Code Changes:**
+
 ```typescript
 // Before
 oldAPI();
@@ -774,6 +852,7 @@ How to verify the migration succeeded.
 If we're replacing another tool:
 
 **From Alternative to This Technology:**
+
 - Mapping of concepts
 - Code transformation examples
 - Gotchas and differences
@@ -784,12 +863,12 @@ If we're replacing another tool:
 
 ### vs. Alternative 1
 
-| Feature | This Tech | Alternative |
-|---------|-----------|-------------|
-| Performance | Better/Worse | Notes |
-| DX | Rating | Notes |
-| TypeScript | Quality | Quality |
-| Community | Size | Size |
+| Feature     | This Tech    | Alternative |
+| ----------- | ------------ | ----------- |
+| Performance | Better/Worse | Notes       |
+| DX          | Rating       | Notes       |
+| TypeScript  | Quality      | Quality     |
+| Community   | Size         | Size        |
 
 **When to Choose Alternative:**
 Scenarios where the alternative is better.
@@ -805,28 +884,33 @@ Scenarios where the alternative is better.
 ### For Beginners
 
 **Essential Reading:**
+
 1. [Resource 1](link) - Why it's valuable
 2. [Resource 2](link) - What you'll learn
 
 **Video Tutorials:**
+
 1. [Video 1](link) - Duration, coverage
 2. [Video 2](link) - Duration, coverage
 
 ### For Intermediate Users
 
 **Deep Dives:**
+
 1. [Article](link) - Advanced topic
 2. [Talk](link) - Conference presentation
 
 ### For Advanced Users
 
 **Internals & Architecture:**
+
 1. [Source Code](link) - Key files to read
 2. [RFC/Proposal](link) - Future directions
 
 ### Practice Exercises
 
 Hands-on learning:
+
 1. Exercise 1: Build X using this technology
 2. Exercise 2: Optimize Y with this technology
 
@@ -839,6 +923,7 @@ Hands-on learning:
 **Next Review Due**: YYYY-MM-DD
 
 **Review Triggers:**
+
 - Major version release
 - Quarterly check (every 3 months)
 - Team feedback
@@ -847,12 +932,14 @@ Hands-on learning:
 ### Known Documentation Gaps
 
 Areas needing more research or examples:
+
 - [ ] Gap 1: Specific topic
 - [ ] Gap 2: Specific topic
 
 ### Enhancement Opportunities
 
 Future improvements to this documentation:
+
 - [ ] Add more examples for X
 - [ ] Create troubleshooting guide for Y
 - [ ] Record video walkthrough of Z
@@ -861,6 +948,7 @@ Future improvements to this documentation:
 
 **How to Contribute:**
 If you find issues or want to improve this documentation:
+
 1. Create an issue in our repository
 2. Submit a pull request with changes
 3. Discuss in team meetings
@@ -872,27 +960,30 @@ Contact: [Team/Person responsible]
 
 ## Document History
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0.0 | YYYY-MM-DD | Name | Initial creation |
+| Version | Date       | Author | Changes          |
+| ------- | ---------- | ------ | ---------------- |
+| 1.0.0   | YYYY-MM-DD | Name   | Initial creation |
 
 ---
 
 ## Related Documentation
 
 **See Also:**
+
 - [Related Technology 1](link) - How they work together
 - [Related Technology 2](link) - Integration points
 - [Our Development Guide](../../codebase/development-guide.md) - Overall standards
 
 **Dependencies:**
+
 - [Dependency 1](link) - What it provides
 - [Dependency 2](link) - What it provides
 
 ---
 
 _This documentation is maintained by the Zach.ai development team. Last verified accurate on [DATE]._
-```
+
+````
 
 ---
 
@@ -958,7 +1049,7 @@ export default {
 ## See Full Documentation
 
 [README.md](./README.md) for comprehensive guide.
-```
+````
 
 ---
 
@@ -967,6 +1058,7 @@ export default {
 ### Minimum Requirements
 
 Every technology documentation MUST include:
+
 - [ ] Current version number
 - [ ] Official documentation links
 - [ ] At least 3 code examples
@@ -977,6 +1069,7 @@ Every technology documentation MUST include:
 ### Excellence Indicators
 
 Great documentation also has:
+
 - [ ] 400+ lines of comprehensive content
 - [ ] Real examples from our codebase
 - [ ] Performance benchmarks or guidelines
@@ -1003,6 +1096,7 @@ Great documentation also has:
 Every 3 months, for each technology:
 
 1. **Check for Updates**
+
    ```bash
    npm outdated
    # Note any major version changes
@@ -1034,6 +1128,7 @@ Every 3 months, for each technology:
 When a technology releases a major version:
 
 1. **Create Migration Branch**
+
    ```bash
    git checkout -b docs/update-<technology>-v<X>
    ```
@@ -1061,11 +1156,13 @@ When a technology releases a major version:
 ### Continuous Improvement
 
 **Monthly:**
+
 - Add examples for frequently asked questions
 - Document newly discovered patterns
 - Fix reported documentation bugs
 
 **As Needed:**
+
 - After resolving complex bugs
 - When discovering better approaches
 - After team discussions or retrospectives
@@ -1077,17 +1174,20 @@ When a technology releases a major version:
 ### Research Tools
 
 **Documentation Discovery:**
+
 - [DevDocs.io](https://devdocs.io/) - Aggregated documentation
 - [You.com](https://you.com/) - AI-powered search for dev topics
 - [Phind.com](https://phind.com/) - Search engine for developers
 
 **Community Insights:**
+
 - GitHub Issues Search
 - Stack Overflow
 - Dev.to and Medium publications
 - Reddit (r/programming, r/typescript, etc.)
 
 **Release Tracking:**
+
 - [npm trends](https://npmtrends.com/)
 - GitHub Watch/Release notifications
 - Twitter lists for official accounts
@@ -1095,11 +1195,13 @@ When a technology releases a major version:
 ### Writing Tools
 
 **Markdown Editors:**
+
 - VSCode (with Markdown extensions)
 - StackEdit (online)
 - Typora (desktop)
 
 **Markdown Linters:**
+
 ```bash
 # markdownlint for consistency
 npm install -g markdownlint-cli
@@ -1107,6 +1209,7 @@ markdownlint knowledge-base/**/*.md
 ```
 
 **Link Checkers:**
+
 ```bash
 # Check for broken links
 npm install -g markdown-link-check
@@ -1134,11 +1237,13 @@ describe('Documentation Examples', () => {
 ### Internal Examples
 
 **Great Documentation We've Created:**
+
 - `knowledge-base/jest/README.md` - Comprehensive with examples
 - `knowledge-base/eslint/README.md` - Well-structured
 - `knowledge-base/prettier/README.md` - Clear and actionable
 
 **What Makes Them Great:**
+
 - Real code examples from our project
 - Clear structure with table of contents
 - Troubleshooting from actual issues we faced
@@ -1148,12 +1253,14 @@ describe('Documentation Examples', () => {
 ### External Examples to Emulate
 
 **Industry Best Practices:**
+
 - [React Documentation](https://react.dev/) - Interactive examples
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/) - Comprehensive coverage
 - [Vite Documentation](https://vitejs.dev/) - Clear and practical
 - [Testing Library Docs](https://testing-library.com/) - Principle-driven
 
 **What to Learn From Them:**
+
 - Clear navigation and search
 - Progressive disclosure (beginner → advanced)
 - Real-world examples
@@ -1169,12 +1276,14 @@ describe('Documentation Examples', () => {
 How we know our documentation is working:
 
 **Quantitative:**
+
 - Time to resolve common issues (track in issues)
 - Number of repeat questions in discussions
 - Onboarding time for new developers
 - Documentation search/view analytics
 
 **Qualitative:**
+
 - Team feedback surveys
 - Documentation referenced in PRs
 - Positive mentions in retrospectives
@@ -1183,16 +1292,19 @@ How we know our documentation is working:
 ### Goals
 
 **Short-term (3 months):**
+
 - Document all Phase 1 technologies (TypeScript, React, Node.js, Express, Vite)
 - Achieve 80% team satisfaction with documentation
 - Reduce "how do I..." questions by 50%
 
 **Medium-term (6 months):**
+
 - Complete Phase 2 (Testing technologies)
 - Establish quarterly review cadence
 - Create video walkthroughs for complex topics
 
 **Long-term (12 months):**
+
 - All technologies documented
 - Documentation referenced in 90%+ of PRs
 - Contributing to upstream project docs
@@ -1207,28 +1319,33 @@ How we know our documentation is working:
 Let's create documentation for TypeScript:
 
 **Step 1: Research (30 min)**
+
 1. Visit https://www.typescriptlang.org/
 2. Read "What's New in TypeScript 5.6"
 3. Review our `tsconfig.json` files
 4. Skim top 10 TypeScript issues on GitHub
 
 **Step 2: Outline (15 min)**
+
 1. Copy the template structure
 2. List our specific TypeScript patterns
 3. Note configuration decisions we made
 
 **Step 3: Write (90 min)**
+
 1. Fill in Overview and Why We Use It
 2. Document our `tsconfig.json` settings
 3. Add 5 common patterns from our code
 4. List 5 troubleshooting items
 
 **Step 4: Review (15 min)**
+
 1. Verify all links work
 2. Test code examples
 3. Get peer review
 
 **Step 5: Publish**
+
 1. Create `knowledge-base/typescript/`
 2. Add `README.md`
 3. Update `knowledge-base-updates.md`
@@ -1241,12 +1358,15 @@ Let's create documentation for TypeScript:
 
 ```markdown
 # H1 - Main title (one per document)
+
 ## H2 - Major sections
+
 ### H3 - Subsections
+
 #### H4 - Sub-subsections (use sparingly)
 
 **Bold** for emphasis
-*Italic* for terms
+_Italic_ for terms
 `code` for inline code
 [Link text](URL) for external links
 [Link text](./relative/path.md) for internal links
@@ -1266,7 +1386,7 @@ const example: string = 'always specify language';
 2. For sequential steps
 
 | Tables | For | Comparison |
-|--------|-----|------------|
+| ------ | --- | ---------- |
 | Data   | Row | Values     |
 
 ---
@@ -1310,7 +1430,8 @@ When creating new documentation, ensure you have:
 
 ### Q: How do we keep documentation from becoming outdated?
 
-**A:** 
+**A:**
+
 1. Include version numbers everywhere
 2. Set quarterly review dates
 3. Make updating docs part of version upgrades
@@ -1329,6 +1450,7 @@ When creating new documentation, ensure you have:
 ## Conclusion
 
 Great documentation is an investment in:
+
 - **Efficiency**: Less time searching, more time building
 - **Quality**: Consistent patterns and best practices
 - **Knowledge**: Shared understanding across the team
@@ -1338,6 +1460,7 @@ Great documentation is an investment in:
 This guide is itself a living document. Improve it as we learn better ways to document our technologies.
 
 **Next Steps:**
+
 1. Review this guide
 2. Choose your first technology to document
 3. Allocate 2-3 hours for creation

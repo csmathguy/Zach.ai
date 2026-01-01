@@ -9,7 +9,15 @@ interface DebugController {
   error(...args: DebugArgs): void;
 }
 
-let enabled = import.meta.env.DEV;
+const globalContext = globalThis as {
+  process?: { env?: Record<string, string | undefined> };
+};
+
+const isBrowserDev =
+  typeof window !== 'undefined' && window.location && window.location.port === '5173';
+const isNodeDev = globalContext.process?.env?.NODE_ENV !== 'production';
+
+let enabled = isBrowserDev || isNodeDev;
 
 function createDebugger(): DebugController {
   const emit = (method: 'log' | 'info' | 'warn' | 'error', args: DebugArgs): void => {

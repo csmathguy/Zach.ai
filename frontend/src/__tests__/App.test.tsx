@@ -6,7 +6,7 @@ describe('App', () => {
     render(<App />);
 
     expect(
-      screen.getByRole('heading', { level: 1, name: /application dashboard/i }),
+      screen.getByRole('heading', { level: 1, name: /application dashboard/i })
     ).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2, name: /health check/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2, name: /dashboard/i })).toBeInTheDocument();
