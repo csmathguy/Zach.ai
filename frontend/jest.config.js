@@ -20,7 +20,7 @@ export default {
     ],
   },
 
-  // Module name mapping for assets
+  // Module name mapping for assets and path aliases
   moduleNameMapper: {
     // CSS/SCSS imports
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
@@ -28,8 +28,12 @@ export default {
     // Image/file imports
     '\\.(jpg|jpeg|png|gif|svg|webp)$': '<rootDir>/__mocks__/fileMock.js',
 
-    // Path aliases (if needed in future)
+    // TypeScript path aliases
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@app/(.*)$': '<rootDir>/src/app/$1',
+    '^@features/(.*)$': '<rootDir>/src/features/$1',
+    '^@shared/(.*)$': '<rootDir>/src/shared/$1',
+    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
   },
 
   // Setup files

@@ -596,6 +596,61 @@ const isAdult = validator.validate(age);
 
 ## TypeScript Best Practices
 
+### TypeScript Path Aliases
+
+**Use path aliases instead of relative imports** for cleaner, more maintainable code.
+
+#### Configured Aliases
+
+**Backend**:
+
+```typescript
+import { User } from '@domain/models/User'; // ✅ Clean alias
+import { PrismaUserRepository } from '@infrastructure/prisma/repositories/PrismaUserRepository';
+import { formatDate } from '@utils/formatters';
+
+// ❌ Avoid messy relative paths
+import { User } from '../../domain/models/User';
+import { formatDate } from '../../../utils/formatters';
+```
+
+**Available Backend Aliases**:
+
+- `@/*` → `src/*` (root)
+- `@domain/*` → `src/domain/*` (domain layer)
+- `@infrastructure/*` → `src/infrastructure/*` (database, external services)
+- `@application/*` → `src/application/*` (business logic services)
+- `@api/*` → `src/api/*` (routes, controllers)
+- `@shared/*` → `src/shared/*` (shared utilities)
+- `@utils/*` → `src/utils/*` (helper functions)
+
+**Frontend**:
+
+```typescript
+import { Dashboard } from '@features/dashboard/Dashboard'; // ✅ Clean alias
+import { Button } from '@shared/components/Button';
+import { formatNumber } from '@utils/formatters';
+
+// ❌ Avoid messy relative paths
+import { Dashboard } from '../../features/dashboard/Dashboard';
+```
+
+**Available Frontend Aliases**:
+
+- `@/*` → `src/*` (root)
+- `@app/*` → `src/app/*` (app shell)
+- `@features/*` → `src/features/*` (feature modules)
+- `@shared/*` → `src/shared/*` (shared components/hooks)
+- `@utils/*` → `src/utils/*` (utility functions)
+
+#### Configuration Locations
+
+Path aliases are configured in three places (all already set up):
+
+1. **TypeScript**: `tsconfig.json` → `compilerOptions.paths`
+2. **Jest**: `jest.config.js` → `moduleNameMapper`
+3. **Vite** (frontend only): `vite.config.ts` → `resolve.alias`
+
 ### Type Safety
 
 #### Always Use Strict Mode
