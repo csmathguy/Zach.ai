@@ -291,6 +291,15 @@ it('should display error message on failure', async () => {
 - Mock cleanup properly handled
 - **Zero TypeScript errors**: Run `npm run typecheck` before committing
 
+## SQLite / Prisma Concurrency Checklist
+
+- **Symptoms**: Random `deleteMany` timeouts, `Transaction already closed`, or `database is locked` errors that disappear when rerunning a single suite.
+- **First step**: Run the suite sequentially — `npx jest --runInBand path/to/test` — to confirm the failure is worker-related.
+- **Backend configuration**: When using SQLite (or any file-based database) set `maxWorkers: 1` in `backend/jest.config.js` and document _why_ so nobody removes it later.
+- **CI parity**: Ensure CI, local scripts, and PM2 processes all inherit the same worker setting; mismatched configs will bring the flake back.
+- **Advanced option**: If you must re-enable parallelism, provision one database file per worker using `process.env.JEST_WORKER_ID` in your global setup and clean them up during teardown.
+- **Test plans & ADRs**: Record the concurrency decision so future contributors understand the constraint before debugging individual tests.
+
 ## Testability Categories
 
 Different code types have different testability characteristics:

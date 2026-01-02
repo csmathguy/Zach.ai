@@ -543,15 +543,72 @@ module.exports = {
 
 #### Cache
 
-```javascript
+````javascript
 module.exports = {
-  // Cache directory (speeds up subsequent runs)
-  cacheDirectory: '<rootDir>/.jest-cache',
 
-  // Disable cache when needed
-  cache: false,
-};
+### SQLite and File-Based Databases
+
+Jest's default behavior is to spawn multiple workers. That works well for most projects, but **file-based databases such as SQLite (especially when using WAL mode) cannot handle concurrent writers**. When multiple workers issue `deleteMany`, `insert`, or long-running transactions simultaneously, SQLite exhausts its lock table and begins throwing errors such as:
+
+- `PrismaClientKnownRequestError: Transaction already closed: A writer needs the exclusive lock`
+- `Error: database is locked` or long running `deleteMany` calls that never return
+
+#### Symptoms
+
+- Integration tests pass when run individually or with `--runInBand` but fail in the full suite
+- Random timeouts anytime multiple suites manipulate the same SQLite database
+- WAL files (`*.db-wal`, `*.db-shm`) keep growing between tests because workers exit mid-transaction
+
+#### Mitigation Strategies
+
+1. **Serialize workers for SQLite-backed projects**
+
+  ```javascript
+  // backend/jest.config.js
+  /** @type {import('jest').Config} */
+  module.exports = {
+    displayName: 'backend',
+    testEnvironment: 'node',
+    preset: 'ts-jest',
+    // SQLite uses a single file, so concurrent writers cause WAL locks.
+    // Force Jest to use one worker for deterministic tests.
+    maxWorkers: 1,
+  };
+````
+
+Document this decision inline (see example comment) so future contributors do not remove it for perceived performance gains.
+
+2. **Run suites sequentially when debugging**
+
+```bash
+npx jest --runInBand src/__tests__/infrastructure/PrismaProjectRepository.test.ts
 ```
+
+If failures disappear with `--runInBand`, the database lock limit—not the test code—is at fault.
+
+3. **Per-worker databases for advanced parallelism**
+
+For teams that require Jest parallelism, provision a **unique database per worker**:
+
+```typescript
+// jest.setup.ts or a global setup file
+process.env.DATABASE_URL = `file:./dev-worker-${process.env.JEST_WORKER_ID}.db?journal_mode=WAL`;
+```
+
+Create and tear down these files in `globalSetup/globalTeardown` to avoid leaking artifacts.
+
+Always update the feature's **test plan** and ADRs when enforcing serialized workers so downstream tooling (CI, PM2 scripts) mirrors the same constraint.
+
+---
+
+// Cache directory (speeds up subsequent runs)
+cacheDirectory: '<rootDir>/.jest-cache',
+
+// Disable cache when needed
+cache: false,
+};
+
+````
 
 ---
 
@@ -570,7 +627,7 @@ npm install --save-dev \
   @testing-library/jest-dom \
   @testing-library/user-event \
   jest-environment-jsdom
-```
+````
 
 #### For TypeScript + Node.js Project
 

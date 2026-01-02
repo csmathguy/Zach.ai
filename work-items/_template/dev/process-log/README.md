@@ -39,24 +39,68 @@ See `TEMPLATE.md` for the entry structure.
 
 ---
 
-## Generating Entries
+## Agent Workflow: Direct Fill-In (Recommended)
 
-### Manual Creation
+**IMPORTANT**: Agent must fill in ALL template sections with actual data, not leave placeholders!
 
-```powershell
-# Copy template with timestamp
-$timestamp = Get-Date -Format "yyyy-MM-dd-HHmmss"
-Copy-Item "TEMPLATE.md" "$timestamp.md"
-# Then edit the file
+After committing code:
+
+1. **Create timestamped file**: `work-items/<work-item>/dev/process-log/$(Get-Date -Format "yyyy-MM-dd-HHmmss").md`
+2. **Copy template**: From `work-items/_template/dev/process-log/TEMPLATE.md`
+3. **Fill ALL sections** with actual data:
+   - Replace [Brief Task Description] with actual task name
+   - Insert actual commit hash and message
+   - List **specific files** created/modified with **actual purposes**
+   - Include **actual test counts** (e.g., "200 passing - 34 new")
+   - Document **actual issues encountered** with resolutions
+   - Specify **next steps** from task-list.md
+4. **Save**: Complete when no placeholders remain
+5. **Continue**: Create retrospective entry (see `work-items/_template/feature-branch-name/retro/`)
+
+### ❌ Bad (Placeholders Left)
+
+```markdown
+**Files Created**:
+
+- `path/to/file1.ts` - [purpose]
+
+**Test Results**:
+
+- X tests passing (Y total)
 ```
 
-### Using Script (Recommended)
+### ✅ Good (Actual Data)
+
+```markdown
+**Files Created**:
+
+- `backend/src/infrastructure/prisma/repositories/PrismaActionRepository.ts` - Action repository with idempotent many-to-many operations
+- `backend/src/domain/repositories/IActionRepository.ts` - Interface defining action repository contract
+
+**Test Results**:
+
+- 200 tests passing (200 total - 34 new PrismaActionRepository tests)
+- Coverage: Infrastructure 85%, Overall 78%
+```
+
+---
+
+## Script Usage (Optional - Minimal Automation)
+
+The PowerShell script creates the file and fills basic metadata, but **agent must still fill all content sections**:
 
 ```powershell
-# From repository root
-.\scripts\dev\new-process-log-entry.ps1 -WorkItem "O1-database-foundation"
-# Opens new timestamped entry in default editor
+.\scripts\dev\new-process-log-entry.ps1 `
+  -WorkItem "O1-database-foundation" `
+  -Description "PrismaActionRepository" `
+  -Task "Section 2.8"
 ```
+
+**After script runs, agent must**:
+
+- Open the created file
+- Replace ALL placeholder text with actual detailed information
+- Ensure no "[Item 1]" or "[purpose]" placeholders remain
 
 ---
 

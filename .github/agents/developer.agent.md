@@ -29,7 +29,7 @@ handoffs:
 - Review `work-items/<branch>/architecture/` for ADRs (WHY decisions were made)
 - Review `work-items/<branch>/architecture/constraints.md` for architectural constraints
 - Review `work-items/<branch>/tests/test-plan.md` for test strategy
-- Review `work-items/<branch>/retro/retrospective.md` for previous phase insights
+- Review `work-items/<branch>/retro/` for previous session retrospectives (individual timestamped files)
 - Track progress in `work-items/<branch>/dev/implementation-notes.md`
 
 **Note**: Interfaces emerge from tests - not created by architect beforehand.
@@ -56,6 +56,12 @@ List all scenarios to test - start simple, build toward complex.
 - ✅ **Verify location pattern**: `backend/src/__tests__/infrastructure/` NOT `backend/src/infrastructure/__tests__/`
 - ✅ **Why this matters**: TypeScript path alias resolution depends on correct directory structure
 - ✅ **Example**: Check PrismaUserRepository.test.ts location before creating PrismaThoughtRepository.test.ts
+
+**SQLite / Prisma Test Failures**
+
+- If backend integration tests start throwing `Transaction already closed` or `database is locked`, **check Jest worker settings before touching production code**.
+- Run the failing suite sequentially (`npx jest --runInBand path/to/test`) to confirm it is a concurrency issue.
+- Ensure `backend/jest.config.js` keeps `maxWorkers: 1` (or a documented per-worker database strategy) so everyone shares the same constraint.
 
 **Follow Outside-In TDD** (start from API, work inward):
 
@@ -114,8 +120,8 @@ List all scenarios to test - start simple, build toward complex.
 
 **Refactor Checkpoints**:
 - After each test passes (quick wins)
-- Mid-implementation (SRP and OCP check)
-- Before next feature (full SOLID assessment)
+- **Mid-implementation (after GREEN phase)**: SOLID review focusing on SRP and OCP compliance
+- Before next feature (full SOLID assessment including LSP, ISP, DIP)
 
 **Code Quality**:
 - Remove dead code aggressively
@@ -176,64 +182,56 @@ After 3-5 tests for a component, usage patterns become clear. Extract the interf
 
 **Purpose**: Chronological factual record of what was completed. Separate from retrospective (which is reflective learning).
 
-**Quick Generation** (recommended):
+**CRITICAL**: Agent must fill ALL sections with actual data, not leave placeholders!
+
+**Quick Generation** (optional):
 
 ```powershell
 .\scripts\dev\new-process-log-entry.ps1 -WorkItem "<branch-name>" -Description "<what-was-done>" -Task "<task-reference>"
 ```
 
-**Manual Creation** (if script unavailable):
+**After script or manual creation**:
 
 1. Create timestamped file: `work-items/<branch>/dev/process-log/$(Get-Date -Format "yyyy-MM-dd-HHmmss").md`
-2. Copy from template: `work-items/_template/dev/process-log/TEMPLATE.md`
-3. Fill in:
-   - Date (YYYY-MM-DD)
-   - Commit hash and message
-   - Task reference (e.g., "Section 2.6: PrismaThoughtRepository")
-   - Status (✅ Complete / ⚠️ Partial / ❌ Issue)
-   - What Was Completed (brief bullet list)
-   - Technical Details (key decisions, patterns used)
-   - Context for Next Task (what needs to happen next)
-   - Quick Reference (files created/modified)
+2. Copy template: `work-items/_template/dev/process-log/TEMPLATE.md`
+3. **Fill ALL sections** with actual data:
+   - Replace [Brief Task Description] with actual task name
+   - Insert actual commit hash and message
+   - List **specific files** with **actual purposes** (not "[purpose]" or "file1.ts")
+   - Include **actual test counts** (e.g., "200 passing - 34 new")
+   - Document **actual issues encountered** with resolutions
+   - Specify **next steps** from task-list.md
+4. **Verify no placeholders remain** (no "[Item 1]", "[purpose]", "X tests")
 
-**Keep entries brief** (5-10 minutes max) - this is a factual log, not a deep reflection.
+**Keep entries brief** (5-10 minutes max) but **complete** - factual log with specifics.
 
 **Note**: This file stays local - it's working memory for this feature branch
 
-### 7.4 Add Retrospective Entry (LOCAL ONLY - NOT COMMITTED)
+### 7.4 Create Retrospective Entry (LOCAL ONLY - NOT COMMITTED)
 
-**File**: `work-items/<branch>/retro/retrospective.md`
-**See**: [retrospective.instructions.md](../instructions/retrospective.instructions.md)
+**File**: `work-items/<branch>/retro/YYYY-MM-DD-HHMMSS.md` (individual timestamped file)
+**Template**: `work-items/_template/feature-branch-name/retro/TEMPLATE.md`
+**See**: [retrospective README](../../work-items/_template/feature-branch-name/retro/README.md)
 
-**Note**: This file is working memory (local-only, gitignored). It captures learnings for this session but doesn't go in git.
+**Note**: These are working memory (local-only, gitignored). Each session gets its own file for chronological organization.
 
-**If file doesn't exist, create it. Then add entry:**
+**CRITICAL**: Agent must fill ALL sections with actual reflections, not leave placeholders!
 
-```markdown
-### Entry N: [Phase/Task Name]
-**Date**: [YYYY-MM-DD]
-**Commit**: `[hash]` - "[message]"
-**Status**: ✅ Complete
+**Create new timestamped file**:
 
-#### What We Did
-- [What was implemented]
+1. Create file: `work-items/<branch>/retro/$(Get-Date -Format "yyyy-MM-dd-HHmmss").md`
+2. Copy template: `work-items/_template/feature-branch-name/retro/TEMPLATE.md`
+3. **Fill ALL sections** with actual reflections:
+   - What We Did: Brief context (can reference process log)
+   - What Went Well ✅: Specific wins with explanations (not "[Win 1]")
+   - What Didn't Go Well ❌: Honest challenges assessment
+   - What We Learned 📚: Key insights and how to apply them
+   - Action Items 🔧: Concrete improvements needed (not "[Action 1]")
+   - Technical Debt 📝: Accumulated debt and follow-ups
+   - Metrics Summary: SOLID score, coverage, validation status
+4. **Verify no placeholders remain** (no "[Learning 1]", "[Win with explanation]")
 
-#### What Went Well ✅
-- [Successes and good decisions]
-
-#### What Didn't Go Well / Issues Found ❌
-- [Problems, bugs, quality issues]
-- **What did user catch that agent missed?**
-
-#### What We Learned / Improvements 📚
-- [Key learnings and how to apply them]
-
-#### Action Items for Future Development 🔧
-- [ ] [Process improvements needed]
-
-#### Technical Debt / Follow-up 📝
-- [Technical debt or follow-up needed]
-````
+**Timestamp should match or closely follow process log entry** for chronological pairing.`
 
 ### 7.5 Generated Files Checklist
 
@@ -334,23 +332,91 @@ Continue cycling through RED-GREEN-REFACTOR until all test cases are complete:
 
 ---
 
-## Step 10: Document Development Retrospective
+## Step 10: Review and Implement Retrospective Improvements
 
-**BEFORE handing off to retro agent or marking feature complete**, document your development phase retrospective in `work-items/<branch>/retro/retrospective.md` under the "Development Phase (Developer Agent)" section:
+**BEFORE starting next task**, review recent retrospectives and implement action items:
 
-1. **What Went Well** - Implementation wins, SOLID compliance, effective TDD/testing
-2. **What Was Challenging** - Architecture misalignments, unexpected complexity, TypeScript/testing issues
-3. **Learnings** - Did ADRs guide implementation? Were tests helpful? Patterns to adopt/avoid?
-4. **Code Quality Metrics**:
-   - SOLID compliance score (1-10)
-   - Dead code removed: Yes/No
-   - TypeScript errors: Zero throughout? Yes/No
-   - Test coverage achieved: \_\_%
-   - **Test output clean: Yes/No**
-5. **Actions for Improvement** - Development guide updates, new patterns/examples, validation script enhancements
+### 10.1 Review Recent Retrospectives
 
-**Purpose**: This retrospective captures implementation insights while they're fresh and provides the final technical perspective before feature completion.
+1. Check `work-items/<branch>/retro/` for recent timestamped retrospective files
+2. Review **Action Items** sections from previous sessions
+3. Identify blocking items, process improvements, and KB updates needed
+
+### 10.2 Knowledge Base Maintenance (CRITICAL)
+
+**New Dependencies/Libraries Added**: Track and document all new dependencies introduced:
+
+**When adding ANY new dependency**:
+1. Document in `work-items/<branch>/dev/dependencies-added.md` (create if doesn't exist):
+   ```markdown
+   ## Dependencies Added
+
+   ### uuid (v10.0.0) - REMOVED
+   - **Purpose**: Generate UUIDs for test fixtures
+   - **Decision**: Switched to Node crypto.randomUUID() (built-in, no dependency)
+   - **Status**: ❌ Removed - unnecessary external dependency
+   - **Date**: 2026-01-02
+
+   ### @prisma/client (v6.0.0) - IN USE
+   - **Purpose**: Database ORM for SQLite access
+   - **Decision**: Core infrastructure dependency
+   - **Status**: ✅ Active - documented in knowledge-base/prisma/
+   - **KB Location**: knowledge-base/prisma/README.md
+   - **Date**: 2026-01-02
+   ```
+
+2. **If keeping dependency**: Create/update knowledge base documentation
+   - Create `knowledge-base/<library>/README.md` if major dependency
+   - Add to existing KB article if related tool (e.g., testing library → jest/README.md)
+   - Document: purpose, setup, our usage patterns, best practices
+
+3. **If removing dependency**: Remove from package.json AND all code references
+   - Run `npm uninstall <package>`
+   - Search for all imports/references and update
+   - Document removal reason in dependencies-added.md
+
+**Audit**: Before completing ANY feature, review package.json changes and ensure all new dependencies are either documented in KB or removed.
+
+### 10.3 Implement Process Improvements
+
+**Agent/Prompt/Skill Updates**: When retrospective identifies workflow improvements:
+
+1. **Make the changes**: Update agent files, prompts, instructions, skills
+2. **Test the changes**: Verify updated workflow makes sense
+3. **Document the changes**: Note what was updated and why
+4. **Commit separately**: Create dedicated commit for workflow improvements
+
+**Example Commit**:
+```bash
+git add .github/agents/developer.agent.md
+git add .github/instructions/tdd.instructions.md
+git commit -m "docs(workflow): update documentation workflow to use timestamped retrospectives
+
+- Changed retrospective structure from monolithic to individual files
+- Added mid-implementation SOLID checkpoint after GREEN phase
+- Emphasized agent-fills-directly approach for process logs
+- Addresses action items from O1 Day 2.8 retrospective"
+```
+
+**Commit Separately from Feature Code**: Workflow improvements should be separate commits from feature implementation to keep history clean.
+
+### 10.4 Apply Learnings to Current Work
+
+- Note any knowledge base updates needed for current task
+- Apply patterns/decisions from previous sessions
+- Avoid repeating mistakes identified in retrospectives
+
+### 10.5 Create Final Retrospective (At Feature Completion)
+
+Before handoff to retro agent, create comprehensive final retrospective:
+- Overall feature assessment
+- SOLID compliance across all components
+- Test coverage summary
+- Accumulated technical debt
+- All dependencies added/removed with KB status
+- Process improvements implemented vs still pending
 
 ```
 
 ```
+````
