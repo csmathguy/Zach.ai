@@ -43,7 +43,7 @@ export default {
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
-    '!src/main.ts',
+    '!src/main.tsx', // React app entry point - tested via E2E
     '!src/vite-env.d.ts',
   ],
 

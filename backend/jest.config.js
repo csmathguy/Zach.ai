@@ -22,6 +22,7 @@ module.exports = {
     'src/**/*.ts',
     '!src/**/*.d.ts',
     '!src/server.ts', // Exclude entry point
+    '!src/infrastructure/prisma/client.ts', // Infrastructure singleton - tested via integration
   ],
 
   coverageDirectory: 'coverage',

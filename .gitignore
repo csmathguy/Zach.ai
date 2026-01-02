@@ -65,6 +65,9 @@ backend/coverage/
 lib-cov
 test-results/
 
+# Generated coverage JSON files (created by generate-coverage.ps1)
+frontend/public/coverage/*-coverage-summary.json
+
 # ===================================
 # Caches
 # ===================================

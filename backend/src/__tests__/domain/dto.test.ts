@@ -7,7 +7,7 @@
 
 import { describe, it, expect } from '@jest/globals';
 
-// Import DTOs (will fail until we create them - RED phase)
+// Import DTOs
 import type {
   CreateUserDto,
   UpdateUserDto,
@@ -16,7 +16,7 @@ import type {
   UpdateProjectDto,
   CreateActionDto,
   UpdateActionDto,
-} from '@domain/types';
+} from '../../domain/types';
 
 describe('User DTOs', () => {
   describe('CreateUserDto', () => {
@@ -34,9 +34,9 @@ describe('User DTOs', () => {
       const dto: CreateUserDto = {
         email: 'test@example.com',
         name: 'Test User',
-        // @ts-expect-error - should not allow extra properties
+        // Should not allow extra properties (TypeScript will error)
         extraField: 'should fail',
-      };
+      } as CreateUserDto;
 
       expect(dto).toBeDefined();
     });
