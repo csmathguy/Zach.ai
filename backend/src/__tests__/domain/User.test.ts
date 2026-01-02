@@ -32,7 +32,7 @@ describe('User Domain Model', () => {
       // Act & Assert - Object.freeze makes properties immutable at runtime
       expect(() => {
         'use strict';
-        (user as any).email = 'new@example.com';
+        (user as unknown as { email: string }).email = 'new@example.com';
       }).toThrow();
     });
 

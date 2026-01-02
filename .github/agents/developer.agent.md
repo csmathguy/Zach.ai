@@ -196,15 +196,27 @@ After 3-5 tests for a component, usage patterns become clear. Extract the interf
 
 **From Day 0 Learning**: Don't proceed until everything is clean and enterprise-ready.
 
+**ZERO WARNINGS POLICY**: Clean codebase is the #1 priority.
+
 Before moving to next task, verify:
 
 - ✅ Tests pass and output is clean
 - ✅ No unexpected console output or errors
 - ✅ Scripts execute correctly (not dumping code)
-- ✅ TypeScript errors = zero
+- ✅ TypeScript errors = **ZERO** (strict mode)
+- ✅ ESLint warnings = **ZERO** (run `npm run lint`)
+- ✅ Prettier formatting = clean (run `npm run format:check`)
 - ✅ Code is production-quality, not just "working"
+- ✅ Temporary/debug files removed before commit
 
 **If output looks wrong → STOP and fix before proceeding!**
+
+**If you find warnings during validation:**
+
+1. Fix them immediately (use `unknown` instead of `any`, fix unused vars)
+2. Delete temporary test scripts after verification complete
+3. Run validation again until ZERO warnings
+4. Never commit with warnings present
 
 ---
 

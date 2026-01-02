@@ -192,7 +192,7 @@ describe('Action Domain Model', () => {
       // Act & Assert - Object.freeze ensures immutability at runtime
       expect(() => {
         'use strict';
-        (action as any).title = 'Modified Title';
+        (action as unknown as { title: string }).title = 'Modified Title';
       }).toThrow();
     });
   });

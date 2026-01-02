@@ -38,7 +38,7 @@ describe('Thought Domain Model', () => {
       // Act & Assert - Object.freeze ensures immutability at runtime
       expect(() => {
         'use strict';
-        (thought as any).text = 'Modified thought';
+        (thought as unknown as { text: string }).text = 'Modified thought';
       }).toThrow();
     });
 
@@ -134,9 +134,11 @@ describe('Thought Domain Model', () => {
       );
 
       // Act & Assert - Verify no update methods exist
-      expect((thought as any).update).toBeUndefined();
-      expect((thought as any).setText).toBeUndefined();
-      expect((thought as any).setProcessedState).toBeUndefined();
+      expect((thought as unknown as { update?: unknown }).update).toBeUndefined();
+      expect((thought as unknown as { setText?: unknown }).setText).toBeUndefined();
+      expect(
+        (thought as unknown as { setProcessedState?: unknown }).setProcessedState
+      ).toBeUndefined();
     });
   });
 

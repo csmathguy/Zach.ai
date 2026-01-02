@@ -145,7 +145,7 @@ describe('Project Domain Model', () => {
       // Act & Assert - Object.freeze ensures immutability at runtime
       expect(() => {
         'use strict';
-        (project as any).title = 'Modified Title';
+        (project as unknown as { title: string }).title = 'Modified Title';
       }).toThrow();
     });
   });
