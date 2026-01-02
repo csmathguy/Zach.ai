@@ -5,3 +5,4 @@
  */
 
 export { IUserRepository } from './IUserRepository';
+export { IThoughtRepository } from './IThoughtRepository';
