@@ -3,7 +3,7 @@
 **Date**: YYYY-MM-DD HH:MM  
 **Commit**: `<hash>` - "<commit message>"  
 **Task**: Section X.X - [Task Name]  
-**Status**: ✅ Complete / 🚧 In Progress / ⚠️ Blocked
+**Status**: [COMPLETE] / [IN PROGRESS] / [BLOCKED]
 
 ---
 
@@ -30,7 +30,7 @@
 
 - X tests passing (Y total)
 - Coverage: Z%
-- Validation: ✅ Pass / ❌ Fail
+- Validation: [PASS] / [FAIL]
 
 **Integration Points**:
 
