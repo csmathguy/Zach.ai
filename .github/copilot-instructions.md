@@ -11,6 +11,7 @@
 ### Technology Documentation
 
 - **[Jest Testing](../knowledge-base/jest/README.md)** - Testing framework, patterns, mocking
+- **[TDD Best Practices](../knowledge-base/tdd/README.md)** - Test-Driven Development, RED-GREEN-REFACTOR cycle
 - **[ESLint](../knowledge-base/eslint/README.md)** - Linting configuration and rules
 - **[Prettier](../knowledge-base/prettier/README.md)** - Code formatting standards
 - **[PM2](../knowledge-base/pm2/README.md)** - Process management
@@ -19,13 +20,26 @@
 
 ## Feature Workflow
 
-**New features follow a structured lifecycle**: Plan → Tests → Dev → Retro
+**New features follow a structured lifecycle**: Plan → Architecture → Research → Tests → Dev → Retro
 
 - **Planning**: Use `planner` agent or `/apr` prompt to draft APR in `work-items/<branch>/plan/apr.md`
 - **Branch First**: Create feature branch (`git checkout -b feat/<name>`) immediately after APR approval, before any code edits
+- **Architecture**: Use `architect` agent to design technical solution, create ADRs in `work-items/<branch>/architecture/`
+- **Research**: Use `researcher` agent to identify new technologies, update knowledge base in `work-items/<branch>/research/research-findings.md`
 - **Test Strategy**: Use `tester` agent to design tests in `work-items/<branch>/tests/test-plan.md`
-- **Implementation**: Use `developer` agent; track decisions in `work-items/<branch>/dev/implementation-notes.md`
+- **Implementation**: Use `developer` agent following TDD (RED-GREEN-REFACTOR); track decisions in `work-items/<branch>/dev/implementation-notes.md`
 - **Retrospective**: Use `retro` agent or `/retro` prompt to complete `work-items/<branch>/retro/retrospective.md`
+
+**TDD Workflow**: Developer follows Test-Driven Development (see [.github/instructions/tdd.instructions.md](instructions/tdd.instructions.md)):
+
+1. List test cases
+2. Write test FIRST (RED - failing)
+3. Implement minimum code (GREEN - passing)
+4. Refactor while maintaining GREEN
+5. Extract interfaces after patterns emerge
+6. Repeat with next test
+
+**Continuous Retrospectives**: Each agent documents their retrospective in `work-items/<branch>/retro/retrospective.md` BEFORE handing off to the next agent. This creates a continuous feedback loop and helps subsequent agents learn from earlier work.
 
 **Quality Gates** (Enforce at Each Phase):
 
@@ -35,11 +49,13 @@
 - ✅ Component structure follows SOLID principles
 - ✅ API contracts documented with TypeScript interfaces
 
-### Phase 4-5: Implementation
+### Phase 4-5: Implementation (TDD)
 
+- ✅ **Test-First Development**: All tests written BEFORE implementations (see TDD instructions)
+- ✅ **RED-GREEN-REFACTOR Cycle**: Tests start failing (RED), then pass (GREEN), then optimized (REFACTOR)
+- ✅ **Interfaces Emerge**: Extracted from test usage patterns, not designed up-front
 - ✅ **Mid-Implementation SOLID Review**: Check SRP, OCP compliance
 - ✅ Remove dead code aggressively (don't let unused code linger)
-- ✅ Unit tests written alongside implementation (not after)
 - ✅ TypeScript strict mode: Zero errors at all times
 - ✅ Performance baseline established for key operations
 
@@ -58,17 +74,53 @@
 - ✅ Knowledge base updated for new technologies
 - ✅ Architecture decisions recorded in implementation notes
 
-**Agents**: `planner`, `tester`, `developer`, `retro` (hand off between phases)
+**Agents**: `planner`, `researcher`, `tester`, `developer`, `retro` (hand off between phases)
 **Skills**: `feature-workflow`, `apr-planning`, `retrospective`, `webapp-testing`
 **Reference**: [knowledge-base/copilot/workflows-apr-retro.md](../knowledge-base/copilot/workflows-apr-retro.md)
 
 ## General Principles
 
+- **Automation First**: Create scripts for complex, multi-step operations instead of documenting manual steps
 - Prefer explicit plans before large edits
 - Use `#tool:<name>` calls for deterministic actions
 - Respect security: never auto-approve terminal commands unless whitelisted
 - Keep changes minimal, align with existing style, and update docs when needed
 - For multi-layer app (frontend/backend), propose isolated changes per layer and avoid cross-layer edits unless requested
+
+### Automation Guidelines
+
+**When to Create Scripts**:
+
+- Database initialization/migrations
+- Build and deployment workflows
+- Testing setup (especially with external dependencies)
+- Development environment setup
+- Repetitive multi-command operations
+- Complex conditional logic
+
+**Script Standards**:
+
+- PowerShell Core for cross-platform compatibility
+- Include `-Help` parameter with usage examples
+- Error handling with exit codes
+- Progress feedback for long operations
+- Idempotent (safe to run multiple times)
+- Integrate with npm scripts where appropriate
+
+**Example**:
+
+```powershell
+# ❌ BAD: Manual steps in documentation
+# 1. cd backend
+# 2. npm install prisma
+# 3. npx prisma init
+# 4. npx prisma generate
+# 5. npx prisma db push
+
+# ✅ GOOD: Single automated script
+# scripts/db-init.ps1
+.\scripts\db-init.ps1
+```
 
 ## Code Quality
 

@@ -28,9 +28,129 @@ All code in this codebase must adhere to:
 1. **SOLID Principles** - Object-oriented design fundamentals
 2. **DRY** (Don't Repeat Yourself) - Avoid code duplication
 3. **KISS** (Keep It Simple, Stupid) - Prefer simplicity over complexity
-4. **Enterprise TypeScript** - Type-safe, maintainable, scalable code
-5. **Enterprise React** - Component-driven, performant UI architecture
-6. **Gang of Four Design Patterns** - Proven solutions to common problems
+4. **Automation First** - Script complex operations for deterministic workflows
+5. **Enterprise TypeScript** - Type-safe, maintainable, scalable code
+6. **Enterprise React** - Component-driven, performant UI architecture
+7. **Gang of Four Design Patterns** - Proven solutions to common problems
+
+### Automation First Principle
+
+**Core Tenet**: If a task requires more than 3 manual commands or complex conditional logic, create a script.
+
+#### Benefits
+
+- **Deterministic**: Same result every time, regardless of who runs it
+- **Documented**: Scripts are living documentation
+- **Testable**: Scripts can be tested in CI/CD
+- **Onboarding**: New developers run scripts, not multi-step instructions
+- **Error Prevention**: Validation and error handling built-in
+
+#### When to Automate
+
+✅ **Always Script**:
+
+- Database setup and migrations
+- Build processes with multiple steps
+- Deployment workflows
+- Environment setup
+- Test data seeding
+- Backup and restore operations
+
+❌ **Don't Script** (unless frequent):
+
+- Simple one-line commands (`npm install`)
+- IDE-specific actions
+- One-time exploratory tasks
+
+#### Script Standards
+
+```powershell
+# ✅ Good - Complete automation script
+<#
+.SYNOPSIS
+    Initialize database with Prisma
+.DESCRIPTION
+    Sets up Prisma, generates client, creates database, and runs migrations
+.PARAMETER Environment
+    Target environment (development, staging, production)
+.PARAMETER Reset
+    Reset existing database before initialization
+.EXAMPLE
+    .\db-init.ps1
+    .\db-init.ps1 -Environment production
+    .\db-init.ps1 -Reset
+#>
+param(
+    [ValidateSet('development', 'staging', 'production')]
+    [string]$Environment = 'development',
+    [switch]$Reset
+)
+
+$ErrorActionPreference = "Stop"
+
+Write-Host "🔧 Database Initialization - $Environment" -ForegroundColor Cyan
+
+try {
+    # Validation
+    if (-not (Test-Path "backend/package.json")) {
+        throw "backend/package.json not found. Run from repository root."
+    }
+
+    Set-Location backend
+
+    # Install dependencies
+    Write-Host "📦 Installing Prisma..." -ForegroundColor Yellow
+    npm install --save-dev prisma @prisma/client
+
+    # Reset if requested
+    if ($Reset -and (Test-Path "prisma/dev.db")) {
+        Write-Host "🗑️  Removing existing database..." -ForegroundColor Yellow
+        Remove-Item "prisma/dev.db" -Force
+    }
+
+    # Generate client
+    Write-Host "⚙️  Generating Prisma Client..." -ForegroundColor Yellow
+    npx prisma generate
+
+    # Run migrations
+    Write-Host "🔄 Running migrations..." -ForegroundColor Yellow
+    if ($Environment -eq 'production') {
+        npx prisma migrate deploy
+    } else {
+        npx prisma db push
+    }
+
+    Write-Host "✅ Database initialized successfully!" -ForegroundColor Green
+    exit 0
+} catch {
+    Write-Host "❌ Error: $_" -ForegroundColor Red
+    exit 1
+} finally {
+    Set-Location ..
+}
+```
+
+#### Integration with npm Scripts
+
+```json
+{
+  "scripts": {
+    "db:init": "pwsh -File scripts/db-init.ps1",
+    "db:migrate": "pwsh -File scripts/db-migrate.ps1",
+    "db:reset": "pwsh -File scripts/db-reset.ps1",
+    "db:seed": "pwsh -File scripts/db-seed.ps1",
+    "db:studio": "pwsh -File scripts/db-studio.ps1"
+  }
+}
+```
+
+**Usage**:
+
+```bash
+npm run db:init      # First-time setup
+npm run db:reset     # Clean slate
+npm run db:seed      # Add test data
+```
 
 ### Code Quality Standards
 
@@ -1162,6 +1282,451 @@ const manager = new EventManager();
 manager.attach(new Logger());
 manager.attach(new EmailSender());
 manager.notify({ event: 'user_registered' });
+```
+
+#### Repository Pattern
+
+```typescript
+// ✅ Good - Database abstraction with interface
+// Domain layer - DB-agnostic interface
+interface IUserRepository {
+  create(data: CreateUserDto): Promise<User>;
+  findById(id: string): Promise<User | null>;
+  findAll(): Promise<User[]>;
+  update(id: string, data: UpdateUserDto): Promise<User>;
+  delete(id: string): Promise<void>;
+}
+
+// Domain model - Pure TypeScript
+class User {
+  constructor(
+    public readonly id: string,
+    public readonly name: string,
+    public readonly email: string,
+    public readonly createdAt: Date
+  ) {}
+}
+
+// Infrastructure layer - Prisma implementation
+class PrismaUserRepository implements IUserRepository {
+  constructor(private prisma: PrismaClient) {}
+
+  async create(data: CreateUserDto): Promise<User> {
+    const prismaUser = await this.prisma.user.create({ data });
+    return this.toDomain(prismaUser);
+  }
+
+  async findById(id: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    return user ? this.toDomain(user) : null;
+  }
+
+  async findAll(): Promise<User[]> {
+    const users = await this.prisma.user.findMany();
+    return users.map((u) => this.toDomain(u));
+  }
+
+  async update(id: string, data: UpdateUserDto): Promise<User> {
+    const updated = await this.prisma.user.update({ where: { id }, data });
+    return this.toDomain(updated);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.user.delete({ where: { id } });
+  }
+
+  // Mapper: Prisma model → Domain model
+  private toDomain(prismaUser: any): User {
+    return new User(prismaUser.id, prismaUser.name, prismaUser.email, prismaUser.createdAt);
+  }
+}
+
+// Service layer - Uses interface only
+class UserService {
+  constructor(private userRepo: IUserRepository) {}
+
+  async registerUser(name: string, email: string): Promise<User> {
+    // Business logic here
+    return this.userRepo.create({ name, email });
+  }
+
+  async getUser(id: string): Promise<User> {
+    const user = await this.userRepo.findById(id);
+    if (!user) throw new Error('User not found');
+    return user;
+  }
+}
+
+// Dependency injection
+const prisma = new PrismaClient();
+const userRepo = new PrismaUserRepository(prisma);
+const userService = new UserService(userRepo);
+
+// Can easily swap implementations
+class MockUserRepository implements IUserRepository {
+  private users: User[] = [];
+
+  async create(data: CreateUserDto): Promise<User> {
+    const user = new User(Math.random().toString(), data.name, data.email, new Date());
+    this.users.push(user);
+    return user;
+  }
+
+  // ... other methods
+}
+
+// Testing with mock
+const mockRepo = new MockUserRepository();
+const testService = new UserService(mockRepo);
+```
+
+**Benefits**:
+
+- Database implementation can be swapped without changing business logic
+- Easy to test with mock repositories
+- Clear separation between domain and infrastructure
+- Supports multiple database providers simultaneously
+
+---
+
+## Layered Architecture & Modularity
+
+### Architecture Overview
+
+This codebase follows a **layered architecture** with clear separation of concerns:
+
+```
+┌─────────────────────────────────────┐
+│   Presentation Layer (API/UI)      │  ← HTTP endpoints, React components
+├─────────────────────────────────────┤
+│   Application Layer (Services)     │  ← Business logic, orchestration
+├─────────────────────────────────────┤
+│   Domain Layer (Models)            │  ← Core business entities, interfaces
+├─────────────────────────────────────┤
+│   Infrastructure Layer             │  ← Database, external APIs, file system
+└─────────────────────────────────────┘
+```
+
+### Directory Structure
+
+```
+backend/src/
+├── domain/                    # Core business logic (DB-agnostic)
+│   ├── models/               # Domain entities (User, Thought, Project)
+│   ├── repositories/         # Repository interfaces
+│   └── types/                # Shared types and DTOs
+├── application/              # Business logic orchestration
+│   └── services/             # Application services
+├── infrastructure/           # External dependencies
+│   ├── prisma/              # Database implementation
+│   │   ├── repositories/    # Prisma repository implementations
+│   │   ├── schema.prisma    # Prisma schema
+│   │   └── client.ts        # Prisma Client singleton
+│   └── external/            # Third-party API clients
+├── api/                      # HTTP layer
+│   ├── routes/              # Express routes
+│   ├── controllers/         # Request handlers
+│   └── middleware/          # Express middleware
+└── shared/                   # Cross-cutting concerns
+    ├── utils/               # Utility functions
+    └── errors/              # Custom error classes
+```
+
+### Layer Responsibilities
+
+#### Domain Layer
+
+**Purpose**: Define core business entities and contracts
+
+**Rules**:
+
+- ✅ Pure TypeScript (no framework dependencies)
+- ✅ No imports from infrastructure, application, or API layers
+- ✅ Contains interfaces for repositories
+- ❌ No database-specific types (e.g., Prisma types)
+- ❌ No HTTP-specific code
+
+```typescript
+// domain/models/User.ts
+export class User {
+  constructor(
+    public readonly id: string,
+    public readonly name: string,
+    public readonly email: string
+  ) {}
+}
+
+// domain/repositories/IUserRepository.ts
+export interface IUserRepository {
+  create(data: CreateUserDto): Promise<User>;
+  findById(id: string): Promise<User | null>;
+}
+```
+
+#### Application Layer (Services)
+
+**Purpose**: Implement business logic and orchestrate domain operations
+
+**Rules**:
+
+- ✅ Depends on domain layer (models and interfaces)
+- ✅ Uses repository interfaces, not implementations
+- ❌ No direct database access
+- ❌ No HTTP-specific code (req/res objects)
+
+```typescript
+// application/services/UserService.ts
+import { IUserRepository } from '../../domain/repositories/IUserRepository';
+import { User } from '../../domain/models/User';
+
+export class UserService {
+  constructor(private userRepo: IUserRepository) {}
+
+  async registerUser(name: string, email: string): Promise<User> {
+    // Business logic validation
+    if (!email.includes('@')) {
+      throw new Error('Invalid email');
+    }
+
+    return this.userRepo.create({ name, email });
+  }
+}
+```
+
+#### Infrastructure Layer
+
+**Purpose**: Implement technical details (database, APIs, file system)
+
+**Rules**:
+
+- ✅ Implements domain interfaces
+- ✅ Contains framework-specific code (Prisma, Axios, etc.)
+- ✅ Maps between domain models and persistence models
+- ❌ No business logic
+
+```typescript
+// infrastructure/prisma/repositories/PrismaUserRepository.ts
+import { PrismaClient } from '@prisma/client';
+import { IUserRepository } from '../../../domain/repositories/IUserRepository';
+import { User } from '../../../domain/models/User';
+
+export class PrismaUserRepository implements IUserRepository {
+  constructor(private prisma: PrismaClient) {}
+
+  async create(data: CreateUserDto): Promise<User> {
+    const prismaUser = await this.prisma.user.create({ data });
+    return this.toDomain(prismaUser);
+  }
+
+  async findById(id: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    return user ? this.toDomain(user) : null;
+  }
+
+  private toDomain(prismaUser: any): User {
+    return new User(prismaUser.id, prismaUser.name, prismaUser.email);
+  }
+}
+```
+
+#### API Layer
+
+**Purpose**: Handle HTTP requests and responses
+
+**Rules**:
+
+- ✅ Depends on application services
+- ✅ Handles request validation and serialization
+- ❌ No business logic
+- ❌ No direct repository access
+
+```typescript
+// api/routes/users.routes.ts
+import { Router } from 'express';
+import { UserService } from '../../application/services/UserService';
+
+export function createUserRoutes(userService: UserService): Router {
+  const router = Router();
+
+  router.post('/users', async (req, res) => {
+    try {
+      const user = await userService.registerUser(req.body.name, req.body.email);
+      res.json(user);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  return router;
+}
+```
+
+### Dependency Flow
+
+**Always flows inward** (outer layers depend on inner layers):
+
+```
+API Layer → Application Layer → Domain Layer ← Infrastructure Layer
+```
+
+**Key principle**: Inner layers never import from outer layers.
+
+### Testing Strategy by Layer
+
+#### Domain Layer Tests
+
+```typescript
+// Pure unit tests - no mocks needed
+describe('User', () => {
+  it('should create user with valid data', () => {
+    const user = new User('1', 'John', 'john@example.com');
+    expect(user.name).toBe('John');
+  });
+});
+```
+
+#### Application Layer Tests
+
+```typescript
+// Unit tests with mocked repositories
+describe('UserService', () => {
+  it('should register user', async () => {
+    const mockRepo: IUserRepository = {
+      create: jest.fn().mockResolvedValue(mockUser),
+      findById: jest.fn(),
+    };
+
+    const service = new UserService(mockRepo);
+    const user = await service.registerUser('John', 'john@example.com');
+
+    expect(mockRepo.create).toHaveBeenCalled();
+    expect(user.name).toBe('John');
+  });
+});
+```
+
+#### Infrastructure Layer Tests
+
+```typescript
+// Integration tests with real database (in-memory)
+describe('PrismaUserRepository', () => {
+  let prisma: PrismaClient;
+  let repo: IUserRepository;
+
+  beforeAll(async () => {
+    prisma = new PrismaClient({ datasource: { url: 'file::memory:' } });
+    repo = new PrismaUserRepository(prisma);
+  });
+
+  it('should create user', async () => {
+    const user = await repo.create({ name: 'John', email: 'john@example.com' });
+    expect(user.id).toBeDefined();
+  });
+});
+```
+
+#### API Layer Tests
+
+```typescript
+// E2E tests with Supertest
+describe('POST /users', () => {
+  it('should create user', async () => {
+    const response = await request(app)
+      .post('/users')
+      .send({ name: 'John', email: 'john@example.com' });
+
+    expect(response.status).toBe(200);
+    expect(response.body.name).toBe('John');
+  });
+});
+```
+
+### Modularity Benefits
+
+1. **Testability**: Each layer can be tested independently
+2. **Maintainability**: Clear boundaries reduce cognitive load
+3. **Flexibility**: Swap implementations without touching business logic
+4. **Scalability**: Easy to add new features without breaking existing code
+5. **Team Collaboration**: Teams can work on different layers simultaneously
+
+### Anti-Patterns to Avoid
+
+#### ❌ Tight Coupling to Database
+
+```typescript
+// BAD: Service directly uses Prisma
+class UserService {
+  constructor(private prisma: PrismaClient) {}
+
+  async getUser(id: string) {
+    return this.prisma.user.findUnique({ where: { id } });
+  }
+}
+```
+
+#### ❌ Business Logic in Controllers
+
+```typescript
+// BAD: Business logic in API layer
+router.post('/users', async (req, res) => {
+  if (!req.body.email.includes('@')) {
+    return res.status(400).json({ error: 'Invalid email' });
+  }
+  const user = await prisma.user.create({ data: req.body });
+  res.json(user);
+});
+```
+
+#### ❌ Domain Models with Framework Dependencies
+
+```typescript
+// BAD: Prisma decorators in domain model
+import { Prisma } from '@prisma/client';
+
+class User {
+  @Prisma.Field()
+  name: string;
+}
+```
+
+### Migration Path Example
+
+**Scenario**: Migrate from SQLite (Prisma) to MongoDB (Mongoose)
+
+**Steps**:
+
+1. Create new repository implementation
+
+```typescript
+// infrastructure/mongoose/repositories/MongoUserRepository.ts
+export class MongoUserRepository implements IUserRepository {
+  // Implement interface using Mongoose
+}
+```
+
+2. Update dependency injection
+
+```typescript
+// Before
+const userRepo = new PrismaUserRepository(prisma);
+
+// After
+const userRepo = new MongoUserRepository(mongoose);
+```
+
+3. **No changes needed in**:
+   - Domain models
+   - Application services
+   - API routes
+   - Tests (business logic)
+
+4. Update infrastructure tests only
+
+```typescript
+// New integration tests for Mongoose implementation
+describe('MongoUserRepository', () => {
+  // Test MongoDB-specific behavior
+});
 ```
 
 ---

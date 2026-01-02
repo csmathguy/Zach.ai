@@ -114,22 +114,48 @@ frontend/
 
 ## Backend
 
-Express + TypeScript API server.
+Express + TypeScript API server with layered architecture.
 
 ```
 backend/
 ├── src/
 │   ├── server.ts               # Express app with API routes
-│   ├── utils/
-│   │   └── metrics.ts          # Metrics utilities
-│   └── __tests__/              # Jest tests
+│   ├── domain/                 # Core business logic (DB-agnostic)
+│   │   ├── models/            # Domain entities (User, Thought, Project, Action)
+│   │   └── repositories/      # Repository interfaces (IUserRepository, etc.)
+│   ├── infrastructure/        # External dependencies
+│   │   └── prisma/           # Prisma-specific implementation
+│   │       ├── client.ts     # Prisma Client singleton
+│   │       ├── repositories/ # Repository implementations (PrismaUserRepository)
+│   │       └── schema.prisma # Database schema
+│   ├── services/              # Business logic orchestration
+│   │   └── *.service.ts      # Service classes (UserService, ThoughtService)
+│   ├── api/                   # HTTP layer
+│   │   ├── routes/           # Express routes
+│   │   ├── controllers/      # Request handlers
+│   │   └── middleware/       # Express middleware
+│   ├── shared/                # Cross-cutting concerns
+│   │   ├── utils/            # Utility functions
+│   │   └── errors/           # Custom error classes
+│   └── __tests__/             # Jest tests
 │       ├── server.test.ts
 │       └── metrics.test.ts
+├── prisma/                     # Prisma configuration
+│   ├── schema.prisma          # Database schema (primary location)
+│   ├── migrations/            # Migration history (git-tracked)
+│   └── seed.ts                # Database seeding script
 ├── dist/                       # Compiled JavaScript (gitignored)
 ├── jest.config.js             # Jest configuration
 ├── package.json               # Backend dependencies
 └── tsconfig.json              # TypeScript config (strict mode)
 ```
+
+**Architecture Layers** (see [development-guide.md](development-guide.md#layered-architecture--modularity)):
+
+- **Domain Layer** - Pure TypeScript models and repository interfaces (no framework dependencies)
+- **Infrastructure Layer** - Prisma implementation, database access, external APIs
+- **Application Layer** - Business logic services (uses repository interfaces)
+- **API Layer** - Express routes and controllers (uses services)
 
 **API Endpoints:**
 
@@ -137,10 +163,18 @@ backend/
 - `GET /api/metrics` - Server metrics (uptime, response time, memory)
 - Production: Serves built frontend static files
 
+**Database:**
+
+- SQLite with Prisma ORM
+- Repository Pattern for database abstraction
+- Migrations in `prisma/migrations/`
+- See [prisma/README.md](../../prisma/README.md) and [sqlite/README.md](../../sqlite/README.md) for details
+
 **Dependencies:**
 
 - Express 4.19+ (web framework)
 - TypeScript 5.6+ (strict mode)
+- Prisma 6.0+ (ORM with migrations)
 - Jest + Supertest (unit tests)
 - ts-node-dev (development)
 
@@ -148,6 +182,7 @@ backend/
 
 - Jest with Node environment
 - Supertest for API testing
+- In-memory SQLite for integration tests
 - Coverage threshold: 70%+
 
 **Ports:**

@@ -1,6 +1,19 @@
-# Feature Workflow Guidance: APR & Retrospectives
+# Feature Workflow Guidance: APR, Architecture, Testing & Retrospectives
 
-This page consolidates external research into actionable guidance for our feature workflow. Use it when drafting APRs/PRDs, running retrospectives, or customizing Copilot agents/skills.
+This page consolidates external research into actionable guidance for our complete feature workflow. Use it when drafting APRs/PRDs, designing architecture, planning tests, or running retrospectives.
+
+## Feature Development Workflow
+
+The complete workflow follows these phases:
+
+1. **Planning (APR)** - Business requirements, user stories, success metrics
+2. **Architecture (ADR)** - Technical design, contracts, interfaces, patterns
+3. **Research** - Knowledge base documentation for new technologies
+4. **Testing** - Test strategy, Gherkin specifications using contracts
+5. **Development** - Implementation following architecture + tests
+6. **Retrospective** - Lessons learned, improvements
+
+**Critical Insight**: Architecture must come BEFORE testing. Testers need contracts/interfaces to write meaningful tests.
 
 ## Product Requirements (APR/PRD) Essentials
 
@@ -31,6 +44,76 @@ Implementation notes:
 - End APR planning by creating/switching to the dedicated Git branch before any code edits.
 - Reference this document from Copilot prompts/agents so the APR checklist stays consistent.
 
+## Continuous Retrospectives (Phase-by-Phase)
+
+**Philosophy**: Rather than waiting until the end, each agent documents their retrospective immediately after completing their phase. This creates a continuous feedback loop and helps subsequent agents learn from earlier work.
+
+### Why Continuous Retrospectives?
+
+1. **Fresh Context**: Insights are captured while details are still fresh
+2. **Early Problem Detection**: Issues identified early can be addressed before compounding
+3. **Knowledge Transfer**: Each agent learns from previous agents' findings
+4. **Workflow Improvement**: Patterns emerge that can improve the process immediately
+5. **Historical Record**: Complete timeline of decisions and learnings
+
+### Retrospective Timing
+
+| Agent           | When to Document                                         | Purpose                                                           |
+| --------------- | -------------------------------------------------------- | ----------------------------------------------------------------- |
+| **Planner**     | After APR approval, before architect handoff             | Were requirements clear? Did stakeholders provide enough context? |
+| **Architect**   | After ADRs/contracts created, before tester handoff      | Did design decisions work? Were contracts clear for testers?      |
+| **Tester**      | After test strategy documented, before developer handoff | Were contracts sufficient? Are tests realistic and valuable?      |
+| **Developer**   | After implementation complete, before final retro        | Did architecture guide implementation? Were tests helpful?        |
+| **Retro Agent** | After feature complete                                   | Synthesize all phase retrospectives into overall learnings        |
+
+### Retrospective Template Location
+
+All phase retrospectives are documented in: `work-items/<branch>/retro/retrospective.md`
+
+Each agent adds to their designated section:
+
+- Planning Phase (Planner Agent)
+- Architecture Phase (Architect Agent)
+- Testing Phase (Tester Agent)
+- Development Phase (Developer Agent)
+- Overall Feature Retrospective (Retro Agent synthesizes)
+
+### Key Questions for Each Phase
+
+**Planning (Planner)**:
+
+- Were user stories clear and testable?
+- Did we identify all accessibility and performance requirements?
+- What information was missing that delayed architecture?
+
+**Architecture (Architect)**:
+
+- Did chosen patterns align with requirements?
+- Were contracts complete enough for testing?
+- What trade-offs proved correct/incorrect?
+
+**Testing (Tester)**:
+
+- Could we test everything specified in contracts?
+- Were coverage targets realistic?
+- What edge cases were discovered?
+
+**Development (Developer)**:
+
+- Did ADRs prevent rework?
+- Were tests valuable for TDD?
+- What SOLID violations emerged and why?
+
+### Retrospective Handoff Pattern
+
+```
+Phase Complete → Document Retrospective → Hand Off to Next Agent
+```
+
+**Example**: Architect completes ADRs → Documents architecture retrospective → Hands off contracts to tester
+
+This ensures the tester can read the architect's concerns about contract clarity or missing requirements BEFORE designing tests.
+
 ## Retrospective Best Practices
 
 **Source:** [Atlassian – Sprint Retrospectives](https://www.atlassian.com/team-playbook/plays/retrospective)
@@ -52,17 +135,184 @@ Recommended retrospective template sections (mirrors `work-items/_template/.../r
 5. Improvement actions (KB updates, agent tweaks, tooling work), each with owner + date.
 6. Follow-ups (items that must become tickets or future features).
 
+## Architecture Decision Records (ADR) Essentials
+
+**Purpose**: Document major technical decisions so future developers understand WHY choices were made.
+
+**Source**: [Michael Nygard - ADR Documentation](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
+
+### ADR Structure
+
+Each ADR should include:
+
+1. **Context** - What problem are we solving? What factors influence the decision?
+2. **Decision** - What are we doing? Be specific and concrete.
+3. **Rationale** - Why this decision over alternatives? What are the benefits?
+4. **Alternatives Considered** - What other options were evaluated and why rejected?
+5. **Consequences** - Positive impacts, negative trade-offs, risks + mitigations
+6. **Implementation Notes** - Key classes/interfaces, integration points, migration path
+7. **Compliance** - SOLID principles, patterns, testing, accessibility, performance
+
+### When to Create ADRs
+
+- Database choice (SQLite vs PostgreSQL vs MongoDB)
+- ORM selection (Prisma vs TypeORM vs Knex)
+- Design patterns (Repository, Factory, Strategy)
+- Architectural patterns (Layered, Hexagonal, Clean)
+- Technology choices (React vs Vue, Express vs Fastify)
+- Major refactoring decisions
+
+### ADR Best Practices
+
+- **One Decision Per ADR**: Keep focused
+- **Immutable**: ADRs are historical records, don't edit them
+- **Status**: Mark as Proposed → Accepted → Deprecated → Superseded
+- **Reference APR**: Link to business requirements
+- **Document Trade-offs**: Be honest about negative consequences
+
+## Architecture Phase Essentials
+
+**When**: After APR approval, BEFORE testing begins
+
+**Why**: Testers need contracts/interfaces to write tests. Developers need design decisions to implement correctly.
+
+### Architecture Artifacts
+
+1. **ADRs** (`adr-*.md`) - Major technical decisions
+2. **Contracts** (`contracts.md`) - All interfaces, domain models, DTOs
+3. **Diagrams** (`diagrams.md`) - ERD, component, sequence diagrams
+4. **Layers** (`layers.md`) - How feature fits into layered architecture
+5. **Integration** (`integration.md`) - How feature integrates with existing codebase
+
+### Architecture Deliverables for Testers
+
+Testers receive:
+
+- **Repository interfaces** with method signatures
+- **Domain models** with properties and invariants
+- **DTOs** with field definitions
+- **Error contracts** defining when exceptions are thrown
+- **Contract guarantees** specifying behavior (e.g., "returns null if not found, never throws")
+
+Example:
+
+```typescript
+interface IUserRepository {
+  create(data: CreateUserDto): Promise<User>; // Throws on duplicate email
+  findById(id: string): Promise<User | null>; // Returns null if not found, never throws
+}
+```
+
+Testers write scenarios against these contracts:
+
+```gherkin
+Scenario: Create user with duplicate email
+  Given a user exists with email "test@example.com"
+  When I attempt to create another user with email "test@example.com"
+  Then a UniqueConstraintError should be thrown
+```
+
+### Architecture Deliverables for Developers
+
+Developers receive:
+
+- **ADRs** explaining WHY decisions were made
+- **Folder structure** showing where files go
+- **Implementation checklist** referencing ADRs
+- **SOLID compliance** requirements
+- **Integration points** with existing code
+
 ## How Copilot Agents Should Use This Guidance
 
-- **Planning agents**: enforce the APR structure, ensure branch creation happens immediately after APR approval, and link to checklist items stored in per-feature folders. Include accessibility requirements and performance baselines in initial plan.
-- **Test/Dev agents**: reference APR sections for acceptance criteria; remind users to run `npm run validate` (typecheck + lint + format) + manual exploratory testing before requesting commits. **Zero red files policy** - no TypeScript errors allowed.
-- **Code review checkpoints**:
-  - **Mid-implementation** (Phase 4-5): Check SRP and OCP, remove unused code
-  - **Pre-testing** (Phase 6): Full SOLID assessment (all 5 principles)
-  - **Pre-commit** (Phase 8): Final ISP and DIP check, verify all dead code removed
-- **Testing agents**: Document testability categories (pure functions 100%, components 80%+, browser APIs 60%+). Use `@jest/globals` → require `/jest-globals` import for jest-dom. Address `act()` warnings immediately.
-- **Retro agents**: follow the question set above, then recommend concrete updates (KB change, new skill, refined prompt) and store them under the feature's `retro/` folder.
-- **Skills/prompts setup**: load this document's highlights to keep Copilot-generated artifacts aligned with best practices even if contributors aren't familiar with the original sources.
+### Planning Agent (planner)
+
+- Enforce APR structure
+- Include accessibility requirements (WCAG 2.1 AA)
+- Include performance baselines
+- **Hand off to architect agent** (not researcher) after APR approval
+- Create feature branch immediately after APR approval
+- **Document planning retrospective** in `work-items/<branch>/retro/retrospective.md` before handoff
+
+### Architecture Agent (architect)
+
+- Analyze APR to extract technical requirements
+- Create ADRs for major decisions (database, ORM, patterns, layers)
+- Define all contracts (interfaces, domain models, DTOs)
+- Create diagrams (ERD, component, sequence)
+- Document layer architecture and integration points
+- Ensure SOLID compliance
+- **Provide contracts to tester agent**
+- **Provide ADRs to developer agent**
+- Hand off to researcher if new technologies identified
+- **Document architecture retrospective** in `work-items/<branch>/retro/retrospective.md` before handoff
+
+### Research Agent (researcher)
+
+- Identify new technologies from architecture decisions
+- Research best practices via web search
+- Create comprehensive knowledge base documentation (400+ lines per technology)
+- Document findings in `work-items/<branch>/research/research-findings.md`
+- Hand back to architect or proceed to tester
+
+### Testing Agent (tester)
+
+- **Receive contracts from architect agent**
+- Design test strategy (Gherkin specifications, test plan)
+- Document what to test (contract guarantees, edge cases, scenarios)
+- Specify coverage targets (70%+ minimum per layer)
+- Reference APR acceptance criteria
+- Define success criteria for tests
+- **Does NOT write actual Jest test code** (developer does this)
+- **Hands off test plan to developer** for test implementation
+- **Document testing retrospective** in `work-items/<branch>/retro/retrospective.md` before handoff
+
+### Development Agent (developer)
+
+- **Receive ADRs from architect agent**
+- **Receive test plan from tester agent**
+- Review retrospective insights from previous phases
+
+**Step 1: Verify/Create Contracts**
+
+- Check if contracts exist (domain models, repository interfaces)
+- Create contracts if needed OR update existing contracts
+- Ensure interfaces match test plan requirements
+
+**Step 2: Implement Tests (TDD RED phase)**
+
+- Read test plan specifications
+- Write Jest tests based on test plan
+- Domain layer tests (pure, no mocks) → ✅ PASS immediately
+- Application layer tests (with `jest.fn()` mocks) → ✅ PASS immediately
+- Infrastructure layer tests (integration) → 🔴 FAIL (expected)
+- Run tests → verify 🔴 RED on infrastructure layer
+
+**Step 3: Implement Features (TDD GREEN phase)**
+
+- Implement repositories/services to make tests pass
+- Run tests continuously → 🟢 PASS
+- Follow SOLID principles
+- Run `npm run validate` frequently
+- **Zero red files policy** - no TypeScript errors allowed
+
+**Step 4: Refactor (maintain GREEN)**
+
+- Remove dead code aggressively
+- Code review checkpoints:
+  - **Mid-implementation**: Check SRP and OCP
+  - **Pre-commit**: Full SOLID assessment
+- Verify coverage targets met
+- **Document development retrospective** in `work-items/<branch>/retro/retrospective.md` before handoff
+
+### Retrospective Agent (retro)
+
+- Review all phase-specific retrospectives from planning, architecture, testing, and development
+- Follow 4Ls framework (Loved, Loathed, Learned, Longed for) for overall feature retrospective
+- Review architectural decisions - did they work out?
+- Synthesize learnings from all phases
+- Recommend concrete updates (KB change, new skill, ADR improvements)
+- Complete overall retrospective in `work-items/<branch>/retro/retrospective.md`
+- Create follow-up tickets for improvements
 
 ## Key Learnings from Feature Development
 
@@ -82,7 +332,10 @@ Recommended retrospective template sections (mirrors `work-items/_template/.../r
 
 ### Workflow Improvements
 
+- **Architecture before testing**: Testers need contracts to write meaningful tests
 - **Branch immediately after APR**: Before any code edits, create feature branch
-- **Document architecture decisions**: In implementation notes, create ADR sections
+- **Document architecture decisions**: Create ADRs for all major decisions
+- **Define contracts early**: Interfaces stabilize before implementation begins
 - **Performance baselines early**: Don't wait until testing phase to measure
 - **act() warnings immediate**: Never defer React Testing Library warnings
+- **ADRs are immutable**: Don't edit approved ADRs, create new ones (supersede pattern)

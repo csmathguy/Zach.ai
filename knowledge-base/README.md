@@ -21,9 +21,12 @@ This workspace-level knowledge base captures core references, summaries, and bes
 - **[jest/](./jest/README.md)**: Jest testing framework ✅
 - **[playwright/](./playwright/README.md)**: Playwright E2E testing (MVP)
 - **[pm2/](./pm2/README.md)**: PM2 process manager ✅
+- **[prisma/](./prisma/README.md)**: Prisma ORM with TypeScript, migrations, Repository Pattern ✅
 - **[react/](./react/README.md)**: React library fundamentals and patterns
 - **[react-router/](./react-router/README.md)**: React Router DOM for client-side routing ✅
 - **[recharts/](./recharts/README.md)**: Recharts data visualization library ✅
+- **[sqlite/](./sqlite/README.md)**: SQLite embedded database, WAL mode, best practices ✅
+- **[tdd/](./tdd/README.md)**: Test-Driven Development (TDD) — RED-GREEN-REFACTOR, test-first principles ✅
 - **[typescript/](./typescript/README.md)**: TypeScript language features
 - **[vite/](./vite/README.md)**: Vite build tool and dev server
 - More technology folders being added (see [ideas/knowledge-base-updates.md](../ideas/knowledge-base-updates.md))
