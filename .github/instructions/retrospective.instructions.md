@@ -5,6 +5,17 @@
 
 ---
 
+## ⚠️ CRITICAL: Local Working Memory Only
+
+**Retrospectives are NOT source controlled!**
+
+- work-items/ folder is temporary working memory (gitignored)
+- Retrospectives capture learnings for the current development session
+- These stay local and are not committed to git
+- Final retrospective synthesis goes into knowledge base after feature complete
+
+---
+
 ## Purpose
 
 Continuous retrospectives capture learnings and improvements throughout development. This creates a feedback loop that improves both the current feature and future work.
@@ -27,6 +38,8 @@ Continuous retrospectives capture learnings and improvements throughout developm
 ```
 work-items/<branch>/retro/retrospective.md
 ```
+
+**Important**: This file is local-only (gitignored). It's working memory for this feature branch.
 
 If file doesn't exist, create it using the template below.
 

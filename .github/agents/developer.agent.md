@@ -138,13 +138,15 @@ After 3-5 tests for a component, usage patterns become clear. Extract the interf
 
 **After implementing and testing a coherent chunk of work:**
 
-### 7.1 Commit Code Changes
+### 7.1 Commit Code Changes ONLY
 
 - Create atomic commit with clear message
 - Reference feature branch in commit message
 - Follow conventional commits format
+- **⚠️ IMPORTANT**: Only commit code/config files, NOT work-items/ content
+- work-items/ folder is working memory (local-only, gitignored)
 
-### 7.2 Update Task List (REQUIRED)
+### 7.2 Update Task List (LOCAL ONLY - NOT COMMITTED)
 
 **File**: `work-items/<branch>/dev/task-list.md`
 
@@ -153,10 +155,14 @@ After 3-5 tests for a component, usage patterns become clear. Extract the interf
 - [x] Add commit hash and status notes
 - [x] Update status at top of file
 
-### 7.3 Add Retrospective Entry (REQUIRED)
+**Note**: This file stays local - it's working memory for this feature branch
+
+### 7.3 Add Retrospective Entry (LOCAL ONLY - NOT COMMITTED)
 
 **File**: `work-items/<branch>/retro/retrospective.md`
 **See**: [retrospective.instructions.md](../instructions/retrospective.instructions.md)
+
+**Note**: This file is working memory (local-only, gitignored). It captures learnings for this session but doesn't go in git.
 
 **If file doesn't exist, create it. Then add entry:**
 
