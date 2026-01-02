@@ -58,6 +58,18 @@ git checkout -b feat/<feature-name>
 
 This ensures all work is isolated and traceable from the start.
 
+## Step 4: Document Planning Retrospective
+
+**BEFORE handing off to the next agent**, document your planning phase retrospective in `work-items/<branch>/retro/retrospective.md` under the "Planning Phase (Planner Agent)" section:
+
+1. **What Went Well** - Requirements gathering wins, APR structure clarity, stakeholder collaboration
+2. **What Was Challenging** - Missing requirements, scope ambiguity, estimation difficulties
+3. **Learnings** - Domain insights, unexpected requirements, assumption accuracy
+4. **Handoff Quality** - Was the APR clear for architecture? Missing accessibility/performance requirements?
+5. **Actions for Improvement** - Template updates, new prompts/skills, knowledge base additions
+
+**Purpose**: Creating this retrospective immediately after planning helps the next agent understand context and identifies gaps early in the workflow.
+
 ## Collaboration
 
 - Gather requirements by asking clarifying questions about user needs, technical constraints, and success criteria.

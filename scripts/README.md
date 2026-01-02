@@ -1,8 +1,16 @@
 # PowerShell Helper Scripts
 
-Automate common workflows for staging and main (production) environments.
+Automate common workflows for staging, production, and database management.
 
-## Scripts
+## Table of Contents
+
+- [Deployment Scripts](#deployment-scripts)
+- [Database Scripts](#database-scripts)
+- [Environment Setup](#environment-setup)
+
+---
+
+## Deployment Scripts
 
 ### `staging-start.ps1`
 
@@ -118,6 +126,221 @@ Pull latest code, rebuild, and reload main.
 ### `setup-auto-start.ps1`
 
 Register a Windows Task Scheduler task to automatically run `pm2 resurrect` at user login, ensuring `zach-main` restarts after reboot.
+
+```powershell
+./scripts/setup-auto-start.ps1
+```
+
+---
+
+## Database Scripts
+
+**Note**: Database scripts will be created as part of the O1-database-foundation work item.
+
+### `db-init.ps1` (Planned)
+
+Initialize Prisma and create database from scratch. **One-command setup for new developers.**
+
+```powershell
+# Initialize with default settings (development)
+./scripts/db-init.ps1
+
+# Initialize for specific environment
+./scripts/db-init.ps1 -Environment production
+
+# Reset existing database
+./scripts/db-init.ps1 -Reset
+```
+
+**What it does:**
+
+- Validates environment (checks for backend/package.json)
+- Installs Prisma dependencies if missing
+- Generates Prisma Client
+- Creates SQLite database file
+- Runs initial migrations
+- Provides success/error feedback
+
+**npm Shortcut:**
+
+```bash
+npm run db:init
+```
+
+### `db-migrate.ps1` (Planned)
+
+Manage database migrations (create, apply, deploy).
+
+```powershell
+# Create a new migration
+./scripts/db-migrate.ps1 -Action create -Name "add_users_table"
+
+# Apply migrations (development)
+./scripts/db-migrate.ps1 -Action apply
+
+# Deploy migrations (production)
+./scripts/db-migrate.ps1 -Action deploy
+
+# Show migration status
+./scripts/db-migrate.ps1 -Action status
+```
+
+**What it does:**
+
+- Create: Generates new migration file
+- Apply: Runs pending migrations (dev mode with db push)
+- Deploy: Runs migrations safely in production
+- Status: Shows applied and pending migrations
+
+**npm Shortcuts:**
+
+```bash
+npm run db:migrate              # Apply in dev
+npm run db:migrate:create       # Create new migration
+npm run db:migrate:deploy       # Deploy in production
+```
+
+### `db-reset.ps1` (Planned)
+
+Reset database to clean state.
+
+```powershell
+# Reset and keep migrations
+./scripts/db-reset.ps1
+
+# Reset and seed with test data
+./scripts/db-reset.ps1 -Seed
+
+# Show what would be deleted (dry-run)
+./scripts/db-reset.ps1 -WhatIf
+```
+
+**What it does:**
+
+- Drops all tables
+- Re-runs migrations from scratch
+- Optionally seeds test data
+- Confirms before destructive actions
+
+**npm Shortcut:**
+
+```bash
+npm run db:reset
+```
+
+### `db-seed.ps1` (Planned)
+
+Populate database with test data.
+
+```powershell
+# Seed with default data
+./scripts/db-seed.ps1
+
+# Seed with specific dataset
+./scripts/db-seed.ps1 -Dataset "full"
+
+# Show what would be created (dry-run)
+./scripts/db-seed.ps1 -WhatIf
+```
+
+**What it does:**
+
+- Creates sample users
+- Creates sample thoughts
+- Creates sample projects and actions
+- Links entities with relationships
+
+**npm Shortcut:**
+
+```bash
+npm run db:seed
+```
+
+### `db-studio.ps1` (Planned)
+
+Launch Prisma Studio (database GUI).
+
+```powershell
+# Launch on default port (5555)
+./scripts/db-studio.ps1
+
+# Launch on specific port
+./scripts/db-studio.ps1 -Port 5566
+```
+
+**What it does:**
+
+- Opens Prisma Studio web interface
+- Handles port conflicts
+- Opens browser automatically
+
+**npm Shortcut:**
+
+```bash
+npm run db:studio
+```
+
+### `db-backup.ps1` (Planned)
+
+Create timestamped backup of database.
+
+```powershell
+# Create backup in default location
+./scripts/db-backup.ps1
+
+# Create backup in specific location
+./scripts/db-backup.ps1 -Path "C:/backups"
+
+# Create compressed backup
+./scripts/db-backup.ps1 -Compress
+```
+
+**What it does:**
+
+- Copies database file with timestamp
+- Optional compression (.zip)
+- Validates backup integrity
+
+**npm Shortcut:**
+
+```bash
+npm run db:backup
+```
+
+### `db-restore.ps1` (Planned)
+
+Restore database from backup.
+
+```powershell
+# List available backups
+./scripts/db-restore.ps1 -List
+
+# Restore latest backup
+./scripts/db-restore.ps1
+
+# Restore specific backup
+./scripts/db-restore.ps1 -BackupFile "dev.db.2026-01-01_123456.bak"
+
+# Show what would be restored (dry-run)
+./scripts/db-restore.ps1 -WhatIf
+```
+
+**What it does:**
+
+- Lists available backup files
+- Creates backup of current DB before restore
+- Restores selected backup
+- Validates restored database
+
+**npm Shortcut:**
+
+```bash
+npm run db:restore
+```
+
+---
+
+## Environment Setup
 
 ```powershell
 ./scripts/setup-auto-start.ps1
