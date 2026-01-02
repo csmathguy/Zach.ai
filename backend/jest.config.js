@@ -6,6 +6,11 @@ module.exports = {
   roots: ['<rootDir>/src'],
   testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
 
+  // SQLite uses file-based locking. Running these integration tests across multiple
+  // Jest workers causes Prisma deleteMany()/create() calls to timeout, so we force
+  // single-worker execution for deterministic results.
+  maxWorkers: 1,
+
   // TypeScript path alias mapping for Jest
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',

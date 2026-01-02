@@ -6,3 +6,4 @@
 
 export { IUserRepository } from './IUserRepository';
 export { IThoughtRepository } from './IThoughtRepository';
+export { IProjectRepository } from './IProjectRepository';
