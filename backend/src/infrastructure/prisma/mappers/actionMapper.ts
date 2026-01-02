@@ -2,53 +2,42 @@
  * Action Mapper
  */
 
+import { Prisma } from '@prisma/client';
 import { Action, ActionType, ActionStatus } from '@domain/models';
 import type { CreateActionDto } from '@domain/types';
 
-interface PrismaAction {
-  id: string;
-  title: string;
-  description: string | null;
-  actionType: string;
-  status: string;
-  projectId: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 export const actionMapper = {
-  toDomain(prismaAction: unknown): Action {
-    const action = prismaAction as PrismaAction;
+  toDomain(prismaAction: Prisma.ActionGetPayload<object>): Action {
     return new Action(
-      action.id,
-      action.title,
-      action.description ?? '', // Convert null to empty string
-      action.actionType as ActionType,
-      action.status as ActionStatus,
-      action.projectId,
-      action.createdAt,
-      action.updatedAt
+      prismaAction.id,
+      prismaAction.title,
+      prismaAction.description ?? '', // Convert null to empty string
+      prismaAction.actionType as ActionType,
+      prismaAction.status as ActionStatus,
+      prismaAction.projectId,
+      prismaAction.createdAt,
+      prismaAction.updatedAt
     );
   },
 
-  toPrisma(dto: CreateActionDto): unknown {
-    const result: Record<string, unknown> = {
+  toPrisma(dto: CreateActionDto): Prisma.ActionCreateInput {
+    const input: Prisma.ActionCreateInput = {
       title: dto.title,
       actionType: dto.actionType,
     };
 
     if (dto.description !== undefined) {
-      result.description = dto.description;
+      input.description = dto.description;
     }
 
     if (dto.status !== undefined) {
-      result.status = dto.status;
+      input.status = dto.status;
     }
 
-    if (dto.projectId !== undefined) {
-      result.projectId = dto.projectId;
+    if (dto.projectId) {
+      input.project = { connect: { id: dto.projectId } };
     }
 
-    return result;
+    return input;
   },
 };

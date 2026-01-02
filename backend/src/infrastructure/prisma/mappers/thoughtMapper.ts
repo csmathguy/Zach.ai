@@ -2,45 +2,38 @@
  * Thought Mapper
  */
 
+import { Prisma } from '@prisma/client';
 import { Thought } from '@domain/models';
 import type { CreateThoughtDto } from '@domain/types';
 
-interface PrismaThought {
-  id: string;
-  text: string;
-  source: string;
-  timestamp: Date;
-  processedState: string;
-  userId: string;
-}
-
 export const thoughtMapper = {
-  toDomain(prismaThought: unknown): Thought {
-    const thought = prismaThought as PrismaThought;
+  toDomain(prismaThought: Prisma.ThoughtGetPayload<object>): Thought {
     return new Thought(
-      thought.id,
-      thought.text,
-      thought.userId,
-      thought.timestamp,
-      thought.source,
-      thought.processedState
+      prismaThought.id,
+      prismaThought.text,
+      prismaThought.userId,
+      prismaThought.timestamp,
+      prismaThought.source,
+      prismaThought.processedState
     );
   },
 
-  toPrisma(dto: CreateThoughtDto): unknown {
-    const result: Record<string, unknown> = {
+  toPrisma(dto: CreateThoughtDto): Prisma.ThoughtCreateInput {
+    const input: Prisma.ThoughtCreateInput = {
       text: dto.text,
-      userId: dto.userId,
+      user: {
+        connect: { id: dto.userId },
+      },
     };
 
     if (dto.source !== undefined) {
-      result.source = dto.source;
+      input.source = dto.source;
     }
 
     if (dto.timestamp !== undefined) {
-      result.timestamp = dto.timestamp;
+      input.timestamp = dto.timestamp;
     }
 
-    return result;
+    return input;
   },
 };

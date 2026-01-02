@@ -2,46 +2,36 @@
  * Project Mapper
  */
 
+import { Prisma } from '@prisma/client';
 import { Project, ProjectStatus } from '@domain/models';
 import type { CreateProjectDto } from '@domain/types';
 
-interface PrismaProject {
-  id: string;
-  title: string;
-  description: string | null;
-  status: string;
-  nextActionId: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 export const projectMapper = {
-  toDomain(prismaProject: unknown): Project {
-    const project = prismaProject as PrismaProject;
+  toDomain(prismaProject: Prisma.ProjectGetPayload<object>): Project {
     return new Project(
-      project.id,
-      project.title,
-      project.description ?? '', // Convert null to empty string
-      project.status as ProjectStatus,
-      project.nextActionId,
-      project.createdAt,
-      project.updatedAt
+      prismaProject.id,
+      prismaProject.title,
+      prismaProject.description ?? '', // Convert null to empty string
+      prismaProject.status as ProjectStatus,
+      prismaProject.nextActionId,
+      prismaProject.createdAt,
+      prismaProject.updatedAt
     );
   },
 
-  toPrisma(dto: CreateProjectDto): unknown {
-    const result: Record<string, unknown> = {
+  toPrisma(dto: CreateProjectDto): Prisma.ProjectCreateInput {
+    const input: Prisma.ProjectCreateInput = {
       title: dto.title,
     };
 
     if (dto.description !== undefined) {
-      result.description = dto.description;
+      input.description = dto.description;
     }
 
     if (dto.status !== undefined) {
-      result.status = dto.status;
+      input.status = dto.status;
     }
 
-    return result;
+    return input;
   },
 };

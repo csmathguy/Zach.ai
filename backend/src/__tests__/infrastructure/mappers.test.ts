@@ -141,10 +141,10 @@ describe('Thought Mapper', () => {
         userId: 'user-123',
       };
 
-      const prismaInput = thoughtMapper.toPrisma(dto) as Record<string, unknown>;
+      const prismaInput = thoughtMapper.toPrisma(dto);
 
       expect(prismaInput.text).toBe('New thought');
-      expect(prismaInput.userId).toBe('user-123');
+      expect(prismaInput.user).toEqual({ connect: { id: 'user-123' } });
     });
 
     it('should include optional source field when provided', () => {
@@ -396,9 +396,9 @@ describe('Action Mapper', () => {
         projectId: 'project-123',
       };
 
-      const prismaInput = actionMapper.toPrisma(dto) as Record<string, unknown>;
+      const prismaInput = actionMapper.toPrisma(dto);
 
-      expect(prismaInput.projectId).toBe('project-123');
+      expect(prismaInput.project).toEqual({ connect: { id: 'project-123' } });
     });
 
     it('should handle null projectId explicitly', () => {
@@ -408,9 +408,9 @@ describe('Action Mapper', () => {
         projectId: null,
       };
 
-      const prismaInput = actionMapper.toPrisma(dto) as Record<string, unknown>;
+      const prismaInput = actionMapper.toPrisma(dto);
 
-      expect(prismaInput.projectId).toBeNull();
+      expect(prismaInput.project).toBeUndefined();
     });
 
     it('should omit optional fields when not provided', () => {

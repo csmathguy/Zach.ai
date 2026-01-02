@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
+import { PrismaLibSql } from '@prisma/adapter-libsql';
 
 /**
  * Prisma Client Singleton
@@ -18,13 +19,25 @@ declare global {
 /**
  * Get or create the singleton Prisma Client instance
  *
- * Note: Prisma 7.x reads database URL from prisma.config.ts automatically
+ * Note: Prisma 7.x requires adapter for SQLite
  */
-export const prisma =
-  globalThis.prisma ||
-  new PrismaClient({
+function createPrismaClient(): PrismaClient {
+  // LibSQL adapter doesn't support URL query parameters like journal_mode
+  // Strip them from the DATABASE_URL
+  let dbUrl = process.env.DATABASE_URL || 'file:./prisma/dev.db';
+  dbUrl = dbUrl.split('?')[0]; // Remove query parameters
+
+  const adapter = new PrismaLibSql({
+    url: dbUrl,
+  });
+
+  return new PrismaClient({
+    adapter,
     log: process.env.NODE_ENV === 'development' ? ['query', 'warn', 'error'] : ['warn', 'error'],
   });
+}
+
+export const prisma = globalThis.prisma || createPrismaClient();
 
 // In development, store in globalThis to survive hot-reloads
 if (process.env.NODE_ENV !== 'production') {
