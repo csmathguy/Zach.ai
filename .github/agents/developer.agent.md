@@ -50,6 +50,13 @@ List all scenarios to test - start simple, build toward complex.
 
 **Purpose**: Define what you want to build. Tests drive interface design.
 
+**CRITICAL: Check File Location Patterns FIRST**
+
+- ✅ **Before creating test files**: Find similar existing test files
+- ✅ **Verify location pattern**: `backend/src/__tests__/infrastructure/` NOT `backend/src/infrastructure/__tests__/`
+- ✅ **Why this matters**: TypeScript path alias resolution depends on correct directory structure
+- ✅ **Example**: Check PrismaUserRepository.test.ts location before creating PrismaThoughtRepository.test.ts
+
 **Follow Outside-In TDD** (start from API, work inward):
 
 1. **API Layer Tests** - E2E tests for routes

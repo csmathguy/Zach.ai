@@ -138,6 +138,10 @@ backend/
 │   │   ├── utils/            # Utility functions
 │   │   └── errors/           # Custom error classes
 │   └── __tests__/             # Jest tests
+│       ├── domain/           # Domain model tests
+│       ├── infrastructure/   # Repository integration tests
+│       │   ├── PrismaUserRepository.test.ts
+│       │   └── PrismaThoughtRepository.test.ts
 │       ├── server.test.ts
 │       └── metrics.test.ts
 ├── prisma/                     # Prisma configuration
@@ -184,6 +188,13 @@ backend/
 - Supertest for API testing
 - In-memory SQLite for integration tests
 - Coverage threshold: 70%+
+
+**Test File Location (CRITICAL)**:
+
+- ✅ **Correct**: `backend/src/__tests__/infrastructure/PrismaUserRepository.test.ts`
+- ❌ **Wrong**: `backend/src/infrastructure/__tests__/PrismaUserRepository.test.ts`
+- **Why**: TypeScript path alias resolution (e.g., `@infrastructure/*`) requires tests in `__tests__/` directory
+- **Rule**: Mirror source structure under `__tests__/`, don't nest tests within source directories
 
 **Ports:**
 
