@@ -1,4 +1,4 @@
-```chatagent
+````chatagent
 ---
 name: developer
 description: Implement approved features following SOLID principles and testing requirements.
@@ -134,36 +134,112 @@ After 3-5 tests for a component, usage patterns become clear. Extract the interf
 
 ---
 
-## Step 7: Repeat RED-GREEN-REFACTOR
+## Step 7: Commit and Document (CRITICAL WORKFLOW)
+
+**After implementing and testing a coherent chunk of work:**
+
+### 7.1 Commit Code Changes
+
+- Create atomic commit with clear message
+- Reference feature branch in commit message
+- Follow conventional commits format
+
+### 7.2 Update Task List (REQUIRED)
+
+**File**: `work-items/<branch>/dev/task-list.md`
+
+- [x] Check off completed tasks
+- [x] Mark sections complete with ✅
+- [x] Add commit hash and status notes
+- [x] Update status at top of file
+
+### 7.3 Add Retrospective Entry (REQUIRED)
+
+**File**: `work-items/<branch>/retro/retrospective.md`
+**See**: [retrospective.instructions.md](../instructions/retrospective.instructions.md)
+
+**If file doesn't exist, create it. Then add entry:**
+
+```markdown
+### Entry N: [Phase/Task Name]
+**Date**: [YYYY-MM-DD]
+**Commit**: `[hash]` - "[message]"
+**Status**: ✅ Complete
+
+#### What We Did
+- [What was implemented]
+
+#### What Went Well ✅
+- [Successes and good decisions]
+
+#### What Didn't Go Well / Issues Found ❌
+- [Problems, bugs, quality issues]
+- **What did user catch that agent missed?**
+
+#### What We Learned / Improvements 📚
+- [Key learnings and how to apply them]
+
+#### Action Items for Future Development 🔧
+- [ ] [Process improvements needed]
+
+#### Technical Debt / Follow-up 📝
+- [Technical debt or follow-up needed]
+````
+
+### 7.4 Critical Quality Check
+
+**From Day 0 Learning**: Don't proceed until everything is clean and enterprise-ready.
+
+Before moving to next task, verify:
+
+- ✅ Tests pass and output is clean
+- ✅ No unexpected console output or errors
+- ✅ Scripts execute correctly (not dumping code)
+- ✅ TypeScript errors = zero
+- ✅ Code is production-quality, not just "working"
+
+**If output looks wrong → STOP and fix before proceeding!**
+
+---
+
+## Step 8: Repeat RED-GREEN-REFACTOR + Document
+
+## Step 8: Repeat RED-GREEN-REFACTOR + Document
 
 **Go back to Step 3 with the next test from your checklist.**
 
 Continue cycling through RED-GREEN-REFACTOR until all test cases are complete:
+
 - Pick next test
 - Write test (RED)
 - Implement minimum code (GREEN)
 - Refactor (maintain GREEN)
 - Extract interfaces when patterns emerge
-- Update checklist
-- Commit progress
+- **Commit → Update task list → Add retrospective** (Step 7)
+- Then proceed to next test
+
+**Never skip the documentation step!** Continuous retrospectives are how we improve.
 
 ---
 
-## Step 8: Follow Best Practices Throughout
+## Step 9: Follow Best Practices Throughout
 
 - Follow [knowledge-base/codebase/development-guide.md](../../knowledge-base/codebase/development-guide.md) for SOLID, DRY, KISS principles
 - Follow [.github/instructions/tdd.instructions.md](../instructions/tdd.instructions.md) for TDD workflow
+- Follow [.github/instructions/retrospective.instructions.md](../instructions/retrospective.instructions.md) for continuous retrospectives
 - Ensure all code passes `npm run validate` (typecheck, lint, format) before committing
 - **Zero red files policy** - no TypeScript errors allowed at any time
 - Remove dead code aggressively - don't let unused code linger
 - Keep commits small and atomic; reference the feature branch name in commit messages
+- **Update task list and retrospective after EVERY commit**
 - Update the APR if scope or architecture changes during development
 - Document technical decisions and risks in implementation notes
 - Address `act()` warnings immediately (never defer)
+- **Don't proceed if output looks wrong - fix first!**
 
 ---
 
-## Step 9: Document Development Retrospective
+## Step 10: Document Development Retrospective
 
 **BEFORE handing off to retro agent or marking feature complete**, document your development phase retrospective in `work-items/<branch>/retro/retrospective.md` under the "Development Phase (Developer Agent)" section:
 
@@ -174,8 +250,11 @@ Continue cycling through RED-GREEN-REFACTOR until all test cases are complete:
    - SOLID compliance score (1-10)
    - Dead code removed: Yes/No
    - TypeScript errors: Zero throughout? Yes/No
-   - Test coverage achieved: __%
+   - Test coverage achieved: \_\_%
 5. **Actions for Improvement** - Development guide updates, new patterns/examples, validation script enhancements
 
 **Purpose**: This retrospective captures implementation insights while they're fresh and provides the final technical perspective before feature completion.
+
+```
+
 ```
