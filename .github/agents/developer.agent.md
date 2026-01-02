@@ -168,7 +168,39 @@ After 3-5 tests for a component, usage patterns become clear. Extract the interf
 
 **Note**: This file stays local - it's working memory for this feature branch
 
-### 7.3 Add Retrospective Entry (LOCAL ONLY - NOT COMMITTED)
+### 7.3 Create Process Log Entry (LOCAL ONLY - NOT COMMITTED)
+
+**File**: `work-items/<branch>/dev/process-log/YYYY-MM-DD-HHMMSS.md`
+**Template**: `work-items/_template/dev/process-log/TEMPLATE.md`
+**See**: [process-log README](../../work-items/_template/dev/process-log/README.md)
+
+**Purpose**: Chronological factual record of what was completed. Separate from retrospective (which is reflective learning).
+
+**Quick Generation** (recommended):
+
+```powershell
+.\scripts\dev\new-process-log-entry.ps1 -WorkItem "<branch-name>" -Description "<what-was-done>" -Task "<task-reference>"
+```
+
+**Manual Creation** (if script unavailable):
+
+1. Create timestamped file: `work-items/<branch>/dev/process-log/$(Get-Date -Format "yyyy-MM-dd-HHmmss").md`
+2. Copy from template: `work-items/_template/dev/process-log/TEMPLATE.md`
+3. Fill in:
+   - Date (YYYY-MM-DD)
+   - Commit hash and message
+   - Task reference (e.g., "Section 2.6: PrismaThoughtRepository")
+   - Status (✅ Complete / ⚠️ Partial / ❌ Issue)
+   - What Was Completed (brief bullet list)
+   - Technical Details (key decisions, patterns used)
+   - Context for Next Task (what needs to happen next)
+   - Quick Reference (files created/modified)
+
+**Keep entries brief** (5-10 minutes max) - this is a factual log, not a deep reflection.
+
+**Note**: This file stays local - it's working memory for this feature branch
+
+### 7.4 Add Retrospective Entry (LOCAL ONLY - NOT COMMITTED)
 
 **File**: `work-items/<branch>/retro/retrospective.md`
 **See**: [retrospective.instructions.md](../instructions/retrospective.instructions.md)
@@ -203,7 +235,7 @@ After 3-5 tests for a component, usage patterns become clear. Extract the interf
 - [Technical debt or follow-up needed]
 ````
 
-### 7.4 Generated Files Checklist
+### 7.5 Generated Files Checklist
 
 **CRITICAL**: Any time you generate files (coverage reports, build artifacts, test outputs), immediately add them to .gitignore.
 
@@ -236,7 +268,7 @@ git add .gitignore
 git commit -m "chore: remove generated files from tracking"
 ```
 
-### 7.5 Critical Quality Check
+### 7.6 Critical Quality Check
 
 **From Day 0 Learning**: Don't proceed until everything is clean and enterprise-ready.
 
@@ -277,7 +309,7 @@ Continue cycling through RED-GREEN-REFACTOR until all test cases are complete:
 - Implement minimum code (GREEN)
 - Refactor (maintain GREEN)
 - Extract interfaces when patterns emerge
-- **Commit → Update task list → Add retrospective** (Step 7)
+- **Commit → Update task list → Create process log → Add retrospective** (Step 7)
 - Then proceed to next test
 
 **Never skip the documentation step!** Continuous retrospectives are how we improve.
@@ -293,7 +325,7 @@ Continue cycling through RED-GREEN-REFACTOR until all test cases are complete:
 - **Zero red files policy** - no TypeScript errors allowed at any time
 - Remove dead code aggressively - don't let unused code linger
 - Keep commits small and atomic; reference the feature branch name in commit messages
-- **Update task list and retrospective after EVERY commit**
+- **Update task list, process log, and retrospective after EVERY commit**
 - Update the APR if scope or architecture changes during development
 - Document technical decisions and risks in implementation notes
 - Address `act()` warnings immediately (never defer)
