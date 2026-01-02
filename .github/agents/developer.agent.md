@@ -112,9 +112,13 @@ List all scenarios to test - start simple, build toward complex.
 
 **Code Quality**:
 - Remove dead code aggressively
-- Run `npm run validate`
+- Run `npm run validate` **FROM ROOT DIRECTORY** (never from subdirectories)
 - Verify coverage targets (75%+ overall)
 - Ensure tests stay 🟢 PASS
+
+**Monorepo Validation Rule**:
+- ✅ CORRECT: `npm run validate` from root (orchestrates frontend + backend)
+- ❌ WRONG: Running validation from backend/ or frontend/ subdirectories
 
 **See TDD instructions** for refactoring examples and SOLID compliance checks.
 
@@ -192,7 +196,40 @@ After 3-5 tests for a component, usage patterns become clear. Extract the interf
 - [Technical debt or follow-up needed]
 ````
 
-### 7.4 Critical Quality Check
+### 7.4 Generated Files Checklist
+
+**CRITICAL**: Any time you generate files (coverage reports, build artifacts, test outputs), immediately add them to .gitignore.
+
+**Common Generated Files**:
+
+- Coverage JSONs: `*-coverage-summary.json`, `coverage/*.json`
+- Build outputs: `dist/`, `build/`, `.next/`
+- Test artifacts: `test-results/`, `.nyc_output/`
+- Logs: `*.log`, `npm-debug.log*`
+
+**Prevention Workflow**:
+
+1. Create script that generates files
+2. Run script once to see what files are created
+3. Check `git status` - are generated files showing as untracked?
+4. Add pattern to .gitignore BEFORE first commit
+5. Never let generated files enter git history
+
+**Recovery if files already tracked**:
+
+```bash
+# Remove from tracking but keep on disk
+git rm --cached <file>
+
+# Add to .gitignore
+echo "pattern/for/generated/files" >> .gitignore
+
+# Commit cleanup
+git add .gitignore
+git commit -m "chore: remove generated files from tracking"
+```
+
+### 7.5 Critical Quality Check
 
 **From Day 0 Learning**: Don't proceed until everything is clean and enterprise-ready.
 

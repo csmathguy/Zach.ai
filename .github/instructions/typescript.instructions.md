@@ -55,6 +55,28 @@ Path aliases require configuration in three places:
 
 All three are already configured - just use the aliases!
 
+### Module Resolution with Jest
+
+**CRITICAL**: When working with TypeScript + Jest, do NOT add `.js` extensions to import statements.
+
+```typescript
+// ❌ WRONG - Jest cannot resolve .js extensions in TypeScript
+export { userMapper } from './userMapper.js';
+export { thoughtMapper } from './thoughtMapper.js';
+
+// ✅ CORRECT - Omit extensions, let Jest handle resolution
+export { userMapper } from './userMapper';
+export { thoughtMapper } from './thoughtMapper';
+```
+
+**Why**:
+
+- TypeScript compiler (ESM mode) expects `.js` extensions for Node.js ESM compatibility
+- Jest's `ts-jest` preset uses `moduleNameMapper` and doesn't expect `.js` extensions
+- Barrel exports (`index.ts`) should omit extensions for Jest to resolve properly
+
+**Solution**: Use extension-less imports in TypeScript. `ts-jest` handles the module resolution correctly.
+
 ## Type Safety
 
 ### Avoid `any`

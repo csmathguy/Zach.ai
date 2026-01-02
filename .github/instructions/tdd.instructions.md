@@ -60,15 +60,59 @@ Then pick one test and apply RED-GREEN-REFACTOR to it.
 
 **Purpose**: Define what you want to build through usage.
 
+### CRITICAL: Proper RED Phase Requirements
+
+**RED phase means:**
+
+- ✅ Tests COMPILE and RUN successfully
+- ✅ Tests FAIL with ASSERTION ERRORS (not compilation errors)
+- ❌ NOT "Cannot find module" or TypeScript errors
+
+**Common Mistake:**
+
+```typescript
+// ❌ WRONG: This is NOT RED phase, this is broken code
+it('should create user', () => {
+  const repo = new PrismaUserRepository(prisma); // TypeScript error: PrismaUserRepository does not exist
+  // ...
+});
+// Run → ❌ ERROR: Cannot find module - THIS IS NOT RED PHASE!
+```
+
+**Correct Approach:**
+
+```typescript
+// Step 1: Create minimal stub to allow compilation
+export class PrismaUserRepository {
+  create(): any {
+    return undefined;
+  } // Stub
+}
+
+// Step 2: Now test compiles and runs
+it('should create user', async () => {
+  const repo = new PrismaUserRepository(prisma);
+  const user = await repo.create({ email: 'test@example.com', name: 'Test' });
+  expect(user.id).toBeDefined(); // ❌ FAIL: Expected undefined to be defined
+});
+// Run → ❌ RED: ASSERTION FAILURE - THIS IS CORRECT RED PHASE!
+```
+
+**Key Insight**: You must create enough structure (stubs, empty functions) for tests to COMPILE and RUN. Then you see assertion failures. That's the TRUE RED phase.
+
 ### Steps
 
 1. **Pick next test from your list**
 2. **Write test showing how you WANT to use the code**
    - Don't worry if classes/functions don't exist yet
-   - Focus on the API you wish existed
+   - Focus on the API you wished existed
    - Think about the interface from the outside
-3. **Run test → ❌ FAIL** (expected!)
-4. **Read error message** - it tells you what to create next
+3. **Create minimal stubs** to allow test compilation
+   - Empty classes with method signatures
+   - Functions returning undefined or {}
+   - Just enough to make TypeScript happy
+4. **Run test → ❌ FAIL with assertions** (proper RED!)
+5. **Read assertion error** - tells you what to implement
 
 ### Example
 
@@ -89,11 +133,20 @@ describe('PrismaUserRepository', () => {
   });
 });
 
-// Step 2: Run test
-// ❌ FAIL: "PrismaUserRepository is not defined"
+// Step 2: Create stub to allow compilation
+export class PrismaUserRepository {
+  constructor(private prisma: PrismaClient) {}
+
+  async create(data: { email: string; name: string }): Promise<any> {
+    return undefined; // Stub - just enough to compile
+  }
+}
+
+// Step 3: Run test
+// ❌ RED: "Expected undefined to be an instance of User" - PROPER RED PHASE!
 ```
 
-**Key Point**: Test shows how you WANT to use the code. The API emerges from usage.
+**Key Point**: Test shows how you WANT to use the code. Stubs allow compilation. Assertion failures are TRUE RED.
 
 ---
 

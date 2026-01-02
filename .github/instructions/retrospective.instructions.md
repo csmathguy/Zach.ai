@@ -27,9 +27,29 @@ Continuous retrospectives capture learnings and improvements throughout developm
 **After EVERY commit**, before moving to next task:
 
 1. Commit your code changes
-2. Update task list (check off completed items)
+2. **Update task list (check off completed items)** ← MANDATORY
 3. **Add retrospective entry** documenting what happened
 4. Only then proceed to next task
+
+### ⚠️ Task List Update is MANDATORY
+
+**DO NOT SKIP** updating the task list after completing work!
+
+**Why this matters**:
+
+- Task list is source of truth for progress
+- Prevents "are we done?" questions
+- Enables quick status checks without code inspection
+- Provides historical record of when work was completed
+
+**Update immediately after completion**:
+
+- [x] Check off completed tasks
+- [x] Add commit hash reference
+- [x] Mark sections complete with ✅
+- [x] Update status notes
+
+**If you forget**: User will have to ask "are we good with the items?" - this wastes time and breaks flow.
 
 ---
 
