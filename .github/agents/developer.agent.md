@@ -291,6 +291,7 @@ Continue cycling through RED-GREEN-REFACTOR until all test cases are complete:
 - Document technical decisions and risks in implementation notes
 - Address `act()` warnings immediately (never defer)
 - **Don't proceed if output looks wrong - fix first!**
+- **Ensure test output is clean** - suppress framework error logs, see [TDD instructions](../instructions/tdd.instructions.md)
 
 ---
 
@@ -306,6 +307,7 @@ Continue cycling through RED-GREEN-REFACTOR until all test cases are complete:
    - Dead code removed: Yes/No
    - TypeScript errors: Zero throughout? Yes/No
    - Test coverage achieved: \_\_%
+   - **Test output clean: Yes/No**
 5. **Actions for Improvement** - Development guide updates, new patterns/examples, validation script enhancements
 
 **Purpose**: This retrospective captures implementation insights while they're fresh and provides the final technical perspective before feature completion.

@@ -601,6 +601,59 @@ it('should create user', async () => {
 
 ---
 
+## Clean Test Output Best Practices
+
+### Suppress Expected Error Logs
+
+When testing error conditions (duplicate email, not found, etc.), libraries may log expected errors to console. Suppress these to keep test output clean.
+
+**Pattern: Prisma Error Log Suppression**
+
+```typescript
+import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
+
+describe('PrismaUserRepository', () => {
+  let repository: PrismaUserRepository;
+  let originalConsoleLog: typeof console.log;
+
+  beforeAll(() => {
+    // Suppress Prisma error logs during tests (expected errors from error condition tests)
+    originalConsoleLog = console.log;
+    console.log = (...args: unknown[]) => {
+      const message = String(args[0]);
+      if (message.includes('prisma:error')) {
+        return; // Suppress Prisma error logs
+      }
+      originalConsoleLog(...args);
+    };
+  });
+
+  afterAll(() => {
+    // Restore original console.log
+    console.log = originalConsoleLog;
+  });
+
+  beforeEach(async () => {
+    // Setup
+    repository = new PrismaUserRepository(prisma);
+    await prisma.user.deleteMany({});
+  });
+
+  // Tests here...
+});
+```
+
+**Why This Pattern:**
+
+- Prisma's internal logger outputs `prisma:error` to console.log
+- Tests for error conditions (duplicate email, not found) trigger these logs
+- Tests pass correctly, but output is cluttered with expected error messages
+- Selective suppression keeps output clean while preserving other logs
+
+**Apply to all repository integration tests that test error conditions.**
+
+---
+
 ## TDD Success Metrics
 
 ### Code Coverage (Byproduct, Not Goal)
@@ -628,6 +681,7 @@ it('should create user', async () => {
 - [ ] Interfaces emerged from test usage (not designed up-front)
 - [ ] Tests document expected behavior
 - [ ] Zero TypeScript errors throughout development
+- [ ] Test output is clean with no unexpected logs
 
 ---
 
