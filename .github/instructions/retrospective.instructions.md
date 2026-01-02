@@ -229,8 +229,63 @@ After adding retrospective entry:
 ## Continuous Improvement Process
 
 ```
-Code → Commit → Update Task List → Add Retrospective → Apply Learnings → Next Task
+Code → Commit → Update Task List → Add Retrospective → Apply Learnings → Commit Improvements → Next Task
 ```
+
+**The Self-Improvement Loop** (MANDATORY after retrospective with action items):
+
+### Step 1: Document Retrospective
+
+- Add retrospective entry with learnings
+- Identify action items for improvement
+- Note specific files/sections needing updates
+
+### Step 2: Implement Improvements Immediately
+
+- Update developer agent instructions based on learnings
+- Update knowledge base documentation
+- Add new patterns/examples discovered
+- Fix process gaps identified
+
+### Step 3: Commit Improvements
+
+- Create separate commit for documentation improvements
+- Reference the retrospective entry that triggered improvements
+- Describe what was learned and how it's now documented
+
+### Step 4: Mark Action Items Complete
+
+- Check off completed action items in retrospective
+- Add ✅ confirmation that improvements are committed
+- This closes the loop
+
+**Example from Day 2.6**:
+
+```markdown
+Retrospective Entry 8 identified:
+
+- [ ] Update TDD guide with immutability testing
+- [ ] Update developer agent with file location checkpoint
+- [ ] Update structure guide with test location convention
+
+Immediately implemented:
+→ Commit 2a2b238: "docs: implement Day 2.6 retrospective improvements"
+
+Then marked complete in retrospective:
+
+- [x] Update TDD guide ✅
+- [x] Update developer agent ✅
+- [x] Update structure guide ✅
+```
+
+**Why This Matters**:
+
+- Learnings become permanent (not just notes)
+- Next iteration benefits immediately
+- Knowledge compounds over time
+- Process continuously improves
+
+**When to Skip**: Only skip if action items are for "after feature complete" (handled by retro agent)
 
 Retrospectives feed into:
 
