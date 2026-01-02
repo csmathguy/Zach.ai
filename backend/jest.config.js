@@ -21,6 +21,7 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.ts',
     '!src/**/*.d.ts',
+    '!src/**/index.ts', // Exclude barrel exports (no logic to test)
     '!src/server.ts', // Exclude entry point
     '!src/infrastructure/prisma/client.ts', // Infrastructure singleton - tested via integration
   ],
