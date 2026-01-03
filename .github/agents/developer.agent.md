@@ -109,7 +109,7 @@ handoffs:
 - **Mid-implementation**: SRP and OCP compliance
 - Before next feature: Full SOLID assessment (LSP, ISP, DIP)
 
-**Quality**: Remove dead code, run `npm run validate` from root, meet coverage targets, maintain GREEN.
+**Quality**: Remove dead code, run `npm run validate` from root, maintain test coverage standards, maintain GREEN.
 
 **Monorepo Rule**: ✅ `npm run validate` from root | ❌ Never from subdirectories
 
@@ -139,7 +139,7 @@ handoffs:
 - [ ] No TypeScript errors: `npm run typecheck`
 - [ ] No linting errors: `npm run lint`
 - [ ] Code formatted: `npm run format`
-- [ ] Coverage maintained/improved
+- [ ] Test coverage maintained
 - [ ] Git hooks pass (Husky)
 
 **Monorepo Rule**: ✅ Run from root | ❌ Never from subdirectories (incomplete validation)
@@ -257,7 +257,7 @@ Refs: work-items/<branch>/architecture/adr-01-domain-models.md"
 **Ready for tester agent when**:
 
 - [ ] All tests passing (🟢 GREEN maintained)
-- [ ] Coverage targets met (70%+ minimum, 90%+ for domain)
+- [ ] Test coverage meets project standards
 - [ ] Zero TypeScript errors (`npm run typecheck` passes)
 - [ ] Zero ESLint warnings (`npm run lint` passes)
 - [ ] Code formatted (`npm run format` passes)
