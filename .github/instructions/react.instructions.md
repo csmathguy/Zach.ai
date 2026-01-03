@@ -3,154 +3,38 @@ name: React guidelines
 applyTo: '**/*.tsx'
 ---
 
-## Component Structure
+## Core Principles
 
-### Functional Components Only
+- **Functional Components Only** - No class components, use FC with TypeScript
+- **TypeScript First** - All props interfaces, typed hooks
+- **Composition Over Props Drilling** - Use small, focused components
 
-```typescript
-// ✅ Use functional components with TypeScript
-import { FC, ReactNode } from 'react';
+## State Management
 
-interface ButtonProps {
-  children: ReactNode;
-  onClick: () => void;
-  variant?: 'primary' | 'secondary';
-  disabled?: boolean;
-}
+- **Simple state** → `useState<T>(initialValue)`
+- **Complex state** → `useReducer` with typed actions (see KB for patterns)
 
-export const Button: FC<ButtonProps> = ({
-  children,
-  onClick,
-  variant = 'primary',
-  disabled = false
-}) => {
-  return (
-    <button onClick={onClick} disabled={disabled} className={`btn-${variant}`}>
-      {children}
-    </button>
-  );
-};
-```
+## Performance
 
-## Hooks
+- **Expensive computations** → `useMemo(() => ..., [deps])`
+- **Event handlers to children** → `useCallback((args) => ..., [deps])`
+- See KB for full patterns
 
-### State Management
+## Effects
 
-```typescript
-// useState for simple state
-const [count, setCount] = useState<number>(0);
-
-// useReducer for complex state
-type State = { count: number; step: number };
-type Action = { type: 'increment' } | { type: 'setStep'; step: number };
-
-function reducer(state: State, action: Action): State {
-  switch (action.type) {
-    case 'increment':
-      return { ...state, count: state.count + state.step };
-    case 'setStep':
-      return { ...state, step: action.step };
-  }
-}
-
-const [state, dispatch] = useReducer(reducer, { count: 0, step: 1 });
-```
-
-### Performance Optimization
-
-```typescript
-// useMemo for expensive computations
-const sortedUsers = useMemo(() => users.sort((a, b) => a.name.localeCompare(b.name)), [users]);
-
-// useCallback for event handlers
-const handleClick = useCallback((id: string) => {
-  console.log('Clicked:', id);
-}, []);
-```
-
-### Effects
-
-```typescript
-// useEffect with cleanup
-useEffect(() => {
-  const controller = new AbortController();
-
-  async function fetchData() {
-    try {
-      const response = await fetch('/api/data', {
-        signal: controller.signal,
-      });
-      const data = await response.json();
-      setData(data);
-    } catch (error) {
-      if (error instanceof Error && error.name !== 'AbortError') {
-        console.error(error);
-      }
-    }
-  }
-
-  fetchData();
-
-  return () => controller.abort();
-}, []);
-```
+- **Always cleanup** with return function
+- **Use AbortController** for fetch requests (see KB for full example)
+- Include all dependencies in dependency array
 
 ## Component Composition
 
-```typescript
-// Small, focused components
-export const Card: FC<{ children: ReactNode }> = ({ children }) => (
-  <div className="card">{children}</div>
-);
-
-export const CardHeader: FC<{ children: ReactNode }> = ({ children }) => (
-  <div className="card-header">{children}</div>
-);
-
-export const CardBody: FC<{ children: ReactNode }> = ({ children }) => (
-  <div className="card-body">{children}</div>
-);
-
-// Usage
-<Card>
-  <CardHeader>Title</CardHeader>
-  <CardBody>Content</CardBody>
-</Card>
-```
+- Build small, focused components that do one thing
+- Compose larger features from smaller pieces (see KB for Card/CardHeader/CardBody pattern)
 
 ## Custom Hooks
 
-```typescript
-// Extract reusable logic
-function useFetch<T>(url: string) {
-  const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function fetchData() {
-      try {
-        const response = await fetch(url);
-        const json = await response.json();
-        if (!cancelled) setData(json);
-      } catch (err) {
-        if (!cancelled) setError(err as Error);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }
-
-    fetchData();
-    return () => {
-      cancelled = true;
-    };
-  }, [url]);
-
-  return { data, loading, error };
-}
-```
+- **Extract reusable logic** into custom hooks (must start with `use`)
+- See KB for full `useFetch` pattern with loading/error states
 
 ## Best Practices
 
@@ -192,5 +76,15 @@ function useFetch<T>(url: string) {
 
 ---
 
-**For detailed patterns**: See [knowledge-base/react/README.md](../../knowledge-base/react/README.md) (when documented)  
-**For design patterns**: See [knowledge-base/codebase/development-guide.md](../../knowledge-base/codebase/development-guide.md)
+**Deep Dive**: See [knowledge-base/react/README.md](../../knowledge-base/react/README.md) for comprehensive patterns including:
+
+- ✅ Full component examples (Button with TypeScript, 20+ line examples)
+- ✅ State management (useState, useReducer with typed actions)
+- ✅ Performance optimization (useMemo, useCallback patterns)
+- ✅ Effects with cleanup (AbortController pattern)
+- ✅ Component composition (Card/CardHeader/CardBody)
+- ✅ Custom hooks (useFetch with loading/error states)
+- ✅ Testing strategies
+- ✅ All anti-patterns with explanations
+
+**For design patterns**: See [knowledge-base/codebase/development-guide.md](../../knowledge-base/codebase/development-guide.md) for SOLID principles
