@@ -17,6 +17,7 @@ This workspace-level knowledge base captures core references, summaries, and bes
 - **[codebase/](./codebase/README.md)**: This repository's structure, development guide, and validation
 - **[deployment/](./deployment/README.md)**: Deployment guides, testing checklists, quick reference
 - **[eslint/](./eslint/README.md)**: ESLint configuration and best practices ✅
+- **[express/](./express/README.md)**: Express web framework — middleware, routing, error handling ✅
 - **[prettier/](./prettier/README.md)**: Prettier formatting standards ✅
 - **[jest/](./jest/README.md)**: Jest testing framework ✅
 - **[playwright/](./playwright/README.md)**: Playwright E2E testing (MVP)
