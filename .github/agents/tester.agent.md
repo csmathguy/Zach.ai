@@ -43,6 +43,10 @@ handoffs:
 - Document test coverage targets (70%+ minimum) and manual QA steps in the test plan.
 - Ensure tests align with the APR's acceptance criteria and risk mitigation strategies.
 
+### SQLite / Prisma Test Constraints
+
+For concurrency limits and serialized-worker requirements, **reference the “SQLite and File-Based Databases” section in [knowledge-base/jest/README.md](../../knowledge-base/jest/README.md)**. Summarize only the relevant expectation in your test plan (e.g., “backend Jest suites must run with serialized workers”) instead of duplicating the detailed mitigation steps here.*** End Patch
+
 ## Step 2: Use Architecture Contracts
 
 - Review `work-items/<branch>/architecture/contracts.md` for interfaces and domain models

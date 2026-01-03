@@ -7,6 +7,7 @@
 - **[Development Guide](../knowledge-base/codebase/development-guide.md)** - SOLID, DRY, KISS principles, TypeScript/React patterns, design patterns
 - **[Codebase Structure](../knowledge-base/codebase/structure.md)** - Repository organization and architecture
 - **[Validation Workflow](../knowledge-base/codebase/validation.md)** - Pre-commit checks, testing requirements
+- **[Knowledge Base Organization](instructions/knowledge-base.instructions.md)** - Where to place documentation (DO NOT scatter .md files in code directories)
 
 ### Technology Documentation
 
@@ -15,8 +16,12 @@
 - **[ESLint](../knowledge-base/eslint/README.md)** - Linting configuration and rules
 - **[Prettier](../knowledge-base/prettier/README.md)** - Code formatting standards
 - **[PM2](../knowledge-base/pm2/README.md)** - Process management
+- **[SQLite](../knowledge-base/sqlite/database-tools.md)** - Database access and management
+- **[Prisma](../knowledge-base/prisma/database-structure.md)** - ORM usage and schema
 
 **Status of Docs**: Check [ideas/knowledge-base-updates.md](../ideas/knowledge-base-updates.md) for complete list and documentation status.
+
+**Documentation Rules**: All long-term project knowledge goes in `knowledge-base/` organized by technology. DO NOT create random `.md` files in `backend/`, `frontend/`, or `scripts/` directories. See [knowledge-base.instructions.md](instructions/knowledge-base.instructions.md) for details.
 
 ## Feature Workflow
 

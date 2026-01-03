@@ -65,6 +65,20 @@ backend/coverage/
 lib-cov
 test-results/
 
+# Generated coverage JSON files (created by generate-coverage.ps1)
+frontend/public/coverage/*-coverage-summary.json
+
+# ===================================
+# Databases (Development)
+# ===================================
+# Development databases (test data, cleared frequently)
+backend/dev.db
+backend/dev.db-shm
+backend/dev.db-wal
+
+# Production database is preserved (not gitignored)
+# backend/prod.db should be tracked for deployment
+
 # ===================================
 # Caches
 # ===================================

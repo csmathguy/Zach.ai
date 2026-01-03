@@ -295,7 +295,58 @@ describe('PrismaUserRepository', () => {
 
 **Key Benefit**: Each layer's interface is discovered through usage by the layer above.
 
-### 4. The Most Common Mistake: Neglecting Refactor
+### 4. Testing Immutability
+
+**Pattern**: Test for the ABSENCE of methods, not just their presence.
+
+**Why**: Some domain models are intentionally immutable (e.g., audit logs, event sourcing).
+
+#### Example: Immutable Thought Repository
+
+```typescript
+// Test that update() and delete() methods DO NOT exist
+describe('PrismaThoughtRepository Immutability Contract', () => {
+  it('should NOT have update method (thoughts are immutable)', () => {
+    const repo = new PrismaThoughtRepository(prisma);
+    expect((repo as unknown as { update?: unknown }).update).toBeUndefined();
+  });
+
+  it('should NOT have delete method (thoughts are append-only)', () => {
+    const repo = new PrismaThoughtRepository(prisma);
+    expect((repo as unknown as { delete?: unknown }).delete).toBeUndefined();
+  });
+});
+```
+
+**Document in Interface**:
+
+```typescript
+/**
+ * Repository for managing thoughts.
+ *
+ * **Immutability Contract**:
+ * - Thoughts are append-only (no update/delete methods)
+ * - Once created, thoughts cannot be modified
+ * - Supports audit trails and historical analysis
+ */
+export interface IThoughtRepository {
+  create(data: CreateThoughtDto): Promise<Thought>;
+  findById(id: string): Promise<Thought | null>;
+  findByUser(userId: string): Promise<Thought[]>;
+  findAll(): Promise<Thought[]>;
+  // NO update() - immutable by design
+  // NO delete() - append-only for audit trail
+}
+```
+
+**Benefits of Testing Immutability**:
+
+- ✅ Prevents accidental addition of mutation methods
+- ✅ Documents design intent in tests
+- ✅ Catches violations during refactoring
+- ✅ Simplifies reasoning about state (no changes to track)
+
+### 5. The Most Common Mistake: Neglecting Refactor
 
 **Warning**: The most common way to fail at TDD is **skipping the refactor step**.
 

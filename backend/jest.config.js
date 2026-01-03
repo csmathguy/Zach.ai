@@ -6,11 +6,32 @@ module.exports = {
   roots: ['<rootDir>/src'],
   testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
 
+  // SQLite uses file-based locking. Running these integration tests across multiple
+  // Jest workers causes Prisma deleteMany()/create() calls to timeout, so we force
+  // single-worker execution for deterministic results.
+  maxWorkers: 1,
+
+  // Global setup - apply database schema before tests run
+  globalSetup: '<rootDir>/jest.setup.ts',
+
+  // TypeScript path alias mapping for Jest
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@domain/(.*)$': '<rootDir>/src/domain/$1',
+    '^@infrastructure/(.*)$': '<rootDir>/src/infrastructure/$1',
+    '^@application/(.*)$': '<rootDir>/src/application/$1',
+    '^@api/(.*)$': '<rootDir>/src/api/$1',
+    '^@shared/(.*)$': '<rootDir>/src/shared/$1',
+    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
+  },
+
   // Coverage configuration
   collectCoverageFrom: [
     'src/**/*.ts',
     '!src/**/*.d.ts',
+    '!src/**/index.ts', // Exclude barrel exports (no logic to test)
     '!src/server.ts', // Exclude entry point
+    '!src/infrastructure/prisma/client.ts', // Infrastructure singleton - tested via integration
   ],
 
   coverageDirectory: 'coverage',

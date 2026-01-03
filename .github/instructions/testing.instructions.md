@@ -5,157 +5,124 @@ applyTo: '**/*.test.{ts,tsx}'
 
 ## Testing Framework
 
-- **Jest** for test runner and assertions
-- **Testing Library** for React component testing
-- **Supertest** for API endpoint testing
-- **70%+ coverage** target for all code
+- **Jest** + **Testing Library** (React components)
+- **Supertest** (API endpoints)
+- **70%+ coverage** target
+- **Reference**: [Jest KB](../../knowledge-base/jest/README.md) | [Testing Library KB](../../knowledge-base/testing-library/README.md)
+
+---
 
 ## Jest-DOM Configuration with @jest/globals
 
-**Critical Pattern**: When using `@jest/globals` imports, you MUST use the special jest-dom import variant:
+**CRITICAL**: When using `@jest/globals` imports, use the special jest-dom variant:
 
 ```typescript
 // jest.setup.ts
-import '@testing-library/jest-dom/jest-globals'; // ← NOT the standard import!
+import '@testing-library/jest-dom/jest-globals'; // ✅ Correct for @jest/globals
 
-// Standard import will cause TypeScript errors:
-// import '@testing-library/jest-dom'; // ❌ Will fail with @jest/globals
+// NOT the standard import:
+// import '@testing-library/jest-dom'; // ❌ Causes TypeScript matcher errors
 ```
 
-**Why**: The `@jest/globals` pattern requires explicit imports (`import { describe, it, expect }`), which creates a different matcher type system. The `/jest-globals` variant properly extends these types.
+**Why**: `@jest/globals` requires explicit imports which changes the matcher type system. The `/jest-globals` suffix extends these types correctly.
 
-**Symptoms of incorrect import**:
+**Symptoms if wrong**:
 
-- TypeScript error: "Property 'toBeInTheDocument' does not exist on type 'Matchers<...>'"
-- Tests pass at runtime but show red squiggles in editor
-- `tsc --noEmit` reports matcher type errors
+- TypeScript error: "Property 'toBeInTheDocument' does not exist"
+- Tests pass but red squiggles in editor
+- `tsc --noEmit` fails
 
-**Solution**: Always use `/jest-globals` suffix when project uses `@jest/globals` imports.
+---
 
 ## Test Structure - AAA Pattern
 
 ```typescript
 import { describe, it, expect } from '@jest/globals';
 
-describe('Component/Function Name', () => {
+describe('Component/Function', () => {
   it('should perform expected behavior', () => {
-    // Arrange - Set up test data and conditions
+    // Arrange - Setup
     const input = 'test';
 
-    // Act - Execute the code being tested
+    // Act - Execute
     const result = myFunction(input);
 
-    // Assert - Verify the result
+    // Assert - Verify
     expect(result).toBe('expected');
   });
 });
 ```
 
-## React Component Testing
+---
+
+## React Component Testing Quick Reference
 
 ```typescript
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Button } from './Button';
 
-describe('Button Component', () => {
-  it('should render with text', () => {
-    render(<Button>Click me</Button>);
-    expect(screen.getByText('Click me')).toBeInTheDocument();
-  });
-
-  it('should handle click events', async () => {
-    const handleClick = jest.fn();
-    render(<Button onClick={handleClick}>Click</Button>);
-
-    await userEvent.click(screen.getByRole('button'));
-
-    expect(handleClick).toHaveBeenCalledTimes(1);
-  });
-
-  it('should be disabled when loading', () => {
-    render(<Button loading>Submit</Button>);
-    expect(screen.getByRole('button')).toBeDisabled();
-  });
+it('should handle interaction', async () => {
+  render(<Button onClick={jest.fn()}>Click</Button>);
+  await userEvent.click(screen.getByRole('button'));
+  expect(screen.getByText('Clicked')).toBeInTheDocument();
 });
 ```
 
-## API Testing
+**Patterns**: [Testing Library KB](../../knowledge-base/testing-library/README.md)
+
+---
+
+## API Testing Quick Reference
 
 ```typescript
 import request from 'supertest';
 import app from './app';
 
-describe('GET /api/health', () => {
-  it('should return 200 OK', async () => {
-    const response = await request(app).get('/api/health');
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({
-      status: 'ok',
-      timestamp: expect.any(Number),
-    });
-  });
+it('should return 200', async () => {
+  const res = await request(app).get('/api/health');
+  expect(res.status).toBe(200);
 });
 ```
 
-## Mocking
+**Patterns**: [Supertest KB](../../knowledge-base/supertest/README.md)
 
-### Mock Functions
+---
 
-```typescript
-const mockFn = jest.fn();
-
-// Mock implementation
-mockFn.mockImplementation((x) => x * 2);
-
-// Mock return value
-mockFn.mockReturnValue(42);
-
-// Mock resolved promise
-mockFn.mockResolvedValue({ data: 'success' });
-
-// Assertions
-expect(mockFn).toHaveBeenCalled();
-expect(mockFn).toHaveBeenCalledWith('arg1', 'arg2');
-expect(mockFn).toHaveBeenCalledTimes(3);
-```
-
-### Mock Modules
+## Mocking Quick Reference
 
 ```typescript
-// Mock entire module
+// Mock function
+const mockFn = jest.fn().mockReturnValue(42);
+
+// Mock module
 jest.mock('./api', () => ({
-  fetchUser: jest.fn(() => Promise.resolve({ id: 1, name: 'Test' })),
-}));
-
-// Partial mock
-jest.mock('./config', () => ({
-  ...jest.requireActual('./config'),
-  API_URL: 'http://test.local',
+  fetchUser: jest.fn(() => Promise.resolve({ id: 1 })),
 }));
 ```
 
-## Async Testing
+**Deep Dive**: [Jest KB - Mocking](../../knowledge-base/jest/README.md#mocking-best-practices)
 
-```typescript
-// Using async/await
-it('should fetch data', async () => {
-  const data = await fetchData();
-  expect(data).toEqual({ success: true });
-});
+---
 
-// Using waitFor for UI updates
-it('should show loading then data', async () => {
-  render(<DataComponent />);
+## Coverage & Validation
 
-  expect(screen.getByText('Loading...')).toBeInTheDocument();
-
-  await waitFor(() => {
-    expect(screen.getByText('Data loaded')).toBeInTheDocument();
-  });
-});
+```bash
+npm test -- --coverage        # Generate coverage report
+npm run typecheck             # Zero TypeScript errors required
 ```
+
+**Target**: 70%+ coverage per project (frontend/backend)
+
+**Best Practices**: [Jest KB](../../knowledge-base/jest/README.md) | [TDD KB](../../knowledge-base/tdd/README.md)
+
+expect(screen.getByText('Loading...')).toBeInTheDocument();
+
+await waitFor(() => {
+expect(screen.getByText('Data loaded')).toBeInTheDocument();
+});
+});
+
+````
 
 ## Custom Hooks Testing
 
@@ -172,166 +139,40 @@ it('should increment counter', () => {
 
   expect(result.current.count).toBe(1);
 });
-```
+````
 
 ## Best Practices
 
 ### Test Behavior, Not Implementation
 
-```typescript
-// ❌ Bad - Testing implementation details
-expect(component.state.count).toBe(1);
+## Core Testing Principles
 
-// ✅ Good - Testing user-facing behavior
-expect(screen.getByText('Count: 1')).toBeInTheDocument();
-```
+- **Test behavior, not implementation**: `screen.getByText('Count: 1')` not `component.state.count`
+- **Testing Library query priority**: getByRole > getByLabelText > getByText > getByTestId
+- **Coverage targets**: 70%+ overall, focus on behavior over line coverage
+- **Pre-commit**: All tests pass, no `.skip`, `npm run typecheck` passes
 
-### Use Testing Library Queries Correctly
+## SQLite Concurrency (Critical)
 
-```typescript
-// Priority order:
-1. getByRole - Most accessible
-2. getByLabelText - Forms
-3. getByPlaceholderText - Forms
-4. getByText - Non-interactive
-5. getByTestId - Last resort
+**Symptoms**: `deleteMany` timeouts, `Transaction already closed`, `database is locked` - disappear with `--runInBand`
 
-// ✅ Good
-screen.getByRole('button', { name: 'Submit' });
+**Fix**: Set `maxWorkers: 1` in `backend/jest.config.js` and document why (SQLite file-based DB cannot handle concurrent writers in WAL mode)
 
-// ❌ Bad
-screen.getByTestId('submit-button');
-```
-
-### Setup and Teardown
-
-```typescript
-import { beforeEach, afterEach } from '@jest/globals';
-
-describe('Component', () => {
-  beforeEach(() => {
-    // Setup before each test
-  });
-
-  afterEach(() => {
-    // Cleanup after each test
-    jest.clearAllMocks();
-  });
-});
-```
-
-## Coverage Requirements
-
-- **70%+ overall coverage** (lines, functions, branches)
-- **100% for critical paths** (authentication, payments, data mutations)
-- **Focus on behavior** not just line coverage
-- Run: `npm run test:coverage`
-
-## Common Patterns
-
-### Test User Interactions
-
-```typescript
-// Click
-await userEvent.click(screen.getByRole('button'));
-
-// Type
-await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
-
-// Select
-await userEvent.selectOptions(screen.getByRole('combobox'), 'option1');
-```
-
-### Test Forms
-
-```typescript
-it('should submit form with valid data', async () => {
-  const onSubmit = jest.fn();
-  render(<LoginForm onSubmit={onSubmit} />);
-
-  await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
-  await userEvent.type(screen.getByLabelText('Password'), 'password123');
-  await userEvent.click(screen.getByRole('button', { name: 'Login' }));
-
-  expect(onSubmit).toHaveBeenCalledWith({
-    email: 'test@example.com',
-    password: 'password123',
-  });
-});
-```
-
-### Test Error States
-
-```typescript
-it('should display error message on failure', async () => {
-  const mockFetch = jest.fn().mockRejectedValue(new Error('Failed'));
-
-  render(<DataComponent fetch={mockFetch} />);
-
-  await waitFor(() => {
-    expect(screen.getByText('Error: Failed')).toBeInTheDocument();
-  });
-});
-```
-
-## Naming Conventions
-
-- `describe` blocks: Component/function name
-- `it` blocks: "should [expected behavior]"
-- Test files: `ComponentName.test.tsx` or `function.test.ts`
-- Test folder: `__tests__/` co-located with source
-
-## Pre-Commit
-
-- All tests pass (`npm test`)
-- No skipped tests (`.skip`) in committed code
-- Coverage meets threshold (70%+)
-- Tests are fast (< 5 seconds total)
-- No console errors or warnings
-- Mock cleanup properly handled
-- **Zero TypeScript errors**: Run `npm run typecheck` before committing
+**Deep Dive**: [knowledge-base/jest/README.md - SQLite Section](../../knowledge-base/jest/README.md#sqlite-and-file-based-databases)
 
 ## Testability Categories
 
-Different code types have different testability characteristics:
+- **High (100% target)**: Pure functions, React components, hooks, utilities
+- **Medium (80% target)**: Components with side effects, event handlers, state management
+- **Lower (60% target)**: Browser APIs (`window.location`), env detection, error boundaries - **document why in comments**
 
-### High Testability (Target: 100%)
+## Coverage vs Quality
 
-- **Pure functions**: Utilities, formatters, parsers, validators
-- **React components**: UI logic with Testing Library
-- **Hooks**: Custom React hooks with `renderHook`
-- **API utilities**: Functions that process data
+Coverage is a **metric to find untested code**, not a goal. Focus on:
 
-### Medium Testability (Target: 80%+)
+- User-facing behavior
+- Critical paths (auth, mutations, business logic)
+- Edge cases (errors, empty data, boundaries)
+- Integration points (APIs, storage, routing)
 
-- **Components with side effects**: API calls, localStorage
-- **Event handlers**: User interactions with async behavior
-- **State management**: Complex useState/useReducer logic
-
-### Lower Testability (Target: 60%+, Document Why)
-
-- **Browser-specific APIs**: `window.location.reload()`, `window.open()`
-- **Environment detection**: `import.meta.env` checks
-- **Error boundaries**: React error handling components
-
-**Best Practice**: For lower testability code, document why in comments and ensure critical paths have integration/E2E tests.
-
-## Coverage vs. Quality
-
-**Coverage is not the goal** - it's a metric to find untested code:
-
-- ✅ **High coverage + high quality**: Tests verify behavior, edge cases handled
-- ⚠️ **High coverage + low quality**: Tests check implementation details, brittle
-- ❌ **Low coverage**: Missing tests, unknown behavior
-
-Focus on:
-
-1. **User-facing behavior**: What users see and interact with
-2. **Critical paths**: Authentication, data mutations, business logic
-3. **Edge cases**: Error states, empty data, boundary conditions
-4. **Integration points**: API calls, localStorage, routing
-
----
-
-**For detailed patterns**: See [knowledge-base/jest/README.md](../../knowledge-base/jest/README.md)  
-**For Testing Library**: See [knowledge-base/testing-library/README.md](../../knowledge-base/testing-library/README.md) (when documented)
+**Deep Dive**: [knowledge-base/jest/README.md](../../knowledge-base/jest/README.md) | [knowledge-base/testing-library/README.md](../../knowledge-base/testing-library/README.md)

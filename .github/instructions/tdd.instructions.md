@@ -1,607 +1,269 @@
 # Test-Driven Development (TDD) Instructions
 
 **Apply to**: All test and implementation files  
-**Reference**: [knowledge-base/tdd/README.md](../../knowledge-base/tdd/README.md)
+**Reference**: [knowledge-base/tdd/README.md](../../knowledge-base/tdd/README.md) (800+ lines comprehensive guide)
 
 ---
 
-## Core TDD Principle
+## Core Principle
 
-**Tests come FIRST. Always.**
+**Tests come FIRST. Always.** If you write implementation code without a failing test demanding it, you're not doing TDD.
 
-If you write implementation code without a failing test demanding it, you're not doing TDD.
+**Cycle**: RED (failing test) → GREEN (make it pass) → REFACTOR (improve code) → Repeat
+
+**Deep Dive**: [knowledge-base/tdd/README.md - RED-GREEN-REFACTOR Section](../../knowledge-base/tdd/README.md#the-red-green-refactor-cycle)
 
 ---
 
-## The RED-GREEN-REFACTOR Cycle
+## Phase -1: Environment Verification (Project-Specific)
 
-```
-┌─────────────────────────────────────┐
-│  1. RED: Write a failing test      │
-│     "What do I want to build?"      │
-└──────────┬──────────────────────────┘
-           ▼
-┌─────────────────────────────────────┐
-│  2. GREEN: Make it pass             │
-│     "How do I make it work?"        │
-└──────────┬──────────────────────────┘
-           ▼
-┌─────────────────────────────────────┐
-│  3. REFACTOR: Improve the code      │
-│     "How can I make it better?"     │
-└──────────┬──────────────────────────┘
-           │
-           └──────┐ (Repeat)
+**Before listing test cases, verify actual file locations and tool versions.**
+
+### Critical Checks
+
+```powershell
+# Verify file locations (prevents path errors)
+Get-ChildItem backend -Recurse -Filter "*.db"  # Database at backend/dev.db NOT prisma/dev.db
+
+# Check existing patterns (Prisma 7.x requires adapter)
+grep_search "new PrismaClient" backend/src/infrastructure/
+
+# Verify PowerShell version (npm scripts compatibility)
+Get-Command powershell.exe  # Windows PS 5.1 - use "powershell" not "pwsh"
 ```
 
+**Document findings** in `work-items/<branch>/dev/implementation-notes.md`
+
+**Deep Dive**: [knowledge-base/tdd/README.md - Phase -1 Section](../../knowledge-base/tdd/README.md#phase--1-verify-environment)
+
 ---
 
-## Phase 0: List Test Cases First
+## Phase 0: List Test Cases
 
-Before starting RED-GREEN-REFACTOR, **write out a list of test cases**:
+**Before starting RED-GREEN-REFACTOR**, write checklist of test cases:
 
 ```markdown
-Test Cases for User Repository:
-
 - [ ] Create user with valid data returns User with ID
 - [ ] Create user with duplicate email throws error
-- [ ] Find user by ID returns user when exists
 - [ ] Find user by ID returns null when not exists
-- [ ] Find all users returns empty array when no users
-- [ ] Update user updates fields correctly
-- [ ] Delete user is idempotent
 ```
 
-Then pick one test and apply RED-GREEN-REFACTOR to it.
+Then pick one and apply RED-GREEN-REFACTOR.
 
 ---
 
 ## Phase 1: RED - Write Failing Test
 
-**Purpose**: Define what you want to build through usage.
+**CRITICAL**: RED phase means:
 
-### Steps
+- ✅ Tests COMPILE and RUN successfully
+- ✅ Tests FAIL with ASSERTION ERRORS
+- ❌ NOT "Cannot find module" or TypeScript errors
 
-1. **Pick next test from your list**
-2. **Write test showing how you WANT to use the code**
-   - Don't worry if classes/functions don't exist yet
-   - Focus on the API you wish existed
-   - Think about the interface from the outside
-3. **Run test → ❌ FAIL** (expected!)
-4. **Read error message** - it tells you what to create next
-
-### Example
+**Create minimal stubs** to allow compilation, THEN see assertion failures.
 
 ```typescript
-// Step 1: Write test FIRST (no implementation exists)
-describe('PrismaUserRepository', () => {
-  it('should create user in database', async () => {
-    const repo = new PrismaUserRepository(prisma);
+// Step 1: Create stub (allows compilation)
+export class PrismaUserRepository {
+  create(): any {
+    return undefined;
+  }
+}
 
-    const user = await repo.create({
-      email: 'test@example.com',
-      name: 'Test User',
-    });
-
-    expect(user).toBeInstanceOf(User);
-    expect(user.id).toBeDefined();
-    expect(user.email).toBe('test@example.com');
-  });
+// Step 2: Write test (compiles, but assertion fails)
+it('should create user', async () => {
+  const user = await repo.create({ email: 'test@example.com', name: 'Test' });
+  expect(user.id).toBeDefined(); // ❌ FAIL: Expected undefined to be defined
 });
-
-// Step 2: Run test
-// ❌ FAIL: "PrismaUserRepository is not defined"
+// This is PROPER RED - assertion failure, not compilation error
 ```
-
-**Key Point**: Test shows how you WANT to use the code. The API emerges from usage.
 
 ---
 
 ## Phase 2: GREEN - Make It Pass
 
-**Purpose**: Write minimum code to make test pass. Don't optimize yet.
-
-### Steps
-
-1. **Create the class/function the test demands**
-2. **Write minimal code to pass the test**
-   - Simple > clever
-   - Don't add features the test doesn't demand
-3. **Run test → ✅ PASS**
-4. **Stop** - resist the urge to add more!
-
-### Example
+Write **minimum code** to pass the test. Don't optimize yet.
 
 ```typescript
-// Step 3: Create minimal implementation
-export class PrismaUserRepository {
-  constructor(private prisma: PrismaClient) {}
-
-  async create(data: { email: string; name: string }): Promise<User> {
-    const prismaUser = await this.prisma.user.create({ data });
-    return new User(prismaUser.id, prismaUser.email, prismaUser.name);
-  }
+async create(data: { email: string; name: string }): Promise<User> {
+  const prismaUser = await this.prisma.user.create({ data });
+  return new User(prismaUser.id, prismaUser.email, prismaUser.name);
 }
-
-// Step 4: Run test
-// ✅ PASS - We're in the GREEN!
+// ✅ PASS - minimal implementation
 ```
-
-**Key Point**: You now have working code. Tests are your safety net.
 
 ---
 
 ## Phase 3: REFACTOR - Improve Code
 
-**Purpose**: Optimize and clean up while staying "in the green."
+Clean up while maintaining GREEN:
 
-### Questions to Ask
-
-- ✅ Can I make my test suite more expressive?
-- ✅ Can I reduce duplication?
-- ✅ Can I make implementation code more descriptive?
-- ✅ Can I implement something more efficiently?
-- ✅ Are my tests isolated and reliable?
-- ✅ Does this follow SOLID principles?
-
-### Steps
-
-1. **Improve code** (extract functions, rename, optimize)
-2. **Run tests → ✅ PASS** (still green!)
-3. **Commit** if you're at a good checkpoint
-4. **Repeat** - back to RED with next test
-
-### Example
+- Extract duplicated code
+- Rename for clarity
+- Optimize performance
+- Apply SOLID principles
 
 ```typescript
-// Step 5: Refactor - Extract mapper function
-export class PrismaUserRepository {
-  constructor(private prisma: PrismaClient) {}
-
-  async create(data: { email: string; name: string }): Promise<User> {
-    const prismaUser = await this.prisma.user.create({ data });
-    return this.toDomain(prismaUser); // Extracted mapper
-  }
-
-  private toDomain(prismaUser: any): User {
-    return new User(prismaUser.id, prismaUser.email, prismaUser.name);
-  }
+// Extract mapper (refactor while GREEN)
+private toDomain(prismaUser: any): User {
+  return new User(prismaUser.id, prismaUser.email, prismaUser.name);
 }
-
-// Step 6: Run test
-// ✅ PASS - Still GREEN after refactor
 ```
 
-**Key Point**: Tests ensure your refactoring doesn't break functionality.
+**Deep Dive**: [knowledge-base/tdd/README.md - Complete Workflow Example](../../knowledge-base/tdd/README.md#tdd-example-complete-workflow)
 
 ---
 
 ## When to Extract Interfaces
 
-**NOT in architecture phase. NOT before writing tests.**
+**NOT before tests.** Extract interfaces **AFTER** you've written 3-5 tests and see patterns emerge.
 
-Extract interfaces **AFTER** you've written several tests and see patterns emerge:
-
-```typescript
-// After writing 3-5 tests, you see the pattern:
-it('should create user', async () => {
-  /* ... */
-});
-it('should find user by ID', async () => {
-  /* ... */
-});
-it('should delete user', async () => {
-  /* ... */
-});
-
-// NOW extract the interface:
-interface IUserRepository {
-  create(data: { email: string; name: string }): Promise<User>;
-  findById(id: string): Promise<User | null>;
-  delete(id: string): Promise<void>;
-}
-
-// Refactor implementation to use interface
-export class PrismaUserRepository implements IUserRepository {
-  // ... implementation
-}
-```
-
-**Key Point**: Interface emerges from test usage, not designed up-front.
+**Deep Dive**: [knowledge-base/tdd/README.md - When to Extract Interfaces](../../knowledge-base/tdd/README.md#when-to-extract-interfaces)
 
 ---
 
-## Outside-In TDD for Layered Architecture
+## Outside-In TDD (Layered Architecture)
 
-For systems with Domain → Infrastructure → Application → API layers:
+For Domain → Infrastructure → Application → API layers, **start from outside (API) and work inward**.
 
-**Start from the outside (API) and work inward:**
+**Flow**: API Test → Service Test → Domain Test → Repository Test
 
-```
-1. API Layer Test → Drives route handler
-   ↓
-2. Service Layer Test → Drives service interface
-   ↓
-3. Domain Model Test → Drives model interface
-   ↓
-4. Repository Test → Implements interface
-```
-
-### Example Flow
-
-```typescript
-// 1. Start with API test (Outside)
-describe('POST /users', () => {
-  it('should create user and return 201', async () => {
-    const response = await request(app)
-      .post('/users')
-      .send({ email: 'test@example.com', name: 'Test' });
-
-    expect(response.status).toBe(201);
-    expect(response.body.id).toBeDefined();
-  });
-});
-// Run → RED
-
-// 2. Implement route handler (calls service)
-router.post('/users', async (req, res) => {
-  const user = await userService.registerUser(req.body.email, req.body.name);
-  res.status(201).json(user);
-});
-// Run → RED (service doesn't exist)
-
-// 3. Write service test
-describe('UserService', () => {
-  it('should create user via repository', async () => {
-    const mockRepo = { create: jest.fn().mockResolvedValue(mockUser) };
-    const service = new UserService(mockRepo);
-
-    const user = await service.registerUser('test@example.com', 'Test');
-
-    expect(mockRepo.create).toHaveBeenCalled();
-  });
-});
-// Run → RED
-
-// 4. Implement service
-export class UserService {
-  constructor(private repo: IUserRepository) {}
-
-  async registerUser(email: string, name: string): Promise<User> {
-    return this.repo.create({ email, name });
-  }
-}
-// Run → GREEN for service test, still RED for API test
-
-// 5. Write repository integration test
-describe('PrismaUserRepository', () => {
-  it('should create user in database', async () => {
-    // ... (see earlier example)
-  });
-});
-// Run → RED
-
-// 6. Implement repository
-// ... (see earlier example)
-// Run → GREEN (all tests pass!)
-```
-
-**Key Benefit**: Each layer's interface emerges from usage by the layer above.
+**Deep Dive**: [knowledge-base/tdd/README.md - Outside-In TDD](../../knowledge-base/tdd/README.md#outside-in-tdd-for-layered-architecture)
 
 ---
 
-## TypeScript + Jest TDD Workflow
+## Project-Specific Patterns
 
 ### Test File Structure
 
 ```
 src/
-├── domain/
-│   ├── models/
-│   │   └── User.ts
-│   └── __tests__/
-│       └── User.test.ts          # Domain model tests
-├── infrastructure/
-│   ├── prisma/
-│   │   └── repositories/
-│   │       └── PrismaUserRepository.ts
-│   └── __tests__/
-│       └── PrismaUserRepository.test.ts  # Integration tests
-└── application/
-    ├── services/
-    │   └── UserService.ts
-    └── __tests__/
-        └── UserService.test.ts   # Service tests with mocks
+├── domain/__tests__/User.test.ts          # Domain model tests
+├── infrastructure/__tests__/PrismaUserRepository.test.ts  # Integration
+└── application/__tests__/UserService.test.ts   # Service with mocks
 ```
 
-### Running Tests During TDD
+### Test Commands
 
 ```bash
-# Run specific test file in watch mode
-npm test -- --watch User.test.ts
-
-# Run all tests
-npm test
-
-# Run with coverage
-npm test -- --coverage
+npm test -- --watch User.test.ts  # Watch mode
+npm test -- --coverage            # Coverage
 ```
 
-### Test Speed Expectations
+### Speed Expectations
 
-- **Domain Model Tests**: <1ms per test (pure TypeScript)
-- **Service Tests**: <10ms per test (mocked dependencies)
-- **Repository Tests**: <100ms per test (in-memory database)
-- **API Tests**: <1s per test (full stack)
+- Domain: <1ms (pure TypeScript)
+- Services: <10ms (mocked)
+- Repositories: <100ms (in-memory DB)
+- API: <1s (full stack)
 
----
-
-## TDD Best Practices for This Codebase
-
-### 1. Test Naming Convention
+### Test Naming
 
 ```typescript
-// ✅ GOOD: Describes behavior from user's perspective
-it('should create user with email and name', () => {
-  /* ... */
-});
-it('should return null when user not found', () => {
-  /* ... */
-});
-it('should throw error on duplicate email', () => {
-  /* ... */
-});
+// ✅ Good: User-facing behavior
+it('should return null when user not found', () => {});
 
-// ❌ BAD: Describes implementation
-it('should call prisma.user.create', () => {
-  /* ... */
-});
-it('should use mapper function', () => {
-  /* ... */
+// ❌ Bad: Implementation details
+it('should call prisma.user.create', () => {});
+```
+
+### AAA Pattern
+
+```typescript
+it('should update user', async () => {
+  // Arrange
+  const user = await repo.create({ email: 'test@test.com', name: 'Test' });
+
+  // Act
+  const updated = await repo.update(user.id, { name: 'New' });
+
+  // Assert
+  expect(updated.name).toBe('New');
 });
 ```
 
-### 2. One Assertion Per Test (When Possible)
+### Mocking (Application Layer)
 
 ```typescript
-// ✅ GOOD: Focused tests
-it('should create user', async () => {
-  const user = await repo.create({ email: 'test@example.com', name: 'Test' });
-  expect(user.id).toBeDefined();
-});
-
-it('should preserve email', async () => {
-  const user = await repo.create({ email: 'test@example.com', name: 'Test' });
-  expect(user.email).toBe('test@example.com');
-});
-
-// ⚠️ ACCEPTABLE: Related assertions
-it('should create user with correct properties', async () => {
-  const user = await repo.create({ email: 'test@example.com', name: 'Test' });
-  expect(user.id).toBeDefined();
-  expect(user.email).toBe('test@example.com');
-  expect(user.name).toBe('Test');
-});
+const mockRepo: IUserRepository = {
+  create: jest.fn().mockResolvedValue(mockUser),
+  findById: jest.fn(),
+  findAll: jest.fn(),
+};
 ```
 
-### 3. Use AAA Pattern (Arrange-Act-Assert)
+### Real Objects (Domain + Infrastructure)
 
 ```typescript
-it('should update user name', async () => {
-  // Arrange: Set up test data
-  const user = await repo.create({ email: 'test@example.com', name: 'Old Name' });
+// Domain: Real models
+const user = new User('id', 'test@test.com', 'Test');
 
-  // Act: Perform the action
-  const updated = await repo.update(user.id, { name: 'New Name' });
-
-  // Assert: Verify the result
-  expect(updated.name).toBe('New Name');
-});
-```
-
-### 4. Mock External Dependencies (Application Layer)
-
-```typescript
-// ✅ GOOD: Mock repository in service tests
-describe('UserService', () => {
-  it('should validate email before creating user', async () => {
-    const mockRepo: IUserRepository = {
-      create: jest.fn().mockResolvedValue(mockUser),
-      findById: jest.fn(),
-      findAll: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-    };
-
-    const service = new UserService(mockRepo);
-
-    await expect(service.registerUser('invalid-email', 'Test')).rejects.toThrow('Invalid email');
-
-    expect(mockRepo.create).not.toHaveBeenCalled();
-  });
-});
-```
-
-### 5. Use Real Objects (Domain + Infrastructure)
-
-```typescript
-// ✅ GOOD: Test real domain model
-it('should create immutable user', () => {
-  const user = new User('id', 'test@example.com', 'Test');
-  expect(() => {
-    user.email = 'new@example.com';
-  }).toThrow();
-});
-
-// ✅ GOOD: Test real repository with in-memory database
-it('should save user to database', async () => {
-  const repo = new PrismaUserRepository(prisma); // Real repository
-  const user = await repo.create({ email: 'test@example.com', name: 'Test' });
-
-  // Verify in database
-  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  expect(dbUser).toBeDefined();
-});
+// Infrastructure: Real repository with in-memory DB
+const repo = new PrismaUserRepository(prisma);
 ```
 
 ---
 
-## Common TDD Antipatterns to Avoid
+## Common Antipatterns
 
-### ❌ 1. Writing Implementation First
+- ❌ **Writing implementation first** - Not TDD
+- ❌ **Testing implementation details** - Test behavior
+- ❌ **Skipping RED phase** - Must fail first
+- ❌ **Not refactoring** - Clean up while GREEN
+- ❌ **Creating contracts before tests** - Let tests drive interfaces
 
-```typescript
-// WRONG ORDER:
-// 1. Create interface
-interface IUserRepository {
-  /* ... */
-}
-
-// 2. Implement class
-class PrismaUserRepository implements IUserRepository {
-  /* ... */
-}
-
-// 3. Write tests
-describe('PrismaUserRepository', () => {
-  /* ... */
-});
-```
-
-**Fix**: Write test first, let it drive the interface.
-
-### ❌ 2. Testing Implementation Details
-
-```typescript
-// BAD: Tests internal state
-it('should set isDeleted flag', async () => {
-  await repo.delete('user-id');
-  expect(repo['_users'][0].isDeleted).toBe(true); // Internal!
-});
-
-// GOOD: Tests behavior
-it('should not find deleted user', async () => {
-  await repo.delete('user-id');
-  const user = await repo.findById('user-id');
-  expect(user).toBeNull(); // External behavior
-});
-```
-
-### ❌ 3. Skipping RED Phase
-
-```typescript
-// BAD: Test passes immediately
-it('should return true', () => {
-  expect(true).toBe(true); // Useless test!
-});
-
-// GOOD: Write failing test first
-it('should validate email', () => {
-  expect(validateEmail('invalid')).toBe(false);
-});
-// Run → RED: validateEmail is not defined
-// Then implement validateEmail
-```
-
-### ❌ 4. Not Refactoring
-
-```typescript
-// After GREEN: Code works but is messy
-function calculateTotal(items) {
-  let t = 0;
-  for (let i = 0; i < items.length; i++) {
-    if (items[i].discount) {
-      t += items[i].price * (1 - items[i].discount);
-    } else {
-      t += items[i].price;
-    }
-  }
-  return t;
-}
-// Tests pass, but code is hard to read
-
-// REFACTOR: Clean it up
-function calculateTotal(items: Item[]): number {
-  return items.reduce((total, item) => total + item.getFinalPrice(), 0);
-}
-// Tests still pass, code is cleaner
-```
-
-### ❌ 5. Creating Contracts Before Tests
-
-```typescript
-// BAD: Architect creates contracts.md with interfaces
-interface IUserRepository {
-  create(data: CreateUserDto): Promise<User>;
-  findById(id: string): Promise<User | null>;
-}
-// Then developer writes tests against this interface
-
-// GOOD: Developer writes test first
-it('should create user', async () => {
-  const repo = getUserRepository();
-  const user = await repo.create({ email: 'test@example.com', name: 'Test' });
-  expect(user.id).toBeDefined();
-});
-// After several tests, extract interface from usage patterns
-```
+**Deep Dive**: [knowledge-base/tdd/README.md - Antipatterns](../../knowledge-base/tdd/README.md#common-tdd-antipatterns)
 
 ---
 
-## TDD Success Metrics
+## Clean Test Output (Project-Specific)
 
-### Code Coverage (Byproduct, Not Goal)
+**Suppress expected error logs** in repository integration tests:
 
-- Overall: 70%+ (naturally achieved through TDD)
-- Domain Layer: 90%+ (pure logic, easy to test)
-- Infrastructure Layer: 80%+ (integration tests)
-- Application Layer: 80%+ (service tests)
+```typescript
+let originalConsoleLog: typeof console.log;
 
-### Test Quality (MC-FIRE)
+beforeAll(() => {
+  originalConsoleLog = console.log;
+  console.log = (...args: unknown[]) => {
+    const message = String(args[0]);
+    if (message.includes('prisma:error')) return; // Suppress Prisma errors
+    originalConsoleLog(...args);
+  };
+});
 
-- **M**eaningful: Tests verify important behavior
-- **C**omplete: All edge cases covered
-- **F**ast: Run quickly (see speed expectations above)
-- **I**solated: Tests don't depend on each other
-- **R**epeatable: Same result every time
-- **E**xpressive: Test names clearly describe behavior
+afterAll(() => {
+  console.log = originalConsoleLog;
+});
+```
 
-### TDD Compliance Checklist
+**Why**: Prisma logs expected errors (duplicate email tests) - suppress to keep output clean.
 
-- [ ] All tests written BEFORE implementations
-- [ ] Each test started RED (failing)
-- [ ] Each test went GREEN (passing) with minimal code
-- [ ] Refactored while maintaining GREEN
-- [ ] Interfaces emerged from test usage (not designed up-front)
-- [ ] Tests document expected behavior
-- [ ] Zero TypeScript errors throughout development
+---
+
+## Success Metrics
+
+- **Coverage** (byproduct): 70%+ overall, 90%+ domain, 80%+ infrastructure/application
+- **Test Quality** (MC-FIRE): Meaningful, Complete, Fast, Isolated, Repeatable, Expressive
+- **TDD Compliance**: All tests written BEFORE implementation, proper RED→GREEN→REFACTOR cycle
 
 ---
 
 ## Quick Reference
 
-### TDD Mantra
+**Mantra**: RED (write failing test) → GREEN (make it pass) → REFACTOR (improve code)
 
-> **RED** (write failing test) → **GREEN** (make it pass) → **REFACTOR** (improve code)
+**Golden Rule**: If you write implementation code without a failing test demanding it, you're not doing TDD.
 
-### Golden Rule
+**When in Doubt**:
 
-**If you write implementation code without a failing test demanding it, you're not doing TDD.**
-
-### When in Doubt
-
-1. Write a test showing how you want to use the code
+1. Write test showing how you want to use the code
 2. Watch it fail (RED)
-3. Write the simplest code to make it pass (GREEN)
+3. Write simplest code to make it pass (GREEN)
 4. Clean up the code (REFACTOR)
 5. Repeat
 
 ---
 
-## Resources
-
-- **Primary Reference**: [knowledge-base/tdd/README.md](../../knowledge-base/tdd/README.md) (800+ lines)
-- **Martin Fowler**: https://martinfowler.com/bliki/TestDrivenDevelopment.html
-- **Kent Beck**: _Test-Driven Development: By Example_ (canonical book)
-- **Test Double**: https://github.com/testdouble/contributing-tests/wiki/Test-Driven-Development
-- **Codecademy**: https://www.codecademy.com/article/tdd-red-green-refactor
+**Deep Dive**: [knowledge-base/tdd/README.md](../../knowledge-base/tdd/README.md) (800+ lines)  
+**Resources**: [Martin Fowler](https://martinfowler.com/bliki/TestDrivenDevelopment.html) | [Kent Beck Book](https://www.amazon.com/Test-Driven-Development-Kent-Beck/dp/0321146530)
