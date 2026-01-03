@@ -9,6 +9,8 @@ ideas/
 # ===================================
 /work-items/*
 !/work-items/README.md
+!/work-items/_template/
+!/work-items/_template/**
 
 # ===================================
 # Dependencies
