@@ -33,6 +33,9 @@ prisma/dev.db-journal
 prisma/dev.db-shm
 prisma/dev.db-wal
 
+# Database backups (timestamped files created by db-backup.ps1)
+*.backup
+
 # Keep migrations in git
 !prisma/migrations/
 
