@@ -93,7 +93,7 @@ try {
   Write-Host "[deploy] Snapshot created at: $deployRoot" -ForegroundColor Green
   Write-Host "[deploy] Starting/reloading PM2 process..." -ForegroundColor Cyan
 
-  if (Get-Command pm2 -ErrorAction SilentlyContiny) {
+  if (Get-Command pm2 -ErrorAction SilentlyContinue) {
     pm2 startOrReload ecosystem.config.js --only main --env production --update-env
     pm2 save
   } else {
