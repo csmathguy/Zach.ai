@@ -1,103 +1,332 @@
 # Retrospective Instructions
 
-**Apply to**: After every commit during feature development  
+**Apply to**: At the end of each phase (Planning, Architecture, Research, Testing, Development)  
 **Reference**: [knowledge-base/copilot/workflows-apr-retro.md](../../knowledge-base/copilot/workflows-apr-retro.md)
-
----
-
-## ⚠️ CRITICAL: Local Working Memory Only
-
-**Retrospectives are NOT source controlled!**
-
-- work-items/ folder is temporary working memory (gitignored)
-- Retrospectives capture learnings for the current development session
-- These stay local and are not committed to git
-- Final retrospective synthesis goes into knowledge base after feature complete
 
 ---
 
 ## Purpose
 
-Continuous retrospectives capture learnings and improvements throughout development. This creates a feedback loop that improves both the current feature and future work.
+Each agent creates a numbered retrospective entry (RET-###) at the end of their phase to capture learnings, challenges, and action items. This creates a continuous feedback loop that improves both the current feature and future work.
 
 ---
 
-## When to Create Retrospective Entry
+## Retrospective Pattern
 
-**After EVERY commit**, before moving to next task:
+Similar to ADRs (adr-###), Research Items (ri-###), and Test Suites (TS-###), retrospectives use a numbered pattern:
 
-1. Commit your code changes
-2. **Update task list (check off completed items)** ← MANDATORY
-3. **Add retrospective entry** documenting what happened
-4. Only then proceed to next task
-
-### ⚠️ Task List Update is MANDATORY
-
-**DO NOT SKIP** updating the task list after completing work!
-
-**Why this matters**:
-
-- Task list is source of truth for progress
-- Prevents "are we done?" questions
-- Enables quick status checks without code inspection
-- Provides historical record of when work was completed
-
-**Update immediately after completion**:
-
-- [x] Check off completed tasks
-- [x] Add commit hash reference
-- [x] Mark sections complete with ✅
-- [x] Update status notes
-
-**If you forget**: User will have to ask "are we good with the items?" - this wastes time and breaks flow.
+- **RET-001**: Planning Phase retrospective
+- **RET-002**: Architecture Phase retrospective
+- **RET-003**: Research Phase retrospective (if applicable)
+- **RET-004**: Testing Phase retrospective
+- **RET-005**: Development Phase retrospective
+- **RET-006**: Overall Feature retrospective (by Retro agent)
 
 ---
 
-## Retrospective File Location
+## When to Create Retrospective
+
+**At the END of your phase**, before handing off to the next agent:
+
+1. ✅ Complete your phase deliverables
+2. ✅ Verify handoff checklist items
+3. ✅ **Create RET-### retrospective entry**
+4. ✅ Add entry to `retrospective.md` summary file
+5. ✅ Hand off to next agent
+
+**Do NOT create retrospectives after every commit** - only at phase completion.
+
+---
+
+## File Locations
 
 ```
-work-items/<branch>/retro/retrospective.md
+work-items/<branch>/retro/
+├── retrospective.md           # Summary with links to all RET entries
+├── RET-001-planning-phase.md
+├── RET-002-architecture-phase.md
+├── RET-003-research-phase.md  # (if research phase occurred)
+├── RET-004-testing-phase.md
+├── RET-005-development-phase.md
+└── RET-006-overall-feature.md # (by retro agent)
 ```
-
-**Important**: This file is local-only (gitignored). It's working memory for this feature branch.
-
-If file doesn't exist, create it using the template below.
 
 ---
 
-## Retrospective Entry Template
+## Creating Your Retrospective
 
-```markdown
-### Entry N: [Phase/Task Name]
+### Step 1: Copy the Template
 
-**Date**: [YYYY-MM-DD]  
-**Commit**: `[hash]` - "[commit message]"  
-**Status**: ✅ Complete | 🔄 In Progress | ❌ Blocked
+**Template**: `work-items/_template/retro/RET-001-example-phase.md`
 
-#### What We Did
+**Copy and rename** for your phase:
 
-- [Bullet list of what was implemented/changed]
-- [Be specific and concrete]
+- Planner → `RET-001-planning-phase.md`
+- Architect → `RET-002-architecture-phase.md`
+- Researcher → `RET-003-research-phase.md`
+- Tester → `RET-004-testing-phase.md`
+- Developer → `RET-005-development-phase.md`
+- Retro Agent → `RET-006-overall-feature.md`
+
+### Step 2: Fill Out All Sections
+
+**Required Sections** (no placeholders - provide actual content):
+
+#### Overview
+
+- Phase summary (what was accomplished)
+- Duration (estimated vs actual)
+- Key deliverables (specific files created)
 
 #### What Went Well ✅
 
-- [Successes, smooth processes, good decisions]
-- [What worked as expected]
-- [Positive outcomes]
+- 3+ specific successes with evidence
+- Why each item worked well
+- Quantifiable metrics (where applicable)
 
-#### What Didn't Go Well / Issues Found ❌
+#### What Didn't Go Well ❌
 
-- [Problems encountered]
-- [Bugs found and fixed]
-- [Unexpected complications]
-- [Process failures]
+- 3+ specific challenges with impact
+- Root cause (if known)
+- Time lost (estimated)
+- Blockers encountered and how resolved
 
-#### What We Learned / Improvements 📚
+#### Key Learnings 💡
 
-1. **[Category]**:
-   - [Specific learning or insight]
-   - [Why it matters]
-   - [How to apply going forward]
+- Technical insights (what we discovered)
+- Process insights (what worked/didn't in workflow)
+- Tool/technology insights
+
+#### Action Items 📋
+
+- Immediate actions for this feature
+- Template/documentation updates needed
+- Knowledge base updates needed
+- Agent/workflow improvements
+
+#### Quality Assessment
+
+- SOLID compliance (if applicable)
+- Code quality metrics (if development phase)
+- Deliverable quality scores
+
+#### Handoff to Next Phase
+
+- What you're delivering
+- Outstanding items
+- Notes for next agent
+
+### Step 3: Update retrospective.md
+
+Add an entry in `work-items/<branch>/retro/retrospective.md`:
+
+```markdown
+### RET-00X: [Phase Name]
+
+- **File**: [RET-00X-phase-name.md](RET-00X-phase-name.md)
+- **Agent**: [Your Agent Name]
+- **Date**: YYYY-MM-DD
+- **Status**: Complete ✅
+- **Key Outcome**: [One-line summary]
+```
+
+---
+
+## Agent-Specific Guidelines
+
+### Planner Agent (RET-001)
+
+**Focus**:
+
+- APR quality and completeness
+- User story clarity
+- Requirements gathering effectiveness
+- Accessibility requirements captured
+
+**Action Items**:
+
+- APR template improvements
+- Planning workflow enhancements
+- Requirements documentation patterns
+
+### Architect Agent (RET-002)
+
+**Focus**:
+
+- ADR quality and completeness
+- Contract clarity for testers
+- Design pattern effectiveness
+- Architecture decision outcomes
+
+**Action Items**:
+
+- ADR template improvements
+- Architecture patterns documentation
+- Contract specification enhancements
+
+### Researcher Agent (RET-003)
+
+**Focus**:
+
+- Research efficiency
+- Knowledge base documentation quality
+- Technology evaluation thoroughness
+- Time spent vs value delivered
+
+**Action Items**:
+
+- Knowledge base template improvements
+- Research workflow optimizations
+- Technology documentation patterns
+
+### Tester Agent (RET-004)
+
+**Focus**:
+
+- Test strategy completeness
+- Test suite coverage adequacy
+- Contract utilization effectiveness
+- Edge case identification
+
+**Action Items**:
+
+- Test plan template improvements
+- Test suite patterns
+- Coverage strategies
+
+### Developer Agent (RET-005)
+
+**Focus**:
+
+- TDD cycle effectiveness
+- Task breakdown quality
+- SOLID compliance
+- Code quality metrics
+- Technical debt introduced
+
+**Action Items**:
+
+- Development workflow improvements
+- Task template enhancements
+- Code quality patterns
+- Refactoring needs
+
+### Retro Agent (RET-006)
+
+**Focus**:
+
+- Cross-phase themes and patterns
+- Overall feature success
+- Consolidated action items
+- Recommendations for future features
+
+**Action Items**:
+
+- High-priority improvements
+- Knowledge base promotions
+- Process refinements
+- Template updates
+
+---
+
+## Quality Standards
+
+### DO ✅
+
+- **Be specific**: "Test coverage improved from 65% to 85%" not "coverage was good"
+- **Provide evidence**: Link to commits, files, metrics
+- **Be honest**: Document failures and challenges candidly
+- **Quantify impact**: "Lost 2 hours debugging X" not "X was hard"
+- **Include action items**: Every problem should have an improvement action
+- **Fill all sections**: No placeholders or "TODO" items
+
+### DON'T ❌
+
+- **Generic statements**: "Everything went well" or "Some issues"
+- **Blame individuals**: Focus on process and outcomes, not people
+- **Leave sections empty**: If a section doesn't apply, explain why
+- **Skip action items**: Always propose improvements
+- **Use placeholders**: Complete all content before handoff
+
+---
+
+## Example Action Items
+
+### Template Updates
+
+```markdown
+- [ ] Add "accessibility requirements" section to APR template
+- [ ] Update ADR template with "alternatives considered" section
+- [ ] Enhance test suite template with edge case checklist
+```
+
+### Knowledge Base Updates
+
+```markdown
+- [ ] Create KB entry for Zod validation patterns
+- [ ] Document React Testing Library best practices
+- [ ] Add troubleshooting guide for Prisma migrations
+```
+
+### Workflow Improvements
+
+```markdown
+- [ ] Add "verify environment" step to developer agent
+- [ ] Update tester agent to require contract references
+- [ ] Clarify handoff checklist for architect agent
+```
+
+---
+
+## Retrospective Flow
+
+```
+Planner completes APR
+    ↓
+Planner creates RET-001
+    ↓
+Planner adds entry to retrospective.md
+    ↓
+Planner hands off to Architect
+    ↓
+Architect reads RET-001 for context
+    ↓
+Architect completes ADRs
+    ↓
+Architect creates RET-002
+    ↓
+... (continues for each phase)
+    ↓
+Retro Agent reads ALL RET entries
+    ↓
+Retro Agent creates RET-006 (synthesis)
+    ↓
+Retro Agent updates retrospective.md with cross-phase themes
+```
+
+---
+
+## Benefits of RET-### Pattern
+
+1. **Structured**: Each retrospective follows the same comprehensive template
+2. **Traceable**: Numbered entries show chronological progression
+3. **Referenceable**: Easy to link to specific phase retrospectives
+4. **Comparable**: Same structure enables comparison across features
+5. **Actionable**: Clear action items with owners and due dates
+6. **Continuous**: Each agent contributes to collective learning
+
+---
+
+## Related Documentation
+
+- **Template**: [work-items/\_template/retro/RET-001-example-phase.md](../../work-items/_template/retro/RET-001-example-phase.md)
+- **Summary Template**: [work-items/\_template/retro/retrospective.md](../../work-items/_template/retro/retrospective.md)
+- **Workflow Guide**: [knowledge-base/copilot/workflows-apr-retro.md](../../knowledge-base/copilot/workflows-apr-retro.md)
+- **Agent Instructions**: [.github/agents/\*.agent.md](../agents/)
+
+---
+
+**Remember**: Retrospectives drive continuous improvement. Take time to document learnings thoroughly - future you will thank present you!
 
 #### Action Items for Future Development 🔧
 
@@ -110,7 +339,8 @@ If file doesn't exist, create it using the template below.
 - [Technical debt introduced (with justification)]
 - [Follow-up work needed]
 - [Refactoring opportunities]
-```
+
+````
 
 ---
 
@@ -119,8 +349,8 @@ If file doesn't exist, create it using the template below.
 ```markdown
 ### Entry 1: Day 0 - Prerequisites & Automation Setup
 
-**Date**: January 2, 2026  
-**Commit**: `3a811a5` - "chore(db): add Prisma dependencies and automation prerequisites"  
+**Date**: January 2, 2026
+**Commit**: `3a811a5` - "chore(db): add Prisma dependencies and automation prerequisites"
 **Status**: ✅ Complete
 
 #### What We Did
@@ -162,7 +392,7 @@ If file doesn't exist, create it using the template below.
 #### Technical Debt / Follow-up 📝
 
 - None yet
-```
+````
 
 ---
 

@@ -1,12 +1,53 @@
 # PowerShell Helper Scripts
 
-Automate common workflows for staging, production, and database management.
+Automate common workflows for ADR management, staging, production, and database operations.
 
 ## Table of Contents
 
+- [ADR Management](#adr-management)
 - [Deployment Scripts](#deployment-scripts)
 - [Database Scripts](#database-scripts)
 - [Environment Setup](#environment-setup)
+
+---
+
+## ADR Management
+
+### `adr-promote.ps1`
+
+**Purpose**: Deterministic Architecture Decision Record (ADR) lifecycle management
+
+Automates ADR approval workflow with automatic knowledge base numbering to prevent conflicts.
+
+**Usage**:
+
+```powershell
+# APPROVED: Auto-assigns next KB number (e.g., 0004-validation-strategy.md)
+.\scripts\adr-promote.ps1 -FilePath "work-items/O2-thought-capture/architecture/adr-validation.md" -Status Approved
+
+# REJECTED: Deletes rejected ADR
+.\scripts\adr-promote.ps1 -FilePath "work-items/O2-thought-capture/architecture/adr-bad-idea.md" -Status Rejected
+
+# DEFERRED: Creates new work item for future implementation
+.\scripts\adr-promote.ps1 -FilePath "work-items/O2-thought-capture/architecture/adr-rate-limiting.md" -Status Deferred -DeferredFeatureName "rate-limiting"
+```
+
+**Features**:
+
+- ✅ Automatic global sequential numbering (0001, 0002, 0003...)
+- ✅ Scans KB for next available number (no conflicts)
+- ✅ Copies approved ADRs to `knowledge-base/codebase/architecture-decisions/`
+- ✅ Updates ADR status to `Accepted` automatically
+- ✅ Creates work items for deferred decisions with proposal documents
+- ✅ Safety confirmations for destructive operations
+
+**KB Naming Convention**: `NNNN-descriptive-title.md`
+
+- Example: `0001-express-validation-strategy.md`
+- Chronological order + self-documenting titles
+- Industry standard (MADR + Nygard best practices)
+
+**See Also**: [ADR Best Practices Research](../work-items/documentation-hierarchy/research/adr-best-practices.md)
 
 ---
 

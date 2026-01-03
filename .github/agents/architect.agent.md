@@ -99,7 +99,7 @@ Design technical solutions that align with business requirements (APR) and exist
 ```markdown
 # ADR-001: [Decision Title]
 
-**Status**: Proposed | Accepted  
+**Status**: Proposed  
 **Date**: YYYY-MM-DD  
 **APR Reference**: [Link to requirement]
 
@@ -150,6 +150,41 @@ Why this approach over alternatives? What are the benefits?
 ```
 
 **Create one ADR per major decision**: Database choice, ORM selection, design pattern, architectural pattern.
+
+**Initial Status**: All ADRs start with `Status: Proposed` for user review.
+
+**After User Approval** - **RUN THE SCRIPT** to promote ADRs:
+
+**Process**:
+
+1. Present ADRs to user for review (Status: Proposed)
+2. User provides approval decision for each ADR
+3. **You run the promotion script** with user's decision
+4. Script handles KB promotion, numbering, and status updates automatically
+
+**Script Usage**:
+
+```powershell
+# APPROVED: Promotes to KB with next global number (e.g., 0004-validation-strategy.md)
+& "c:\Users\csmat\source\repos\Zach.ai\scripts\adr-promote.ps1" -FilePath "work-items/O2-thought-capture/architecture/adr-validation.md" -Status Approved
+
+# REJECTED: Deletes the ADR file
+& "c:\Users\csmat\source\repos\Zach.ai\scripts\adr-promote.ps1" -FilePath "work-items/O2-thought-capture/architecture/adr-bad-idea.md" -Status Rejected
+
+# DEFERRED: Creates new work item for future implementation
+& "c:\Users\csmat\source\repos\Zach.ai\scripts\adr-promote.ps1" -FilePath "work-items/O2-thought-capture/architecture/adr-rate-limiting.md" -Status Deferred -DeferredFeatureName "rate-limiting"
+```
+
+**Script Benefits**:
+
+- ✅ Automatic global numbering (0001, 0002, 0003) - no conflicts
+- ✅ Deterministic KB promotion workflow
+- ✅ Deferred ADRs → new work items automatically
+- ✅ Status updates handled automatically
+- ✅ Extracts descriptive titles from filenames
+- ✅ Adds KB references to work item ADRs
+
+**Important**: Use full path with `&` operator in PowerShell commands.
 
 **Reference Development Guide** for SOLID principles and design patterns - don't duplicate them.
 
@@ -231,7 +266,40 @@ interface IUserRepository {
 
 ---
 
-## Step 8: Validate Design
+## Step 8: Present ADRs for User Approval
+
+**Action**: After completing all ADRs, present them to user for review.
+
+**Wait for User Decision** on each ADR:
+
+- ✅ **Approved** - User agrees with decision
+- ❌ **Rejected** - User disagrees, ADR should be deleted
+- ⏳ **Deferred** - Good idea but out of scope for current feature
+
+---
+
+## Step 9: Promote ADRs with Script
+
+**AFTER user provides decisions**, run `adr-promote.ps1` for each ADR:
+
+```powershell
+# Example: Promote approved validation ADR
+& "c:\Users\csmat\source\repos\Zach.ai\scripts\adr-promote.ps1" `
+  -FilePath "work-items/O2-thought-capture/architecture/adr-validation.md" `
+  -Status Approved
+
+# Script will:
+# 1. Scan KB for next available number (e.g., 0004)
+# 2. Copy ADR to KB as 0004-validation-strategy.md
+# 3. Update status to "Accepted"
+# 4. Add KB reference to work item ADR
+```
+
+**Run script for ALL ADRs** based on user's decisions (Approved/Rejected/Deferred).
+
+---
+
+## Step 10: Validate Design
 
 **Checklist**:
 
@@ -242,18 +310,36 @@ interface IUserRepository {
 - [ ] Addresses all APR requirements
 - [ ] Integrates cleanly with existing architecture
 - [ ] Includes rollback strategy
+- [ ] **All ADRs promoted to KB** (if approved)
 
 ---
 
-## Step 9: Document Architecture Retrospective
+## Step 11: Create Architecture Phase Retrospective (RET-002)
 
-**BEFORE handoff**, update `work-items/<branch>/retro/retrospective.md` under "Architecture Phase":
+**BEFORE handoff**, create your phase retrospective:
 
-1. **What Went Well** - Effective patterns, clear contracts, good ADRs
-2. **Challenges** - Unclear requirements, difficult trade-offs, integration complexity
-3. **Learnings** - Were contracts testable? Did ADRs guide implementation? Patterns effective?
-4. **Handoff Quality** - Did testers have enough detail? Were contracts clear?
-5. **Actions** - KB updates needed, ADR improvements, template refinements
+1. **Copy Template**: Copy `work-items/_template/retro/RET-001-example-phase.md` to `work-items/<branch>/retro/RET-002-architecture-phase.md`
+
+2. **Fill All Sections**:
+   - **Overview**: Phase summary, duration, key deliverables (ADRs, contracts, diagrams)
+   - **What Went Well** ✅: Effective patterns, clear contracts, good ADRs (with evidence)
+   - **What Didn't Go Well** ❌: Unclear requirements, difficult trade-offs, integration complexity (with impact)
+   - **Key Learnings** 💡: Were contracts testable? Did ADRs guide implementation? Patterns effective?
+   - **Action Items** 📋: KB updates needed, ADR improvements, template refinements
+   - **Quality Assessment**: Contract clarity, ADR completeness, design pattern effectiveness
+   - **Handoff to Next Phase**: Did testers have enough detail? Were contracts clear for testing?
+
+3. **Update Summary**: Add entry to `work-items/<branch>/retro/retrospective.md`:
+
+   ```markdown
+   ### RET-002: Architecture Phase
+
+   - **File**: [RET-002-architecture-phase.md](RET-002-architecture-phase.md)
+   - **Agent**: Architect
+   - **Date**: YYYY-MM-DD
+   - **Status**: Complete ✅
+   - **Key Outcome**: ADRs and contracts created, design patterns documented
+   ```
 
 ---
 

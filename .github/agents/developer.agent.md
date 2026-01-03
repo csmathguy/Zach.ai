@@ -22,19 +22,74 @@ handoffs:
 
 ---
 
-## Step 1: Review Handoff Materials
+## Step 1: Analyze Work Item & Create Task Breakdown
 
-- ✅ Confirm feature branch exists (`git branch --show-current`)
-- ✅ Review `work-items/<branch>/architecture/` ADRs (WHY decisions were made)
-- ✅ Review `work-items/<branch>/tests/test-plan.md` for test strategy
-- ✅ Review `work-items/<branch>/retro/` for previous retrospectives
-- ✅ Track progress in `work-items/<branch>/dev/implementation-notes.md`
+**Purpose**: Understand the complete scope and break down work into discrete, manageable tasks before starting implementation.
 
-**Note**: Interfaces emerge from tests - not created by architect beforehand.
+### 1.1 Read All Source Documents
+
+**Required Reading Order**:
+
+1. ✅ **APR** (`work-items/<branch>/plan/apr.md`) - Feature requirements, acceptance criteria, success metrics
+2. ✅ **Architecture README** (`work-items/<branch>/architecture/README.md`) - Technical overview, key decisions
+3. ✅ **All ADRs** (`work-items/<branch>/architecture/adr-*.md`) - WHY decisions were made, alternatives considered
+4. ✅ **Contracts** (`work-items/<branch>/architecture/contracts.md`) - Interfaces, domain models, DTOs
+5. ✅ **Test Plan** (`work-items/<branch>/tests/test-plan.md`) - Testing strategy, coverage targets
+6. ✅ **All Test Suites** (`work-items/<branch>/tests/TS-*.md`) - Individual test suite specifications
+7. ✅ **Previous Retrospectives** (`work-items/<branch>/retro/retrospective.md`) - Learnings from earlier phases
+
+### 1.2 Create Task Breakdown
+
+**Create `work-items/<branch>/dev/README.md`** using the template at `work-items/_template/dev/README.md`:
+
+1. **Identify discrete units of work** from architecture and test plan:
+   - Domain models (pure TypeScript)
+   - Repository interfaces and implementations
+   - Application services
+   - API endpoints
+   - Integration points
+
+2. **Create individual task files** for each unit:
+   - `dev/task-001-setup-domain-models.md`
+   - `dev/task-002-implement-repositories.md`
+   - `dev/task-003-create-services.md`
+   - `dev/task-004-build-api-endpoints.md`
+3. **For each task file** (use template: `work-items/_template/dev/task-001-example-task.md`):
+   - Reference ADRs that guide the implementation
+   - Reference Test Suites (TS-001, TS-002) that verify the task
+   - Define clear completion criteria
+   - Assign priority (Critical → High → Medium → Low)
+   - Identify dependencies (task-001 must complete before task-002)
+
+4. **Update README.md task summary table**:
+
+   ```markdown
+   | ID       | Task Name              | Priority    | Status         | Test Suites | Dependencies |
+   | -------- | ---------------------- | ----------- | -------------- | ----------- | ------------ |
+   | task-001 | Setup domain models    | 🔴 Critical | ⚪ Not Started | -           | -            |
+   | task-002 | Implement repositories | 🔴 Critical | ⚪ Not Started | TS-001      | task-001     |
+   | task-003 | Create services        | 🟠 High     | ⚪ Not Started | TS-002      | task-002     |
+   ```
+
+5. **Get user approval** for task breakdown before proceeding to implementation
+
+**Output**: Complete task breakdown in `dev/README.md` and individual `dev/task-*.md` files ready for execution.
 
 ---
 
-## Step 2: Pre-Implementation Verification ⚠️ CRITICAL
+## Step 2: Begin First Task
+
+**After task breakdown approved**, start with the highest priority task (usually task-001):
+
+1. ✅ Mark task as 🟢 In Progress in `dev/README.md`
+2. ✅ Open task file (`dev/task-001-*.md`)
+3. ✅ Review ADRs and test suite references in task file
+4. ✅ Confirm feature branch exists (`git branch --show-current`)
+5. ✅ Begin TDD cycle (Step 3 below)
+
+---
+
+## Step 3: Pre-Implementation Verification ⚠️ CRITICAL
 
 **BEFORE any code, verify environment to prevent common errors:**
 
@@ -63,9 +118,15 @@ handoffs:
 
 **Why**: Prevents outdated patterns, unsupported syntax, npm script errors.
 
+### 3.3 Document Environment Findings
+
+- [ ] Update current task file (`dev/task-001-*.md`) with environment notes
+- [ ] Document any deviations from standard patterns
+- [ ] Note file locations, library versions, PowerShell compatibility
+
 ---
 
-## Step 3: TDD Cycle - RED → GREEN → REFACTOR
+## Step 4: TDD Cycle - RED → GREEN → REFACTOR
 
 ### Phase 0: List Test Cases
 
@@ -117,9 +178,34 @@ handoffs:
 
 ---
 
-## Step 4: Document Decisions & Progress
+## Step 5: Update Task Progress
 
-**Update** `work-items/<branch>/dev/implementation-notes.md`:
+**Continuous documentation throughout development**:
+
+- Track decisions with rationale in current task file
+- Note deviations from architecture with justification
+- Log technical debt (`// TODO:` comments) in code
+- Document performance observations in task file
+- Update `dev/README.md` with cross-task insights
+
+**Reference architecture** when making decisions - ADRs explain WHY.
+
+---
+
+## Step 7te dependencies tracking if packages added/removed
+
+- Update risks & issues log if new concerns identified
+- Update key decisions table if architectural choices made
+
+3. ✅ Move to next task:
+   - Mark next task as 🟢 In Progress
+   - Begin Step 4 (TDD Cycle) for new task
+
+---
+
+## Step 6: Document Decisions & Progress
+
+**Continuous documentation throughout development**:
 
 - Document decisions with rationale ("Using Repository Pattern per ADR-02")
 - Note deviations from plan with justification
@@ -131,7 +217,7 @@ handoffs:
 
 ---
 
-## Step 5: Continuous Quality Validation
+## Step 7: Continuous Quality Validation
 
 **Before each commit (from root directory)**:
 
@@ -148,7 +234,7 @@ handoffs:
 
 ---
 
-## Step 6: SOLID Compliance Checkpoints
+## Step 8: SOLID Compliance Checkpoints
 
 **Reference**: [Development Guide - SOLID Principles](../../knowledge-base/codebase/development-guide.md#solid-principles)
 
@@ -170,7 +256,7 @@ handoffs:
 
 ---
 
-## Step 7: Commit Strategy
+## Step 9: Commit Strategy
 
 **Atomic commits** with conventional commit format:
 
@@ -192,35 +278,31 @@ Refs: work-items/<branch>/architecture/adr-01-domain-models.md"
 
 ---
 
-## Step 8: Document Progress (Local Memory)
+## Step 10: Complete All Tasks
 
-**After each commit**, update work-items documentation:
+**Repeat Steps 4-9 for each task** until all tasks in `dev/README.md` are marked ✅ Complete.
 
-### Process Log
+**After completing each task**:
 
-**File**: `work-items/<branch>/dev/process-log/YYYY-MM-DD-HHMMSS.md`
+1. Update task file with implementation details
+2. Mark ✅ Complete in `dev/README.md` task table
+3. Move to next task (mark 🟢 In Progress)
 
-**Purpose**: Chronological factual record (what, when, how).
+**After final task complete**:
 
-**Fill ALL sections** - no placeholders! Actual commit hashes, file names, test counts, issues encountered.
+1. ✅ Run full validation suite:
+   - `npm test` - All tests passing
+   - `npm run typecheck` - Zero TypeScript errors
+   - `npm run lint` - Zero ESLint warnings
+   - `npm run format:check` - Clean formatting
+2. ✅ Complete manual verification checklist in `dev/README.md`
+3. ✅ Update `dev/README.md` "Handoff to Retrospective Phase" section
+4. ✅ Document any outstanding items or tech debt
+5. ✅ Hand off to retrospective agent (see Handoff Checklist below)
 
-### Retrospective Entry
+---
 
-**File**: `work-items/<branch>/retro/YYYY-MM-DD-HHMMSS.md`
-
-**Purpose**: Reflective learning (wins, challenges, learnings, actions).
-
-**Fill ALL sections** - no placeholders! Honest assessment with specifics.
-
-**See**: [Retrospective Instructions](../instructions/retrospective.instructions.md)
-
-### Task List
-
-**File**: `work-items/<branch>/dev/task-list.md`
-
-## **Update**: Check off completed items, add commit hash, note status.
-
-## Step 9: Quality Gates (Zero Warnings Policy)
+## Step 11: Quality Gates (Zero Warnings Policy)
 
 **Never proceed with warnings**:
 
@@ -237,42 +319,61 @@ Refs: work-items/<branch>/architecture/adr-01-domain-models.md"
 
 ---
 
-## Step 10: Repeat & Document
+## Step 12: Create Development Phase Retrospective (RET-005)
 
-**Continue RED-GREEN-REFACTOR cycle**:
+**BEFORE handing off to retro agent**, create your phase retrospective:
 
-1. Pick next test case
-2. RED → GREEN → REFACTOR
-3. Commit with conventional format
-4. Document (process log + retrospective)
-5. Update task list
-6. Repeat until feature complete
+1. **Copy Template**: Copy `work-items/_template/retro/RET-001-example-phase.md` to `work-items/<branch>/retro/RET-005-development-phase.md`
 
-**Never skip documentation** - continuous retrospectives drive improvement.
+2. **Fill All Sections**:
+   - **Overview**: Phase summary, duration (estimated vs actual), key deliverables (dev/README.md, task-NNN files, tests)
+   - **What Went Well** ✅: TDD cycle effectiveness, task breakdown quality, SOLID compliance (with evidence)
+   - **What Didn't Go Well** ❌: Challenges, blockers, refactoring needs, unexpected complexity (with impact and time lost)
+   - **Key Learnings** 💡: TDD insights, architecture clarity, test effectiveness, pattern usage
+   - **Action Items** 📋: Dev workflow improvements, task template enhancements, code quality patterns
+   - **Quality Assessment**: SOLID compliance (SRP/OCP/LSP/ISP/DIP checklist), Code quality metrics (TypeScript errors: 0, ESLint warnings: 0, Test coverage: X%, Dead code removed), Deliverable quality
+   - **Handoff to Next Phase**: Feature complete, all tasks ✅, tests passing, code quality validated
+
+3. **Update Summary**: Add entry to `work-items/<branch>/retro/retrospective.md`:
+
+   ```markdown
+   ### RET-005: Development Phase
+
+   - **File**: [RET-005-development-phase.md](RET-005-development-phase.md)
+   - **Agent**: Developer
+   - **Date**: YYYY-MM-DD
+   - **Status**: Complete ✅
+   - **Key Outcome**: All tasks implemented, tests passing, SOLID principles followed
+   ```
+
+**Purpose**: This retrospective documents TDD effectiveness, architecture decisions in practice, and provides critical feedback for continuous workflow improvement.
 
 ---
 
 ## Handoff Checklist
 
-**Ready for tester agent when**:
+**Ready for retrospective agent when**:
 
+- [ ] **RET-005 retrospective created** and added to retrospective.md summary
+- [ ] All tasks in `dev/README.md` marked ✅ Complete
 - [ ] All tests passing (🟢 GREEN maintained)
-- [ ] Test coverage meets project standards
+- [ ] Test coverage meets targets (70%+ overall, 90%+ domain)
 - [ ] Zero TypeScript errors (`npm run typecheck` passes)
 - [ ] Zero ESLint warnings (`npm run lint` passes)
-- [ ] Code formatted (`npm run format` passes)
+- [ ] Code formatted (`npm run format:check` passes)
 - [ ] SOLID principles followed (checkpoints completed)
 - [ ] Dead code removed
-- [ ] Implementation notes updated with decisions/deviations
+- [ ] All task files (`dev/task-*.md`) complete with implementation details
+- [ ] `dev/README.md` updated with dependencies, decisions, issues
 - [ ] Commits follow convention (conventional commits)
 - [ ] Git hooks pass (Husky pre-commit)
 - [ ] No `console.log` statements (proper logging only)
-- [ ] All TODOs resolved or tracked as tech debt
+- [ ] All TODOs resolved or tracked as tech debt in README.md
 - [ ] Documentation updated (JSDoc, README if needed)
 - [ ] Feature branch up to date with main
-- [ ] Process logs and retrospectives current
+- [ ] Manual verification checklist complete
 
-**Hand off to**: Tester agent for full test suite validation
+**Hand off to**: Retrospective agent for post-feature review
 
 ---
 

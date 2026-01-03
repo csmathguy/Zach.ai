@@ -7,7 +7,7 @@ tool-set: planner
 agent: planner
 ---
 
-Generate a comprehensive APR following the template in `features/_template/plan/apr.md`. Include:
+Generate a comprehensive APR following the template in `work-items/_template/plan/apr.md`. Include:
 
 1. **Overview**: Working name, problem statement, stakeholders
 2. **Goals & Success Metrics**: Business outcomes, non-goals, success criteria

@@ -103,7 +103,7 @@ If learnings apply beyond this feature:
 
 ## Resources
 
-- Retrospective template: `features/_template/retro/retrospective.md`
+- Retrospective template: `work-items/_template/retro/retrospective.md` (see `work-items/_template/README.md` for usage)
 - Atlassian retro guidance: `knowledge-base/copilot/workflows-apr-retro.md`
 - Feature workspace: `features/<branch>/`
 
