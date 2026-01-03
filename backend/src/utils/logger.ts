@@ -15,8 +15,19 @@ export function logError(data: Record<string, unknown>): void {
 }
 
 /**
+ * Log structured info data to console with JSON formatting
+ * Used by request logger for request lifecycle logging
+ *
+ * @param data - Info context object (requestId, method, path, duration, etc.)
+ */
+export function logInfo(data: Record<string, unknown>): void {
+  console.log('[INFO]', JSON.stringify(data, null, 2));
+}
+
+/**
  * Logger interface for dependency injection and testing
  */
 export const logger = {
   error: logError,
+  info: logInfo,
 };
