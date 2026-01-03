@@ -12,7 +12,16 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:coverage:export": "npm run test:coverage && powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/generate-coverage.ps1 -Project backend",
-    "test:ci": "jest --ci --coverage --maxWorkers=2"
+    "test:ci": "jest --ci --coverage --maxWorkers=2",
+    "db:init": "powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/database/db-init.ps1",
+    "db:check": "powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/database/db-check.ps1",
+    "db:migrate": "powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/database/db-migrate.ps1",
+    "db:migrate:prod": "powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/database/db-migrate.ps1 -Environment production",
+    "db:reset": "powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/database/db-reset.ps1",
+    "db:seed": "npx prisma db seed",
+    "db:studio": "powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/database/db-studio.ps1",
+    "db:backup": "powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/database/db-backup.ps1",
+    "db:restore": "powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/database/db-restore.ps1"
   },
   "dependencies": {
     "@prisma/adapter-libsql": "^7.2.0",
