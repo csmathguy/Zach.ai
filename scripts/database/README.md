@@ -2,6 +2,14 @@
 
 Automation scripts for SQLite database management with Prisma ORM.
 
+## Prerequisites
+
+- **Node.js**: 18+ (for Prisma)
+- **PowerShell**: Windows PowerShell 5.1+ OR PowerShell Core 7+
+  - Windows: `powershell.exe` (built-in) or `pwsh.exe` (install separately)
+  - npm scripts use `powershell` for Windows PowerShell 5.1 compatibility
+- **Prisma**: Installed via `npm install` in backend directory
+
 ## Overview
 
 These scripts provide a complete database workflow for development and production deployments. All scripts are idempotent and safe to run multiple times.

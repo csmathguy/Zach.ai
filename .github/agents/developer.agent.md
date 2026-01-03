@@ -56,10 +56,15 @@ handoffs:
 
 ### 2.3 Verify Tool Versions & Compatibility
 - [ ] **Check package versions**: Review `package.json` for library versions (e.g., Prisma 7.x vs 4.x)
-- [ ] **Check environment**: PowerShell version (`$PSVersionTable.PSVersion`), Node version, etc.
-- [ ] **Note compatibility requirements**: Document version-specific syntax (e.g., Join-Path multi-segment not supported in PowerShell 5.1)
+- [ ] **Check environment**:
+  - PowerShell version: Run `$PSVersionTable.PSVersion` to check for Windows PowerShell 5.1 vs PowerShell Core 7+
+  - Node version: Run `node --version`
+  - Available PowerShell executables: `powershell.exe` (Windows PS 5.1) vs `pwsh.exe` (PS Core 7+)
+- [ ] **Note compatibility requirements**:
+  - Document version-specific syntax (e.g., Join-Path multi-segment not supported in PowerShell 5.1)
+  - Document which PowerShell executable to use in npm scripts (`powershell` vs `pwsh`)
 
-**Why**: Prevents using outdated patterns or unsupported syntax.
+**Why**: Prevents using outdated patterns or unsupported syntax. Critical for npm scripts that invoke PowerShell.
 
 ---
 

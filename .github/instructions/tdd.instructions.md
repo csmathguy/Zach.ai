@@ -71,6 +71,31 @@ read_file backend/src/infrastructure/prisma/client.ts
 
 **Why**: Ensures consistency. Example: Prisma 7.x requires adapter - copy pattern from `client.ts`.
 
+### Verify Tool Versions & Compatibility
+
+Before writing scripts or npm commands:
+
+```powershell
+# Check PowerShell version
+$PSVersionTable.PSVersion
+
+# Verify which PowerShell executable is available
+Get-Command powershell.exe -ErrorAction SilentlyContinue  # Windows PS 5.1
+Get-Command pwsh.exe -ErrorAction SilentlyContinue        # PS Core 7+
+
+# Check Node.js version
+node --version
+
+# Check package versions
+cat backend/package.json | Select-String "prisma"
+```
+
+**Why**: Prevents compatibility issues. Critical for npm scripts that invoke PowerShell:
+
+- Use `powershell` for Windows PowerShell 5.1 (most common on Windows)
+- Use `pwsh` for PowerShell Core 7+ (requires separate install)
+- Example: `"db:init": "powershell -File ../scripts/database/db-init.ps1"` (not `pwsh`)
+
 ### Document Findings
 
 Create or update `work-items/<branch>/dev/implementation-notes.md`:
