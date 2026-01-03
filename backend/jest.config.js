@@ -11,6 +11,9 @@ module.exports = {
   // single-worker execution for deterministic results.
   maxWorkers: 1,
 
+  // Global setup - apply database schema before tests run
+  globalSetup: '<rootDir>/jest.setup.ts',
+
   // TypeScript path alias mapping for Jest
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
