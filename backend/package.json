@@ -13,7 +13,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:coverage:export": "npm run test:coverage && powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/generate-coverage.ps1 -Project backend",
-    "test:ci": "jest --ci --coverage --maxWorkers=2",
+    "test:ci": "prisma db push --skip-generate && jest --ci --coverage --maxWorkers=2",
     "db:init": "powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/database/db-init.ps1",
     "db:check": "powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/database/db-check.ps1",
     "db:migrate": "powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/database/db-migrate.ps1",
