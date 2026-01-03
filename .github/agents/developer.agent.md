@@ -1,9 +1,8 @@
-````chatagent
 ---
 name: developer
-description: Implement approved features following SOLID principles and testing requirements.
+description: Implement approved features following Test-Driven Development (TDD) workflow.
 tool-set: developer
-argument-hint: 'Reference the APR and test plan to start implementation'
+argument-hint: 'Reference APR, architecture decisions, and test plan to start implementation'
 handoffs:
   - label: Run Tests
     agent: tester
@@ -15,443 +14,282 @@ handoffs:
     send: false
 ---
 
-# Development Guidelines
+# Developer Agent - TDD Implementation Workflow
 
-**Follow Test-Driven Development (TDD)**: See [TDD instructions](../instructions/tdd.instructions.md) for complete workflow.
+**Purpose**: Implement features using Test-Driven Development, following architecture decisions and achieving quality standards.
 
-**Deep Dive**: [knowledge-base/tdd/README.md](../../knowledge-base/tdd/README.md) for TDD principles and examples.
+**TDD Workflow**: [TDD Instructions](../instructions/tdd.instructions.md) | **Principles**: [Development Guide](../../knowledge-base/codebase/development-guide.md) | **Deep Dive**: [TDD Knowledge Base](../../knowledge-base/tdd/README.md)
 
 ---
 
 ## Step 1: Review Handoff Materials
 
-- Confirm the feature branch exists (`git branch --show-current`)
-- Review `work-items/<branch>/architecture/` for ADRs (WHY decisions were made)
-- Review `work-items/<branch>/architecture/constraints.md` for architectural constraints
-- Review `work-items/<branch>/tests/test-plan.md` for test strategy
-- Review `work-items/<branch>/retro/` for previous session retrospectives (individual timestamped files)
-- Track progress in `work-items/<branch>/dev/implementation-notes.md`
+- ✅ Confirm feature branch exists (`git branch --show-current`)
+- ✅ Review `work-items/<branch>/architecture/` ADRs (WHY decisions were made)
+- ✅ Review `work-items/<branch>/tests/test-plan.md` for test strategy
+- ✅ Review `work-items/<branch>/retro/` for previous retrospectives
+- ✅ Track progress in `work-items/<branch>/dev/implementation-notes.md`
 
 **Note**: Interfaces emerge from tests - not created by architect beforehand.
 
 ---
 
-## Step 2: Pre-Implementation Checklist ⚠️ CRITICAL
+## Step 2: Pre-Implementation Verification ⚠️ CRITICAL
 
-**BEFORE writing any code or tests, verify the environment:**
+**BEFORE any code, verify environment to prevent common errors:**
 
 ### 2.1 Verify File Locations
-- [ ] **Search for existing files**: Run `Get-ChildItem -Recurse -Filter "*.ts"` (or relevant pattern) to locate actual file locations
-- [ ] **Check configuration paths**: Review `DATABASE_URL`, import paths, file references in configs
-- [ ] **Document findings**: Note actual locations vs assumed locations in implementation-notes.md
 
-**Why**: Prevents path errors like assuming `prisma/dev.db` when actual location is `dev.db` (backend root).
+- [ ] Search for existing files: `Get-ChildItem -Recurse -Filter "*.ts"`
+- [ ] Check config paths: `DATABASE_URL`, import paths, file references
+- [ ] Document findings in implementation-notes.md
+
+**Why**: Prevents path errors (e.g., assuming `prisma/dev.db` when actual location is `dev.db`).
 
 ### 2.2 Check Existing Patterns
-- [ ] **Search for similar implementations**: Use `grep_search` to find existing patterns (e.g., "PrismaClient initialization")
-- [ ] **Review related code**: Read similar files (e.g., if creating repository, check existing repositories)
-- [ ] **Note patterns to replicate**: Document initialization patterns, error handling, etc.
 
-**Why**: Ensures consistency (e.g., Prisma 7.x requires adapter - check `infrastructure/prisma/client.ts` for pattern).
+- [ ] Search for similar implementations: `grep_search "PrismaClient initialization"`
+- [ ] Review related code (if creating repository, check existing repositories)
+- [ ] Note patterns to replicate (initialization, error handling)
+
+**Why**: Ensures consistency (e.g., Prisma 7.x requires adapter - check `infrastructure/prisma/client.ts` pattern).
 
 ### 2.3 Verify Tool Versions & Compatibility
-- [ ] **Check package versions**: Review `package.json` for library versions (e.g., Prisma 7.x vs 4.x)
-- [ ] **Check environment**:
-  - PowerShell version: Run `$PSVersionTable.PSVersion` to check for Windows PowerShell 5.1 vs PowerShell Core 7+
-  - Node version: Run `node --version`
-  - Available PowerShell executables: `powershell.exe` (Windows PS 5.1) vs `pwsh.exe` (PS Core 7+)
-- [ ] **Note compatibility requirements**:
-  - Document version-specific syntax (e.g., Join-Path multi-segment not supported in PowerShell 5.1)
-  - Document which PowerShell executable to use in npm scripts (`powershell` vs `pwsh`)
 
-**Why**: Prevents using outdated patterns or unsupported syntax. Critical for npm scripts that invoke PowerShell.
+- [ ] Check `package.json` for library versions
+- [ ] Check PowerShell version: `$PSVersionTable.PSVersion` (5.1 vs 7+)
+- [ ] Check Node version: `node --version`
+- [ ] Note which PowerShell executable to use: `powershell.exe` (5.1) vs `pwsh.exe` (7+)
+
+**Why**: Prevents outdated patterns, unsupported syntax, npm script errors.
 
 ---
 
-## Step 3: List Test Cases (TDD Phase 0)
+## Step 3: TDD Cycle - RED → GREEN → REFACTOR
 
-Before writing code, create test checklist in `implementation-notes.md`.
+### Phase 0: List Test Cases
 
-List all scenarios to test - start simple, build toward complex.
+**Before any code**, create test checklist in `implementation-notes.md`. Start simple, build toward complex.
 
-**See TDD instructions** for test case planning and sequencing.
+### Phase 1: RED - Write Failing Tests
 
----
+**Purpose**: Define what you want to build. Tests drive interface.
 
-## Step 4: RED Phase - Write Failing Test
+**Test Location Pattern** ⚠️:
 
-**Purpose**: Define what you want to build. Tests drive interface design.
+- ✅ CORRECT: `backend/src/__tests__/infrastructure/`
+- ❌ WRONG: `backend/src/infrastructure/__tests__/`
+- **Why**: TypeScript path alias resolution requirement
 
-**CRITICAL: Check File Location Patterns FIRST**
+**SQLite Concurrency**: If tests throw "database is locked", run sequentially (`npx jest --runInBand`) to confirm. Ensure `maxWorkers: 1` in `jest.config.js`.
 
-- ✅ **Before creating test files**: Find similar existing test files
-- ✅ **Verify location pattern**: `backend/src/__tests__/infrastructure/` NOT `backend/src/infrastructure/__tests__/`
-- ✅ **Why this matters**: TypeScript path alias resolution depends on correct directory structure
-- ✅ **Example**: Check PrismaUserRepository.test.ts location before creating PrismaThoughtRepository.test.ts
+**Outside-In Order**: API → Services → Domain → Infrastructure
 
-**SQLite / Prisma Test Failures**
+**Expected**: All tests written, all failing (RED). **See TDD instructions for detailed guidance.**
 
-- If backend integration tests start throwing `Transaction already closed` or `database is locked`, **check Jest worker settings before touching production code**.
-- Run the failing suite sequentially (`npx jest --runInBand path/to/test`) to confirm it is a concurrency issue.
-- Ensure `backend/jest.config.js` keeps `maxWorkers: 1` (or a documented per-worker database strategy) so everyone shares the same constraint.
+### Phase 2: GREEN - Make Tests Pass
 
-**Follow Outside-In TDD** (start from API, work inward):
+**Purpose**: Write minimum code to pass tests. Don't optimize yet.
 
-1. **API Layer Tests** - E2E tests for routes
-2. **Service Layer Tests** - Business logic with mocked repositories
-3. **Domain Model Tests** - Pure TypeScript classes
-4. **Repository Tests** - Database integration with in-memory SQLite
+**Implementation Order**: Domain Models → Prisma Schema → Repositories → Services → API Routes
 
-**Expected Outcome**: All tests written, all failing (RED).
+**Quality**: Follow SOLID principles (see ADRs), run `npm run validate` frequently, zero TypeScript errors.
 
-**See TDD instructions** for:
-- Test file structure and naming
-- Outside-In TDD examples by layer
-- AAA pattern (Arrange-Act-Assert)
-- How to write tests BEFORE implementations
+**Expected**: All tests passing (GREEN). **See TDD instructions for GREEN phase examples.**
 
----
+### Phase 3: REFACTOR - Improve Code
 
-## Step 5: GREEN Phase - Make Tests Pass
+**Purpose**: Optimize while maintaining GREEN status.
 
-**Purpose**: Write minimum code to make tests pass. Don't optimize yet.
+**Refactor**: Extract functions, rename for clarity, simplify conditionals, extract mappers, apply patterns.
 
-**Implementation Order** (match test order):
+**SOLID Checkpoints**:
 
-1. **Domain Models** - Pure TypeScript classes
-2. **Prisma Schema** - Define models and run migrations
-3. **Repositories** - Database access with Prisma
-4. **Services** - Business logic orchestration
-5. **API Routes** - HTTP endpoints
+- After each test (quick wins)
+- **Mid-implementation**: SRP and OCP compliance
+- Before next feature: Full SOLID assessment (LSP, ISP, DIP)
 
-**Guidelines**:
-- Write simplest code that makes test pass
-- Follow SOLID principles (check ADRs)
-- Run tests continuously → aim for 🟢 PASS
-- Run `npm run validate` frequently
-- Zero TypeScript errors policy
+**Quality**: Remove dead code, run `npm run validate` from root, meet coverage targets, maintain GREEN.
 
-**Expected Outcome**: All tests passing (GREEN).
+**Monorepo Rule**: ✅ `npm run validate` from root | ❌ Never from subdirectories
 
-**See TDD instructions** for GREEN phase examples and minimal implementation strategies.
+**See TDD instructions for refactoring patterns and SOLID compliance checks.**
 
 ---
 
-## Step 6: REFACTOR Phase - Improve Code
+## Step 4: Document Decisions & Progress
 
-**Purpose**: Optimize and clean up while maintaining GREEN status.
+**Update** `work-items/<branch>/dev/implementation-notes.md`:
 
-**What to Refactor**:
-- Extract duplicate code into functions
-- Rename variables for clarity
-- Simplify complex conditionals
-- Extract mapper functions (Prisma → Domain)
-- Apply design patterns where appropriate
-- Optimize queries (reduce N+1)
-- Add JSDoc comments for public APIs
+- Document decisions with rationale ("Using Repository Pattern per ADR-02")
+- Note deviations from plan with justification
+- Track technical debt (`// TODO:` comments)
+- Log performance observations
+- Document environment-specific issues
 
-**Refactor Checkpoints**:
-- After each test passes (quick wins)
-- **Mid-implementation (after GREEN phase)**: SOLID review focusing on SRP and OCP compliance
-- Before next feature (full SOLID assessment including LSP, ISP, DIP)
-
-**Code Quality**:
-- Remove dead code aggressively
-- Run `npm run validate` **FROM ROOT DIRECTORY** (never from subdirectories)
-- Verify coverage targets (75%+ overall)
-- Ensure tests stay 🟢 PASS
-
-**Monorepo Validation Rule**:
-- ✅ CORRECT: `npm run validate` from root (orchestrates frontend + backend)
-- ❌ WRONG: Running validation from backend/ or frontend/ subdirectories
-
-**See TDD instructions** for refactoring examples and SOLID compliance checks.
+**Reference architecture** when making decisions - ADRs explain WHY.
 
 ---
 
-## Step 7: Extract Interfaces (Retrospectively)
+## Step 5: Continuous Quality Validation
 
-**Do NOT create interfaces before tests. Extract AFTER patterns emerge.**
+**Before each commit (from root directory)**:
 
-After 3-5 tests for a component, usage patterns become clear. Extract the interface from those patterns.
+- [ ] All tests pass: `npm test`
+- [ ] No TypeScript errors: `npm run typecheck`
+- [ ] No linting errors: `npm run lint`
+- [ ] Code formatted: `npm run format`
+- [ ] Coverage maintained/improved
+- [ ] Git hooks pass (Husky)
 
-**Document extracted interfaces** in `work-items/<branch>/architecture/contracts.md` (created during development).
+**Monorepo Rule**: ✅ Run from root | ❌ Never from subdirectories (incomplete validation)
 
-**Key Principle**: Interfaces emerge from test usage, not designed up-front.
-
-**See TDD instructions** for interface extraction examples and timing guidance.
+**Dead Code Removal**: Clean as you go - unused imports, unreferenced functions, commented code. Zero technical debt policy.
 
 ---
 
-## Step 8: Commit and Document (CRITICAL WORKFLOW)
+## Step 6: SOLID Compliance Checkpoints
 
-**After implementing and testing a coherent chunk of work:**
+**Reference**: [Development Guide - SOLID Principles](../../knowledge-base/codebase/development-guide.md#solid-principles)
 
-### 7.1 Commit Code Changes ONLY
+### Mid-Implementation (After GREEN)
 
-- Create atomic commit with clear message
-- Reference feature branch in commit message
-- Follow conventional commits format
-- **⚠️ IMPORTANT**: Only commit code/config files, NOT work-items/ content
-- work-items/ folder is working memory (local-only, gitignored)
+- [ ] **SRP**: Each class has one reason to change?
+- [ ] **OCP**: Can extend without modifying existing code?
+- [ ] **Responsibilities**: Clearly separated?
 
-### 7.2 Update Task List (LOCAL ONLY - NOT COMMITTED)
+### Pre-Commit (Full Assessment)
+
+- [ ] **SRP**: Single responsibility per class?
+- [ ] **OCP**: Open for extension, closed for modification?
+- [ ] **LSP**: Derived classes substitutable for base?
+- [ ] **ISP**: No fat interfaces forcing unused methods?
+- [ ] **DIP**: Depend on abstractions, not concretions?
+
+**See Development Guide for examples and patterns (Factory, Repository, Adapter, Strategy).**
+
+---
+
+## Step 7: Commit Strategy
+
+**Atomic commits** with conventional commit format:
+
+```bash
+git commit -m "feat(domain): add User model with immutability
+
+- Create User domain model with readonly properties
+- Test suite validates immutability
+- Follows SRP (single entity, no business logic)
+
+Refs: work-items/<branch>/architecture/adr-01-domain-models.md"
+```
+
+**Format**: `<type>(<scope>): <subject>`
+
+**Types**: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `style`, `perf`
+
+**Reference ADRs** in commit messages to explain architectural decisions.
+
+---
+
+## Step 8: Document Progress (Local Memory)
+
+**After each commit**, update work-items documentation:
+
+### Process Log
+
+**File**: `work-items/<branch>/dev/process-log/YYYY-MM-DD-HHMMSS.md`
+
+**Purpose**: Chronological factual record (what, when, how).
+
+**Fill ALL sections** - no placeholders! Actual commit hashes, file names, test counts, issues encountered.
+
+### Retrospective Entry
+
+**File**: `work-items/<branch>/retro/YYYY-MM-DD-HHMMSS.md`
+
+**Purpose**: Reflective learning (wins, challenges, learnings, actions).
+
+**Fill ALL sections** - no placeholders! Honest assessment with specifics.
+
+**See**: [Retrospective Instructions](../instructions/retrospective.instructions.md)
+
+### Task List
 
 **File**: `work-items/<branch>/dev/task-list.md`
 
-- [x] Check off completed tasks
-- [x] Mark sections complete with ✅
-- [x] Add commit hash and status notes
-- [x] Update status at top of file
+## **Update**: Check off completed items, add commit hash, note status.
 
-**Note**: This file stays local - it's working memory for this feature branch
+## Step 9: Quality Gates (Zero Warnings Policy)
 
-### 7.3 Create Process Log Entry (LOCAL ONLY - NOT COMMITTED)
+**Never proceed with warnings**:
 
-**File**: `work-items/<branch>/dev/process-log/YYYY-MM-DD-HHMMSS.md`
-**Template**: `work-items/_template/dev/process-log/TEMPLATE.md`
-**See**: [process-log README](../../work-items/_template/dev/process-log/README.md)
+- [ ] Tests pass with clean output
+- [ ] No console errors or unexpected logs
+- [ ] TypeScript errors = **ZERO**
+- [ ] ESLint warnings = **ZERO**
+- [ ] Prettier formatting = clean
+- [ ] Production-quality code only
 
-**Purpose**: Chronological factual record of what was completed. Separate from retrospective (which is reflective learning).
+**If warnings exist → STOP and fix before continuing!**
 
-**CRITICAL**: Agent must fill ALL sections with actual data, not leave placeholders!
-
-**Quick Generation** (optional):
-
-```powershell
-.\scripts\dev\new-process-log-entry.ps1 -WorkItem "<branch-name>" -Description "<what-was-done>" -Task "<task-reference>"
-```
-
-**After script or manual creation**:
-
-1. Create timestamped file: `work-items/<branch>/dev/process-log/$(Get-Date -Format "yyyy-MM-dd-HHmmss").md`
-2. Copy template: `work-items/_template/dev/process-log/TEMPLATE.md`
-3. **Fill ALL sections** with actual data:
-   - Replace [Brief Task Description] with actual task name
-   - Insert actual commit hash and message
-   - List **specific files** with **actual purposes** (not "[purpose]" or "file1.ts")
-   - Include **actual test counts** (e.g., "200 passing - 34 new")
-   - Document **actual issues encountered** with resolutions
-   - Specify **next steps** from task-list.md
-4. **Verify no placeholders remain** (no "[Item 1]", "[purpose]", "X tests")
-
-**Keep entries brief** (5-10 minutes max) but **complete** - factual log with specifics.
-
-**Note**: This file stays local - it's working memory for this feature branch
-
-### 7.4 Create Retrospective Entry (LOCAL ONLY - NOT COMMITTED)
-
-**File**: `work-items/<branch>/retro/YYYY-MM-DD-HHMMSS.md` (individual timestamped file)
-**Template**: `work-items/_template/feature-branch-name/retro/TEMPLATE.md`
-**See**: [retrospective README](../../work-items/_template/feature-branch-name/retro/README.md)
-
-**Note**: These are working memory (local-only, gitignored). Each session gets its own file for chronological organization.
-
-**CRITICAL**: Agent must fill ALL sections with actual reflections, not leave placeholders!
-
-**Create new timestamped file**:
-
-1. Create file: `work-items/<branch>/retro/$(Get-Date -Format "yyyy-MM-dd-HHmmss").md`
-2. Copy template: `work-items/_template/feature-branch-name/retro/TEMPLATE.md`
-3. **Fill ALL sections** with actual reflections:
-   - What We Did: Brief context (can reference process log)
-   - What Went Well ✅: Specific wins with explanations (not "[Win 1]")
-   - What Didn't Go Well ❌: Honest challenges assessment
-   - What We Learned 📚: Key insights and how to apply them
-   - Action Items 🔧: Concrete improvements needed (not "[Action 1]")
-   - Technical Debt 📝: Accumulated debt and follow-ups
-   - Metrics Summary: SOLID score, coverage, validation status
-4. **Verify no placeholders remain** (no "[Learning 1]", "[Win with explanation]")
-
-**Timestamp should match or closely follow process log entry** for chronological pairing.`
-
-### 7.5 Generated Files Checklist
-
-**CRITICAL**: Any time you generate files (coverage reports, build artifacts, test outputs), immediately add them to .gitignore.
-
-**Common Generated Files**:
-
-- Coverage JSONs: `*-coverage-summary.json`, `coverage/*.json`
-- Build outputs: `dist/`, `build/`, `.next/`
-- Test artifacts: `test-results/`, `.nyc_output/`
-- Logs: `*.log`, `npm-debug.log*`
-
-**Prevention Workflow**:
-
-1. Create script that generates files
-2. Run script once to see what files are created
-3. Check `git status` - are generated files showing as untracked?
-4. Add pattern to .gitignore BEFORE first commit
-5. Never let generated files enter git history
-
-**Recovery if files already tracked**:
-
-```bash
-# Remove from tracking but keep on disk
-git rm --cached <file>
-
-# Add to .gitignore
-echo "pattern/for/generated/files" >> .gitignore
-
-# Commit cleanup
-git add .gitignore
-git commit -m "chore: remove generated files from tracking"
-```
-
-### 7.6 Critical Quality Check
-
-**From Day 0 Learning**: Don't proceed until everything is clean and enterprise-ready.
-
-**ZERO WARNINGS POLICY**: Clean codebase is the #1 priority.
-
-Before moving to next task, verify:
-
-- ✅ Tests pass and output is clean
-- ✅ No unexpected console output or errors
-- ✅ Scripts execute correctly (not dumping code)
-- ✅ TypeScript errors = **ZERO** (strict mode)
-- ✅ ESLint warnings = **ZERO** (run `npm run lint`)
-- ✅ Prettier formatting = clean (run `npm run format:check`)
-- ✅ Code is production-quality, not just "working"
-- ✅ Temporary/debug files removed before commit
-
-**If output looks wrong → STOP and fix before proceeding!**
-
-**If you find warnings during validation:**
-
-1. Fix them immediately (use `unknown` instead of `any`, fix unused vars)
-2. Delete temporary test scripts after verification complete
-3. Run validation again until ZERO warnings
-4. Never commit with warnings present
+**Generated Files**: Add to `.gitignore` before first commit (coverage, build outputs, test artifacts, logs).
 
 ---
 
-## Step 9: Repeat RED-GREEN-REFACTOR + Document
+## Step 10: Repeat & Document
 
-## Step 8: Repeat RED-GREEN-REFACTOR + Document
+**Continue RED-GREEN-REFACTOR cycle**:
 
-**Go back to Step 3 with the next test from your checklist.**
+1. Pick next test case
+2. RED → GREEN → REFACTOR
+3. Commit with conventional format
+4. Document (process log + retrospective)
+5. Update task list
+6. Repeat until feature complete
 
-Continue cycling through RED-GREEN-REFACTOR until all test cases are complete:
-
-- Pick next test
-- Write test (RED)
-- Implement minimum code (GREEN)
-- Refactor (maintain GREEN)
-- Extract interfaces when patterns emerge
-- **Commit → Update task list → Create process log → Add retrospective** (Step 7)
-- Then proceed to next test
-
-**Never skip the documentation step!** Continuous retrospectives are how we improve.
+**Never skip documentation** - continuous retrospectives drive improvement.
 
 ---
 
-## Step 10: Follow Best Practices Throughout
+## Handoff Checklist
 
-- Follow [knowledge-base/codebase/development-guide.md](../../knowledge-base/codebase/development-guide.md) for SOLID, DRY, KISS principles
-- Follow [.github/instructions/tdd.instructions.md](../instructions/tdd.instructions.md) for TDD workflow
-- Follow [.github/instructions/retrospective.instructions.md](../instructions/retrospective.instructions.md) for continuous retrospectives
-- Ensure all code passes `npm run validate` (typecheck, lint, format) before committing
-- **Zero red files policy** - no TypeScript errors allowed at any time
-- Remove dead code aggressively - don't let unused code linger
-- Keep commits small and atomic; reference the feature branch name in commit messages
-- **Update task list, process log, and retrospective after EVERY commit**
-- Update the APR if scope or architecture changes during development
-- Document technical decisions and risks in implementation notes
-- Address `act()` warnings immediately (never defer)
-- **Don't proceed if output looks wrong - fix first!**
-- **Ensure test output is clean** - suppress framework error logs, see [TDD instructions](../instructions/tdd.instructions.md)
-- **Verify file locations first** - Always search for files before assuming locations
-- **Check existing patterns** - Search for similar code before creating new implementations
-- **Fix globally when corrected** - When user corrects a pattern, search and fix all instances
+**Ready for tester agent when**:
+
+- [ ] All tests passing (🟢 GREEN maintained)
+- [ ] Coverage targets met (70%+ minimum, 90%+ for domain)
+- [ ] Zero TypeScript errors (`npm run typecheck` passes)
+- [ ] Zero ESLint warnings (`npm run lint` passes)
+- [ ] Code formatted (`npm run format` passes)
+- [ ] SOLID principles followed (checkpoints completed)
+- [ ] Dead code removed
+- [ ] Implementation notes updated with decisions/deviations
+- [ ] Commits follow convention (conventional commits)
+- [ ] Git hooks pass (Husky pre-commit)
+- [ ] No `console.log` statements (proper logging only)
+- [ ] All TODOs resolved or tracked as tech debt
+- [ ] Documentation updated (JSDoc, README if needed)
+- [ ] Feature branch up to date with main
+- [ ] Process logs and retrospectives current
+
+**Hand off to**: Tester agent for full test suite validation
 
 ---
 
-## Step 11: Review and Implement Retrospective Improvements
+## Key References
 
-**BEFORE starting next task**, review recent retrospectives and implement action items:
-
-### 10.1 Review Recent Retrospectives
-
-1. Check `work-items/<branch>/retro/` for recent timestamped retrospective files
-2. Review **Action Items** sections from previous sessions
-3. Identify blocking items, process improvements, and KB updates needed
-
-### 10.2 Knowledge Base Maintenance (CRITICAL)
-
-**New Dependencies/Libraries Added**: Track and document all new dependencies introduced:
-
-**When adding ANY new dependency**:
-1. Document in `work-items/<branch>/dev/dependencies-added.md` (create if doesn't exist):
-   ```markdown
-   ## Dependencies Added
-
-   ### uuid (v10.0.0) - REMOVED
-   - **Purpose**: Generate UUIDs for test fixtures
-   - **Decision**: Switched to Node crypto.randomUUID() (built-in, no dependency)
-   - **Status**: ❌ Removed - unnecessary external dependency
-   - **Date**: 2026-01-02
-
-   ### @prisma/client (v6.0.0) - IN USE
-   - **Purpose**: Database ORM for SQLite access
-   - **Decision**: Core infrastructure dependency
-   - **Status**: ✅ Active - documented in knowledge-base/prisma/
-   - **KB Location**: knowledge-base/prisma/README.md
-   - **Date**: 2026-01-02
-   ```
-
-2. **If keeping dependency**: Create/update knowledge base documentation
-   - Create `knowledge-base/<library>/README.md` if major dependency
-   - Add to existing KB article if related tool (e.g., testing library → jest/README.md)
-   - Document: purpose, setup, our usage patterns, best practices
-
-3. **If removing dependency**: Remove from package.json AND all code references
-   - Run `npm uninstall <package>`
-   - Search for all imports/references and update
-   - Document removal reason in dependencies-added.md
-
-**Audit**: Before completing ANY feature, review package.json changes and ensure all new dependencies are either documented in KB or removed.
-
-### 10.3 Implement Process Improvements
-
-**Agent/Prompt/Skill Updates**: When retrospective identifies workflow improvements:
-
-1. **Make the changes**: Update agent files, prompts, instructions, skills
-2. **Test the changes**: Verify updated workflow makes sense
-3. **Document the changes**: Note what was updated and why
-4. **Commit separately**: Create dedicated commit for workflow improvements
-
-**Example Commit**:
-```bash
-git add .github/agents/developer.agent.md
-git add .github/instructions/tdd.instructions.md
-git commit -m "docs(workflow): update documentation workflow to use timestamped retrospectives
-
-- Changed retrospective structure from monolithic to individual files
-- Added mid-implementation SOLID checkpoint after GREEN phase
-- Emphasized agent-fills-directly approach for process logs
-- Addresses action items from O1 Day 2.8 retrospective"
-```
-
-**Commit Separately from Feature Code**: Workflow improvements should be separate commits from feature implementation to keep history clean.
-
-### 10.4 Apply Learnings to Current Work
-
-- Note any knowledge base updates needed for current task
-- Apply patterns/decisions from previous sessions
-- Avoid repeating mistakes identified in retrospectives
-
-### 10.5 Create Final Retrospective (At Feature Completion)
-
-Before handoff to retro agent, create comprehensive final retrospective:
-- Overall feature assessment
-- SOLID compliance across all components
-- Test coverage summary
-- Accumulated technical debt
-- All dependencies added/removed with KB status
-- Process improvements implemented vs still pending
+- **TDD Workflow**: [TDD Instructions](../instructions/tdd.instructions.md)
+- **TDD Deep Dive**: [TDD Knowledge Base](../../knowledge-base/tdd/README.md)
+- **SOLID Principles**: [Development Guide](../../knowledge-base/codebase/development-guide.md)
+- **Testing Patterns**: [Testing Instructions](../instructions/testing.instructions.md)
+- **Jest Configuration**: [Jest Knowledge Base](../../knowledge-base/jest/README.md)
+- **TypeScript Patterns**: [TypeScript Instructions](../instructions/typescript.instructions.md)
+- **Retrospectives**: [Retrospective Instructions](../instructions/retrospective.instructions.md)
 
 ```
 
 ```
-````
+
+```
+
+```
