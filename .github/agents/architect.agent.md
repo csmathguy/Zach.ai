@@ -314,15 +314,32 @@ interface IUserRepository {
 
 ---
 
-## Step 11: Document Architecture Retrospective
+## Step 11: Create Architecture Phase Retrospective (RET-002)
 
-**BEFORE handoff**, update `work-items/<branch>/retro/retrospective.md` under "Architecture Phase":
+**BEFORE handoff**, create your phase retrospective:
 
-1. **What Went Well** - Effective patterns, clear contracts, good ADRs
-2. **Challenges** - Unclear requirements, difficult trade-offs, integration complexity
-3. **Learnings** - Were contracts testable? Did ADRs guide implementation? Patterns effective?
-4. **Handoff Quality** - Did testers have enough detail? Were contracts clear?
-5. **Actions** - KB updates needed, ADR improvements, template refinements
+1. **Copy Template**: Copy `work-items/_template/retro/RET-001-example-phase.md` to `work-items/<branch>/retro/RET-002-architecture-phase.md`
+
+2. **Fill All Sections**:
+   - **Overview**: Phase summary, duration, key deliverables (ADRs, contracts, diagrams)
+   - **What Went Well** ✅: Effective patterns, clear contracts, good ADRs (with evidence)
+   - **What Didn't Go Well** ❌: Unclear requirements, difficult trade-offs, integration complexity (with impact)
+   - **Key Learnings** 💡: Were contracts testable? Did ADRs guide implementation? Patterns effective?
+   - **Action Items** 📋: KB updates needed, ADR improvements, template refinements
+   - **Quality Assessment**: Contract clarity, ADR completeness, design pattern effectiveness
+   - **Handoff to Next Phase**: Did testers have enough detail? Were contracts clear for testing?
+
+3. **Update Summary**: Add entry to `work-items/<branch>/retro/retrospective.md`:
+
+   ```markdown
+   ### RET-002: Architecture Phase
+
+   - **File**: [RET-002-architecture-phase.md](RET-002-architecture-phase.md)
+   - **Agent**: Architect
+   - **Date**: YYYY-MM-DD
+   - **Status**: Complete ✅
+   - **Key Outcome**: ADRs and contracts created, design patterns documented
+   ```
 
 ---
 

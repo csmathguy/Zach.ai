@@ -1,217 +1,327 @@
-# Retrospective: [Feature Name]
+# Retrospective Summary: [Feature Name]
 
 **Feature**: [Feature Name]  
 **Work Item**: [O#-feature-name]  
-**Date Completed**: YYYY-MM-DD  
-**Participants**: [Names/Agents]
+**Start Date**: YYYY-MM-DD  
+**Completion Date**: YYYY-MM-DD  
+**Total Duration**: X days/weeks
 
 ---
 
-## Phase-by-Phase Retrospectives
+## Overview
 
-### Planning Phase (Planner Agent)
+This document provides a high-level summary of the retrospectives conducted throughout the feature development lifecycle. Each phase has a detailed retrospective entry (RET-###) that captures specific learnings, challenges, and action items.
 
-**Date**: YYYY-MM-DD
+**Purpose**: Synthesize cross-phase insights and track overall feature success.
 
-**What Went Well**:
-
-- APR clarity and completeness
-- User story quality
-- Accessibility requirements captured
-
-**What Didn't Go Well**:
-
-- Information gaps or delays
-- Unclear requirements
-
-**Learnings**:
-
-- Key insights about planning process
-
-**Action Items**:
-
-- [ ] Update APR template with [improvement]
-- [ ] Document [pattern] in planning guide
+**How to Use**: Each agent creates their phase retrospective (RET-###) using the template. The retro agent then synthesizes all entries into this summary document.
 
 ---
 
-### Architecture Phase (Architect Agent)
+## Individual Phase Retrospectives
 
-**Date**: YYYY-MM-DD
+### RET-001: Planning Phase
 
-**What Went Well**:
+- **File**: [RET-001-planning-phase.md](RET-001-planning-phase.md)
+- **Agent**: Planner
+- **Date**: YYYY-MM-DD
+- **Status**: Complete ✅
+- **Key Outcome**: APR created with clear requirements and success metrics
 
-- ADR quality and completeness
-- Contract clarity for testers
-- Design patterns chosen
+### RET-002: Architecture Phase
 
-**What Didn't Go Well**:
+- **File**: [RET-002-architecture-phase.md](RET-002-architecture-phase.md)
+- **Agent**: Architect
+- **Date**: YYYY-MM-DD
+- **Status**: Complete ✅
+- **Key Outcome**: ADRs and contracts defined for implementation
 
-- Missing technical details
-- Integration complexity
+### RET-003: Research Phase
 
-**Learnings**:
+- **File**: [RET-003-research-phase.md](RET-003-research-phase.md) _(if applicable)_
+- **Agent**: Researcher
+- **Date**: YYYY-MM-DD
+- **Status**: Complete ✅ / Skipped
+- **Key Outcome**: Knowledge base updated with new technology documentation
 
-- Key insights about architecture decisions
+### RET-004: Testing Phase
 
-**Action Items**:
+- **File**: [RET-004-testing-phase.md](RET-004-testing-phase.md)
+- **Agent**: Tester
+- **Date**: YYYY-MM-DD
+- **Status**: Complete ✅
+- **Key Outcome**: Test plan and test suites created with clear specifications
 
-- [ ] Update ADR template with [improvement]
-- [ ] Document [pattern] in architecture guide
+### RET-005: Development Phase
 
----
+- **File**: [RET-005-development-phase.md](RET-005-development-phase.md)
+- **Agent**: Developer
+- **Date**: YYYY-MM-DD
+- **Status**: Complete ✅
+- **Key Outcome**: All tasks implemented following TDD, tests passing, SOLID compliant
 
-### Research Phase (Researcher Agent)
+### RET-006: Overall Feature
 
-**Date**: YYYY-MM-DD
-
-**What Went Well**:
-
-- Research efficiency
-- KB documentation quality
-- Technology evaluation
-
-**What Didn't Go Well**:
-
-- Research scope creep
-- Documentation gaps
-
-**Learnings**:
-
-- Key insights about research process
-
-**Action Items**:
-
-- [ ] Update research workflow with [improvement]
-- [ ] Create KB entry for [technology]
-
----
-
-### Testing Phase (Tester Agent)
-
-**Date**: YYYY-MM-DD
-
-**What Went Well**:
-
-- Test strategy completeness
-- Coverage adequacy
-- Contract utilization
-
-**What Didn't Go Well**:
-
-- Missing edge cases
-- Test complexity
-
-**Learnings**:
-
-- Key insights about testing approach
-
-**Action Items**:
-
-- [ ] Update test plan template with [improvement]
-- [ ] Document [pattern] in testing guide
+- **File**: [RET-006-overall-feature.md](RET-006-overall-feature.md)
+- **Agent**: Retro
+- **Date**: YYYY-MM-DD
+- **Status**: Complete ✅
+- **Key Outcome**: Cross-phase insights synthesized, action items prioritized
 
 ---
 
-### Development Phase (Developer Agent)
+## High-Level Metrics
 
-**Date**: YYYY-MM-DD
+**Timeline Performance**:
 
-**What Went Well**:
+- Estimated Duration: X days
+- Actual Duration: Y days
+- Variance: +/- Z days (% over/under)
+- Phases on time: X/6
+- Phases delayed: Y/6
 
-- TDD implementation
-- Architecture adherence
-- Code quality
+**Quality Metrics**:
 
-**What Didn't Go Well**:
+- Tests passing: X/Y (Z%)
+- Coverage achieved: X% (target: 70%+)
+- TypeScript errors: 0 ✅
+- ESLint warnings: 0 ✅
+- SOLID compliance: ✅/❌
 
-- Technical debt introduced
-- SOLID violations
+**Deliverables Completed**:
 
-**Learnings**:
-
-- Key insights about development process
-
-**Action Items**:
-
-- [ ] Refactor [component] to fix [issue]
-- [ ] Document [pattern] in development guide
-
----
-
-## Overall Feature Retrospective
-
-### Wins (What Went Well)
-
-1. **Win 1**: [Description and why it was successful]
-2. **Win 2**: [Description and why it was successful]
-
-### Frictions (What Slowed Us Down)
-
-1. **Friction 1**: [What was the problem and how did it impact us]
-2. **Friction 2**: [What was the problem and how did it impact us]
-
-### Learnings (Insights & Experiments)
-
-1. **Learning 1**: [What we discovered and why it matters]
-2. **Learning 2**: [What we discovered and why it matters]
-
-### Action Items (Process Improvements)
-
-| Action                                     | Owner        | Due Date   | Priority |
-| ------------------------------------------ | ------------ | ---------- | -------- |
-| Update [template/guide] with [improvement] | [Agent/Team] | YYYY-MM-DD | High     |
-| Create KB entry for [topic]                | Researcher   | YYYY-MM-DD | Medium   |
-| Refactor [code] to fix [issue]             | Developer    | YYYY-MM-DD | High     |
+- ✅ APR: 1
+- ✅ ADRs: X created
+- ✅ Research Items: X created
+- ✅ Test Suites: X created
+- ✅ Tasks: X completed
+- ✅ Knowledge Base entries: X created/updated
 
 ---
 
-## Metrics
+## Cross-Phase Themes
 
-### Time Analysis
+### What Worked Well Across All Phases ✅
 
-- **Estimated**: X weeks
-- **Actual**: Y weeks
-- **Variance**: +/- Z weeks
+1. **Theme 1**: Pattern that worked consistently
+   - Evidence from RET-001, RET-002, RET-005
+   - Impact on overall success: [Description]
+   - Recommendation: Continue this practice
 
-**Breakdown by Phase**:
+2. **Theme 2**: Process that proved effective
+   - Evidence from RET-003, RET-004, RET-005
+   - Impact on overall success: [Description]
+   - Recommendation: Document as standard practice
 
-- Planning: X days
-- Architecture: X days
-- Research: X days
-- Testing: X days
-- Development: X days
+3. **Theme 3**: Tool or approach that delivered value
+   - Evidence from all phases
+   - Impact on overall success: [Description]
+   - Recommendation: Adopt for future features
 
-### Quality Metrics
+### What Didn't Work Well Across Phases ❌
 
-- **Code Coverage**: X% (Target: 70%+)
-- **Test Pass Rate**: X% (Target: 100%)
-- **TypeScript Errors**: X (Target: 0)
-- **ESLint Warnings**: X (Target: 0)
+1. **Theme 1**: Consistent challenge or friction point
+   - Evidence from RET-001, RET-002, RET-005
+   - Impact on timeline/quality: [Description]
+   - Root cause: [Analysis]
+   - Recommendation: [Improvement]
 
-### SOLID Compliance
+2. **Theme 2**: Process that caused delays
+   - Evidence from RET-003, RET-004
+   - Impact on timeline/quality: [Description]
+   - Root cause: [Analysis]
+   - Recommendation: [Improvement]
 
-- [ ] Single Responsibility Principle (SRP)
-- [ ] Open/Closed Principle (OCP)
-- [ ] Liskov Substitution Principle (LSP)
-- [ ] Interface Segregation Principle (ISP)
-- [ ] Dependency Inversion Principle (DIP)
+3. **Theme 3**: Tool or gap that hindered progress
+   - Evidence from RET-002, RET-005
+   - Impact on timeline/quality: [Description]
+   - Root cause: [Analysis]
+   - Recommendation: [Improvement]
 
 ---
 
-## Follow-Up Items
+## Key Cross-Phase Learnings 💡
 
-### For Next Feature
+### Technical Insights
 
-- [ ] Item 1: [What to do differently]
-- [ ] Item 2: [What to carry forward]
+1. **Learning 1**: Cross-phase technical insight
+   - Discovered in: [Phase names]
+   - Insight: [Description]
+   - Application to future work: [How to use]
 
-### Technical Debt Tickets
+2. **Learning 2**: Cross-phase technical insight
+   - Discovered in: [Phase names]
+   - Insight: [Description]
+   - Application to future work: [How to use]
 
-- [ ] Ticket 1: [Refactoring needed]
-- [ ] Ticket 2: [Performance optimization]
+### Process Insights
 
-### Knowledge Base Updates Needed
+1. **Learning 1**: What we learned about our workflow
+   - Discovered in: [Phase names]
+   - Observation: [Description]
+   - Impact: [Effect on work]
+   - Future application: [How to improve]
 
-- [ ] Update [KB entry] with [new information]
-- [ ] Create [new KB entry] for [topic]
+2. **Learning 2**: What we learned about our workflow
+   - Discovered in: [Phase names]
+   - Observation: [Description]
+   - Impact: [Effect on work]
+   - Future application: [How to improve]
+
+---
+
+## Consolidated Action Items
+
+**High Priority** (Complete within 1 week):
+
+- [ ] [Action from RET-001] - Owner: [Name] - Due: [Date]
+- [ ] [Action from RET-002] - Owner: [Name] - Due: [Date]
+- [ ] [Action from RET-005] - Owner: [Name] - Due: [Date]
+
+**Medium Priority** (Complete within 1 month):
+
+- [ ] [Template update from RET-003] - Owner: [Name] - Due: [Date]
+- [ ] [KB update from RET-004] - Owner: [Name] - Due: [Date]
+- [ ] [Workflow improvement from RET-006] - Owner: [Name] - Due: [Date]
+
+**Low Priority** (Nice to have):
+
+- [ ] [Enhancement from RET-001] - Owner: [Name] - Due: [Date]
+- [ ] [Exploration from RET-005] - Owner: [Name] - Due: [Date]
+
+**Action Item Status Tracking**:
+
+- Total Action Items: X
+- Completed: Y (Z%)
+- In Progress: A
+- Blocked: B
+- Not Started: C
+
+---
+
+## Knowledge Base Updates Performed
+
+**New Entries Created**:
+
+1. [Technology Name] - Location: `knowledge-base/[tech]/README.md`
+   - Created by: [Agent name]
+   - Documented in: RET-003
+   - Quality: [Score/10]
+
+2. [Pattern Name] - Location: `knowledge-base/[section]/[file].md`
+   - Created by: [Agent name]
+   - Documented in: RET-006
+   - Quality: [Score/10]
+
+**Existing Entries Updated**:
+
+1. [Entry Name] - Location: `knowledge-base/[path]`
+   - Updates: [Summary of changes]
+   - Updated by: [Agent name]
+   - Documented in: RET-004
+
+2. [Entry Name] - Location: `knowledge-base/[path]`
+   - Updates: [Summary of changes]
+   - Updated by: [Agent name]
+   - Documented in: RET-005
+
+**ADRs Promoted** (Feature-specific → Codebase):
+
+1. [ADR Title] - From: `work-items/[branch]/architecture/adr-###` → To: `knowledge-base/codebase/architecture-decisions/####`
+   - Promoted by: Retro agent
+   - Reason: Pattern applicable to future features
+
+---
+
+## Recommendations for Future Features
+
+### Process Improvements
+
+1. **Recommendation 1**: Specific process change
+   - Evidence: RET-001, RET-002, RET-005
+   - Why: [Reasoning based on learnings]
+   - Expected impact: [Benefit to future work]
+   - Implementation: [How to apply]
+
+2. **Recommendation 2**: Specific process change
+   - Evidence: RET-003, RET-004
+   - Why: [Reasoning based on learnings]
+   - Expected impact: [Benefit to future work]
+   - Implementation: [How to apply]
+
+### Template/Workflow Enhancements
+
+1. **Enhancement 1**: Specific template improvement
+   - Target: [Template/workflow name]
+   - Change: [What to add/modify]
+   - Benefit: [Why this helps]
+   - Source: RET-###
+
+2. **Enhancement 2**: Specific workflow improvement
+   - Target: [Template/workflow name]
+   - Change: [What to add/modify]
+   - Benefit: [Why this helps]
+   - Source: RET-###
+
+### Technology Considerations
+
+1. **Tool/Library 1**: Evaluation or recommendation
+   - Use case: When to use
+   - Benefits: What it provides
+   - Trade-offs: What to watch for
+   - Source: RET-003
+
+2. **Tool/Library 2**: Evaluation or recommendation
+   - Use case: When to use
+   - Benefits: What it provides
+   - Trade-offs: What to watch for
+   - Source: RET-005
+
+---
+
+## Success Criteria Assessment
+
+**From APR** (Reference original success criteria):
+
+| Criterion  | Target | Actual | Status | Notes        |
+| ---------- | ------ | ------ | ------ | ------------ |
+| [Metric 1] | X      | Y      | ✅/❌  | [Brief note] |
+| [Metric 2] | X      | Y      | ✅/❌  | [Brief note] |
+| [Metric 3] | X      | Y      | ✅/❌  | [Brief note] |
+| [Metric 4] | X      | Y      | ✅/❌  | [Brief note] |
+
+**Overall Feature Success**: ✅ Success / ⚠️ Partial / ❌ Needs Improvement
+
+**Rationale**: [Brief explanation of overall assessment based on metrics and learnings]
+
+---
+
+## Retrospective Files Index
+
+All detailed phase retrospectives are linked below for reference:
+
+1. **Planning**: [RET-001-planning-phase.md](RET-001-planning-phase.md)
+2. **Architecture**: [RET-002-architecture-phase.md](RET-002-architecture-phase.md)
+3. **Research**: [RET-003-research-phase.md](RET-003-research-phase.md) _(if applicable)_
+4. **Testing**: [RET-004-testing-phase.md](RET-004-testing-phase.md)
+5. **Development**: [RET-005-development-phase.md](RET-005-development-phase.md)
+6. **Overall**: [RET-006-overall-feature.md](RET-006-overall-feature.md)
+
+**Total Retrospectives**: 5-6 (depending on whether research phase was needed)
+
+---
+
+## Related Documentation
+
+- **APR**: [work-items/[branch]/plan/apr.md](../plan/apr.md)
+- **Architecture**: [work-items/[branch]/architecture/README.md](../architecture/README.md)
+- **Research**: [work-items/[branch]/research/research-findings.md](../research/research-findings.md)
+- **Test Plan**: [work-items/[branch]/tests/test-plan.md](../tests/test-plan.md)
+- **Dev Summary**: [work-items/[branch]/dev/README.md](../dev/README.md)
+- **Knowledge Base**: [knowledge-base/copilot/workflows-apr-retro.md](../../../knowledge-base/copilot/workflows-apr-retro.md)
+
+---
+
+**Last Updated**: YYYY-MM-DD  
+**Synthesized by**: Retrospective Agent  
+**Feature Status**: Complete ✅

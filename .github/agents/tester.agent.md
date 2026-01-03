@@ -126,17 +126,36 @@ For concurrency limits and serialized-worker requirements, **reference the "SQLi
 
 ---
 
-## Step 4: Document Testing Retrospective
+## Step 4: Create Testing Phase Retrospective (RET-004)
 
-**BEFORE handing off to the developer**, document your testing phase retrospective in `work-items/<branch>/retro/retrospective.md` under the "Testing Phase (Tester Agent)" section:
+**BEFORE handing off to the developer**, create your phase retrospective:
 
-1. **What Went Well** - Modular TS-XXX structure, contract-driven design, clear Gherkin specs
-2. **What Was Challenging** - Balancing detail vs autonomy, coverage target trade-offs, E2E dependencies
-3. **Learnings** - Were contracts stable? TS-XXX pattern effective? Coverage rationale clear?
-4. **Handoff Quality** - Are test specs complete? Gherkin clear? Constraints documented?
-5. **Actions for Improvement** - Test template updates, knowledge base additions, process improvements
+1. **Copy Template**: Copy `work-items/_template/retro/RET-001-example-phase.md` to `work-items/<branch>/retro/RET-004-testing-phase.md`
+
+2. **Fill All Sections**:
+   - **Overview**: Phase summary, duration, key deliverables (test-plan.md, TS-### files)
+   - **What Went Well** ✅: Modular TS-XXX structure, contract-driven design, clear Gherkin specs (with evidence)
+   - **What Didn't Go Well** ❌: Balancing detail vs autonomy, coverage target trade-offs, E2E dependencies (with impact)
+   - **Key Learnings** 💡: Were contracts stable? TS-XXX pattern effective? Coverage rationale clear?
+   - **Action Items** 📋: Test template updates, knowledge base additions, process improvements
+   - **Quality Assessment**: Test spec completeness, Gherkin clarity, constraints documented
+   - **Handoff to Next Phase**: Are test specs complete for developer? Constraints clear?
+
+3. **Update Summary**: Add entry to `work-items/<branch>/retro/retrospective.md`:
+
+   ```markdown
+   ### RET-004: Testing Phase
+
+   - **File**: [RET-004-testing-phase.md](RET-004-testing-phase.md)
+   - **Agent**: Tester
+   - **Date**: YYYY-MM-DD
+   - **Status**: Complete ✅
+   - **Key Outcome**: Test plan and test suites created with clear specifications
+   ```
 
 **Purpose**: This retrospective helps developers understand test expectations and provides feedback on architecture testability.
+
+**Note**: RET-003 is Research Phase (may be skipped), so Tester creates RET-004.
 
 ---
 

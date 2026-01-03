@@ -57,15 +57,32 @@ git checkout -b feat/<feature-name>
 
 This ensures all work is isolated and traceable from the start.
 
-## Step 4: Document Planning Retrospective
+## Step 4: Create Planning Phase Retrospective (RET-001)
 
-**BEFORE handing off to the next agent**, document your planning phase retrospective in `work-items/<branch>/retro/retrospective.md` under the "Planning Phase (Planner Agent)" section:
+**BEFORE handing off to the next agent**, create your phase retrospective:
 
-1. **What Went Well** - Requirements gathering wins, APR structure clarity, stakeholder collaboration
-2. **What Was Challenging** - Missing requirements, scope ambiguity, estimation difficulties
-3. **Learnings** - Domain insights, unexpected requirements, assumption accuracy
-4. **Handoff Quality** - Was the APR clear for architecture? Missing accessibility/performance requirements?
-5. **Actions for Improvement** - Template updates, new prompts/skills, knowledge base additions
+1. **Copy Template**: Copy `work-items/_template/retro/RET-001-example-phase.md` to `work-items/<branch>/retro/RET-001-planning-phase.md`
+
+2. **Fill All Sections**:
+   - **Overview**: Phase summary, duration (estimated vs actual), key deliverables (APR location)
+   - **What Went Well** ✅: Requirements gathering wins, APR structure clarity, stakeholder collaboration (with evidence)
+   - **What Didn't Go Well** ❌: Missing requirements, scope ambiguity, estimation difficulties (with impact and time lost)
+   - **Key Learnings** 💡: Domain insights, unexpected requirements, assumption accuracy
+   - **Action Items** 📋: APR template updates, new prompts/skills, knowledge base additions
+   - **Quality Assessment**: Was APR complete? Clear for architecture? Accessibility/performance requirements included?
+   - **Handoff to Next Phase**: What you're delivering (APR location), outstanding items, notes for architect
+
+3. **Update Summary**: Add entry to `work-items/<branch>/retro/retrospective.md` under "Individual Phase Retrospectives" section:
+
+   ```markdown
+   ### RET-001: Planning Phase
+
+   - **File**: [RET-001-planning-phase.md](RET-001-planning-phase.md)
+   - **Agent**: Planner
+   - **Date**: YYYY-MM-DD
+   - **Status**: Complete ✅
+   - **Key Outcome**: APR created with requirements, user stories, and success criteria
+   ```
 
 **Purpose**: Creating this retrospective immediately after planning helps the next agent understand context and identifies gaps early in the workflow.
 

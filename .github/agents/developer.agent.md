@@ -319,10 +319,42 @@ Refs: work-items/<branch>/architecture/adr-01-domain-models.md"
 
 ---
 
+## Step 12: Create Development Phase Retrospective (RET-005)
+
+**BEFORE handing off to retro agent**, create your phase retrospective:
+
+1. **Copy Template**: Copy `work-items/_template/retro/RET-001-example-phase.md` to `work-items/<branch>/retro/RET-005-development-phase.md`
+
+2. **Fill All Sections**:
+   - **Overview**: Phase summary, duration (estimated vs actual), key deliverables (dev/README.md, task-NNN files, tests)
+   - **What Went Well** ✅: TDD cycle effectiveness, task breakdown quality, SOLID compliance (with evidence)
+   - **What Didn't Go Well** ❌: Challenges, blockers, refactoring needs, unexpected complexity (with impact and time lost)
+   - **Key Learnings** 💡: TDD insights, architecture clarity, test effectiveness, pattern usage
+   - **Action Items** 📋: Dev workflow improvements, task template enhancements, code quality patterns
+   - **Quality Assessment**: SOLID compliance (SRP/OCP/LSP/ISP/DIP checklist), Code quality metrics (TypeScript errors: 0, ESLint warnings: 0, Test coverage: X%, Dead code removed), Deliverable quality
+   - **Handoff to Next Phase**: Feature complete, all tasks ✅, tests passing, code quality validated
+
+3. **Update Summary**: Add entry to `work-items/<branch>/retro/retrospective.md`:
+
+   ```markdown
+   ### RET-005: Development Phase
+
+   - **File**: [RET-005-development-phase.md](RET-005-development-phase.md)
+   - **Agent**: Developer
+   - **Date**: YYYY-MM-DD
+   - **Status**: Complete ✅
+   - **Key Outcome**: All tasks implemented, tests passing, SOLID principles followed
+   ```
+
+**Purpose**: This retrospective documents TDD effectiveness, architecture decisions in practice, and provides critical feedback for continuous workflow improvement.
+
+---
+
 ## Handoff Checklist
 
 **Ready for retrospective agent when**:
 
+- [ ] **RET-005 retrospective created** and added to retrospective.md summary
 - [ ] All tasks in `dev/README.md` marked ✅ Complete
 - [ ] All tests passing (🟢 GREEN maintained)
 - [ ] Test coverage meets targets (70%+ overall, 90%+ domain)

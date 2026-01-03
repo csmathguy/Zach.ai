@@ -26,7 +26,13 @@ work-items/<feature-name>/
 │   ├── task-001-task-name.md     # Individual task files
 │   └── task-002-task-name.md     # (Create as needed)
 └── retro/
-    └── retrospective.md          # Post-feature retrospective
+    ├── retrospective.md                 # Summary linking to all RET entries
+    ├── RET-001-planning-phase.md        # Individual phase retrospectives
+    ├── RET-002-architecture-phase.md
+    ├── RET-003-research-phase.md        # (if research occurred)
+    ├── RET-004-testing-phase.md
+    ├── RET-005-development-phase.md
+    └── RET-006-overall-feature.md       # (by retro agent)
 ```
 
 ## Phase-by-Phase Usage
@@ -60,8 +66,15 @@ work-items/<feature-name>/
 
 ### Retrospective Phase (Retro Agent)
 
-- Complete `retro/retrospective.md`
-- Document lessons learned and improvements
+- Each agent creates individual RET-### retrospective at end of their phase:
+  - Planner → `RET-001-planning-phase.md`
+  - Architect → `RET-002-architecture-phase.md`
+  - Researcher → `RET-003-research-phase.md` (if applicable)
+  - Tester → `RET-004-testing-phase.md`
+  - Developer → `RET-005-development-phase.md`
+- Retro agent synthesizes all into:
+  - `RET-006-overall-feature.md` (comprehensive synthesis)
+  - `retrospective.md` (summary with cross-phase themes and consolidated actions)
 
 ## Template Files
 
@@ -71,6 +84,8 @@ work-items/<feature-name>/
 - **`tests/TS-001-example-test-suite.md`** – Test suite specification template
 - **`dev/README.md`** – Development summary, task breakdown, quality gates
 - **`dev/task-001-example-task.md`** – Individual task template (TDD cycle, implementation details)
+- **`retro/RET-001-example-phase.md`** – Individual phase retrospective template (copy for each agent)
+- **`retro/retrospective.md`** – Retrospective summary linking to all RET-### entries
 
 ## How to Use
 
