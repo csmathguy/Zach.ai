@@ -35,7 +35,7 @@ Interview the user to understand:
 
 ### 2. Draft the APR
 
-Create or update `features/<branch>/plan/apr.md` following [ProductPlan PRD guidance](../../../knowledge-base/copilot/workflows-apr-retro.md):
+Create or update `work-items/<feature-name>/plan/apr.md` following [ProductPlan PRD guidance](../../../knowledge-base/copilot/workflows-apr-retro.md) and the template at `work-items/_template/plan/apr.md`:
 
 **Required Sections:**
 
@@ -105,7 +105,7 @@ Once the APR is approved:
 
 ## Resources
 
-- APR template: `features/_template/plan/apr.md`
+- APR template: `work-items/_template/plan/apr.md` (complete structure documented in `work-items/_template/README.md`)
 - ProductPlan PRD guidance: `knowledge-base/copilot/workflows-apr-retro.md`
 - Example APR: `features/feat-copilot-agents/plan/apr.md`
 

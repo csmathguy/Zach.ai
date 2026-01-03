@@ -16,8 +16,8 @@ Use this skill when:
 
 ### 1. Planning Phase
 
-- Copy the feature template: `features/_template` → `features/<branch-name>`
-- Use the `planner` agent or `/apr` prompt to draft an APR in `features/<branch>/plan/apr.md`
+- Copy the feature template: `work-items/_template` → `work-items/<feature-name>`
+- Use the `planner` agent or `/apr` prompt to draft an APR in `work-items/<feature-name>/plan/apr.md`
 - Reference [knowledge-base/copilot/workflows-apr-retro.md](../../../knowledge-base/copilot/workflows-apr-retro.md) for APR structure
 - **Critical**: Once the APR is approved, create the feature branch immediately:
   ```bash
@@ -73,7 +73,7 @@ The workflow agents are designed to hand off to each other:
 
 ## Resources
 
-- Feature template: `features/_template/`
+- Feature template: `work-items/_template/` (see `work-items/_template/README.md` for structure)
 - Workflow guidance: `knowledge-base/copilot/workflows-apr-retro.md`
 - Development standards: `knowledge-base/codebase/development-guide.md`
 - Repository structure: `knowledge-base/codebase/structure.md`

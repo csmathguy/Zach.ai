@@ -7,7 +7,7 @@ tool-set: retro
 agent: retro
 ---
 
-Facilitate a retrospective following the template in `features/_template/retro/retrospective.md`. Guide the user through:
+Facilitate a retrospective following the template in `work-items/_template/retro/retrospective.md`. Guide the user through:
 
 1. **Quick Summary**: Outcome, date range, participants
 2. **What Went Well?**: Celebrate successes and effective practices

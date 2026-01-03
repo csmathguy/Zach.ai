@@ -29,6 +29,7 @@ This workspace-level knowledge base captures core references, summaries, and bes
 - **[tdd/](./tdd/README.md)**: Test-Driven Development (TDD) — RED-GREEN-REFACTOR, test-first principles ✅
 - **[typescript/](./typescript/README.md)**: TypeScript language features
 - **[vite/](./vite/README.md)**: Vite build tool and dev server
+- **[zod/](./zod/README.md)**: Zod schema validation library — TypeScript-first, type inference, single source of truth ✅
 - More technology folders being added (see [ideas/knowledge-base-updates.md](../ideas/knowledge-base-updates.md))
 
 ## 🎯 Getting Started

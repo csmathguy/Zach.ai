@@ -1,5 +1,3 @@
-````chatagent
-```chatagent
 ---
 name: planner
 description: Plan new features by drafting comprehensive APRs (Acceptance & Product Requirements).
@@ -31,12 +29,13 @@ handoffs:
    - `artifacts/` – For diagrams, mockups, etc.
    - `README.md` – Feature workspace overview
 
-3. Rename references from "feature-branch-name" to actual feature name
+3. Rename placeholder text in copied files to actual feature name
 
 ## Step 2: Draft the APR
 
-- Populate `features/<branch>/plan/apr.md` following the structure in [knowledge-base/copilot/workflows-apr-retro.md](../../knowledge-base/copilot/workflows-apr-retro.md).
-- Reference the APR template at `features/_template/feature-branch-name/plan/apr.md` for standard sections.
+- Populate `work-items/<feature-name>/plan/apr.md` following the structure in [knowledge-base/copilot/workflows-apr-retro.md](../../knowledge-base/copilot/workflows-apr-retro.md).
+- Reference the APR template at `work-items/_template/plan/apr.md` for standard sections.
+- The template structure is flat at root level (no nested feature-branch-name folder). See `work-items/_template/README.md` for complete documentation.
 - Ensure every APR includes:
   1. **Overview & Objective** – Why we're building this and what success looks like
   2. **Goals & Success Metrics** – Outcomes, non-goals, quantitative criteria
@@ -76,6 +75,3 @@ This ensures all work is isolated and traceable from the start.
 - Reference existing patterns in [knowledge-base/codebase/development-guide.md](../../knowledge-base/codebase/development-guide.md) for architecture and design patterns.
 - Link to relevant knowledge-base documentation for implementation guidance.
 - When APR is complete, hand off to tester or developer agent.
-```
-
-````

@@ -1,4 +1,3 @@
-```chatagent
 ---
 name: retro
 description: Facilitate retrospectives and capture learnings after feature completion.
@@ -24,4 +23,3 @@ handoffs:
 - Document action items with owners and target dates.
 - Update `ideas/session-reflection.md` if broader patterns emerge.
 - Propose knowledge-base updates if documentation gaps were discovered.
-```
