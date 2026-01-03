@@ -36,7 +36,34 @@ handoffs:
 
 ---
 
-## Step 2: List Test Cases (TDD Phase 0)
+## Step 2: Pre-Implementation Checklist ⚠️ CRITICAL
+
+**BEFORE writing any code or tests, verify the environment:**
+
+### 2.1 Verify File Locations
+- [ ] **Search for existing files**: Run `Get-ChildItem -Recurse -Filter "*.ts"` (or relevant pattern) to locate actual file locations
+- [ ] **Check configuration paths**: Review `DATABASE_URL`, import paths, file references in configs
+- [ ] **Document findings**: Note actual locations vs assumed locations in implementation-notes.md
+
+**Why**: Prevents path errors like assuming `prisma/dev.db` when actual location is `dev.db` (backend root).
+
+### 2.2 Check Existing Patterns
+- [ ] **Search for similar implementations**: Use `grep_search` to find existing patterns (e.g., "PrismaClient initialization")
+- [ ] **Review related code**: Read similar files (e.g., if creating repository, check existing repositories)
+- [ ] **Note patterns to replicate**: Document initialization patterns, error handling, etc.
+
+**Why**: Ensures consistency (e.g., Prisma 7.x requires adapter - check `infrastructure/prisma/client.ts` for pattern).
+
+### 2.3 Verify Tool Versions & Compatibility
+- [ ] **Check package versions**: Review `package.json` for library versions (e.g., Prisma 7.x vs 4.x)
+- [ ] **Check environment**: PowerShell version (`$PSVersionTable.PSVersion`), Node version, etc.
+- [ ] **Note compatibility requirements**: Document version-specific syntax (e.g., Join-Path multi-segment not supported in PowerShell 5.1)
+
+**Why**: Prevents using outdated patterns or unsupported syntax.
+
+---
+
+## Step 3: List Test Cases (TDD Phase 0)
 
 Before writing code, create test checklist in `implementation-notes.md`.
 
@@ -46,7 +73,7 @@ List all scenarios to test - start simple, build toward complex.
 
 ---
 
-## Step 3: RED Phase - Write Failing Test
+## Step 4: RED Phase - Write Failing Test
 
 **Purpose**: Define what you want to build. Tests drive interface design.
 
@@ -80,7 +107,7 @@ List all scenarios to test - start simple, build toward complex.
 
 ---
 
-## Step 4: GREEN Phase - Make Tests Pass
+## Step 5: GREEN Phase - Make Tests Pass
 
 **Purpose**: Write minimum code to make tests pass. Don't optimize yet.
 
@@ -105,7 +132,7 @@ List all scenarios to test - start simple, build toward complex.
 
 ---
 
-## Step 5: REFACTOR Phase - Improve Code
+## Step 6: REFACTOR Phase - Improve Code
 
 **Purpose**: Optimize and clean up while maintaining GREEN status.
 
@@ -137,7 +164,7 @@ List all scenarios to test - start simple, build toward complex.
 
 ---
 
-## Step 6: Extract Interfaces (Retrospectively)
+## Step 7: Extract Interfaces (Retrospectively)
 
 **Do NOT create interfaces before tests. Extract AFTER patterns emerge.**
 
@@ -151,7 +178,7 @@ After 3-5 tests for a component, usage patterns become clear. Extract the interf
 
 ---
 
-## Step 7: Commit and Document (CRITICAL WORKFLOW)
+## Step 8: Commit and Document (CRITICAL WORKFLOW)
 
 **After implementing and testing a coherent chunk of work:**
 
@@ -294,7 +321,7 @@ Before moving to next task, verify:
 
 ---
 
-## Step 8: Repeat RED-GREEN-REFACTOR + Document
+## Step 9: Repeat RED-GREEN-REFACTOR + Document
 
 ## Step 8: Repeat RED-GREEN-REFACTOR + Document
 
@@ -314,7 +341,7 @@ Continue cycling through RED-GREEN-REFACTOR until all test cases are complete:
 
 ---
 
-## Step 9: Follow Best Practices Throughout
+## Step 10: Follow Best Practices Throughout
 
 - Follow [knowledge-base/codebase/development-guide.md](../../knowledge-base/codebase/development-guide.md) for SOLID, DRY, KISS principles
 - Follow [.github/instructions/tdd.instructions.md](../instructions/tdd.instructions.md) for TDD workflow
@@ -329,10 +356,13 @@ Continue cycling through RED-GREEN-REFACTOR until all test cases are complete:
 - Address `act()` warnings immediately (never defer)
 - **Don't proceed if output looks wrong - fix first!**
 - **Ensure test output is clean** - suppress framework error logs, see [TDD instructions](../instructions/tdd.instructions.md)
+- **Verify file locations first** - Always search for files before assuming locations
+- **Check existing patterns** - Search for similar code before creating new implementations
+- **Fix globally when corrected** - When user corrects a pattern, search and fix all instances
 
 ---
 
-## Step 10: Review and Implement Retrospective Improvements
+## Step 11: Review and Implement Retrospective Improvements
 
 **BEFORE starting next task**, review recent retrospectives and implement action items:
 

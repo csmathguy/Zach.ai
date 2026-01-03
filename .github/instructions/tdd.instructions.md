@@ -36,6 +36,61 @@ If you write implementation code without a failing test demanding it, you're not
 
 ---
 
+## Phase -1: Verify Environment (BEFORE Test Cases)
+
+**CRITICAL: Do this FIRST before listing test cases**
+
+### Verify File Locations
+
+Before writing any code or paths:
+
+```powershell
+# Locate actual files
+Get-ChildItem backend -Recurse -Filter "*.db"
+Get-ChildItem backend -Recurse -Filter "*.ts" | Where-Object { $_.Name -like "*Repository*" }
+
+# Check configuration
+cat backend/.env | Select-String DATABASE_URL
+cat backend/prisma.config.ts
+```
+
+**Why**: Prevents path errors. Example: Database at `backend/dev.db`, not `backend/prisma/dev.db`.
+
+### Check Existing Patterns
+
+Before creating new infrastructure code:
+
+```bash
+# Search for similar implementations
+grep_search "new PrismaClient" backend/src/infrastructure/
+grep_search "PrismaLibSql" backend/
+
+# Review existing patterns
+read_file backend/src/infrastructure/prisma/client.ts
+```
+
+**Why**: Ensures consistency. Example: Prisma 7.x requires adapter - copy pattern from `client.ts`.
+
+### Document Findings
+
+Create or update `work-items/<branch>/dev/implementation-notes.md`:
+
+```markdown
+## Environment Verification (Phase -1)
+
+### File Locations
+
+- Database: backend/dev.db (NOT prisma/dev.db)
+- Repositories: backend/src/infrastructure/prisma/repositories/
+
+### Patterns to Follow
+
+- Prisma Client: Requires PrismaLibSql adapter (see client.ts lines 30-35)
+- PowerShell: Use Split-Path chaining (Join-Path multi-segment unsupported in 5.1)
+```
+
+---
+
 ## Phase 0: List Test Cases First
 
 Before starting RED-GREEN-REFACTOR, **write out a list of test cases**:
