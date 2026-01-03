@@ -79,111 +79,51 @@ export { thoughtMapper } from './thoughtMapper';
 
 ## Type Safety
 
-### Avoid `any`
+## Type Safety Best Practices
+
+**Deep Dive**: [Development Guide - TypeScript](../../knowledge-base/codebase/development-guide.md#typescript-best-practices)
 
 ```typescript
-// ❌ Bad
+// ❌ Avoid 'any'
 function process(data: any) {}
 
-// ✅ Good
+// ✅ Use 'unknown' with type guards
 function process(data: unknown) {
   if (typeof data === 'object' && data !== null) {
-    // Type guard narrows the type
+    // Safely handle typed data
   }
 }
-```
 
-### Prefer Interfaces for Objects
-
-```typescript
-// ✅ Use interface for object shapes
+// ✅ Interfaces for objects, types for unions
 interface User {
   id: string;
   name: string;
-  email: string;
 }
 
-// ✅ Use type for unions, intersections, primitives
 type Status = 'active' | 'inactive';
-type UserWithTimestamps = User & { createdAt: Date };
 ```
 
-### Use Utility Types
+## Naming & Organization
+
+- `PascalCase` - Interfaces, Types, Classes
+- `camelCase` - Functions, variables, methods
+- `UPPER_CASE` - Constants
+
+**Imports**: external → internal (aliases) → relative
 
 ```typescript
-type PartialUser = Partial<User>;
-type RequiredUser = Required<User>;
-type ReadonlyUser = Readonly<User>;
-type UserIdAndName = Pick<User, 'id' | 'name'>;
-type UserWithoutEmail = Omit<User, 'email'>;
-```
-
-### Generics
-
-```typescript
-// Generic constraints
-interface HasId {
-  id: string;
-}
-
-function findById<T extends HasId>(items: T[], id: string): T | undefined {
-  return items.find((item) => item.id === id);
-}
-```
-
-### Type Guards
-
-```typescript
-function isError(value: unknown): value is Error {
-  return value instanceof Error;
-}
-
-// Usage
-if (isError(result)) {
-  console.error(result.message); // TypeScript knows it's Error
-}
-```
-
-## Error Handling
-
-```typescript
-// ✅ Proper async error handling
-async function fetchData(): Promise<Data> {
-  try {
-    const response = await fetch('/api/data');
-    return await response.json();
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Failed to fetch data: ${error.message}`);
-    }
-    throw new Error('Unknown error occurred');
-  }
-}
-```
-
-## Naming Conventions
-
-- `PascalCase` - Interfaces, Types, Classes, Enums
-- `camelCase` - Functions, variables, properties, methods
-- `UPPER_CASE` - Constants, environment variables
-
-## Imports
-
-```typescript
-// Organize: external → internal → relative
-import { useState, useEffect } from 'react';
-import { fetchUser } from '@/services/api';
+import { useState } from 'react';
+import { User } from '@domain/models/User';
 import { formatDate } from './utils';
 ```
 
-## Pre-Commit
+## Pre-Commit Validation
 
-- No TypeScript errors (`tsc --noEmit`)
-- No unused imports or variables
+- No TypeScript errors (`npm run typecheck`)
 - All functions have explicit return types
-- Complex types are well-documented
+- No unused imports/variables
 
 ---
 
-**For detailed patterns**: See [knowledge-base/typescript/README.md](../../knowledge-base/typescript/README.md) (when documented)  
-**For SOLID principles**: See [knowledge-base/codebase/development-guide.md](../../knowledge-base/codebase/development-guide.md)
+**SOLID Principles**: [Development Guide](../../knowledge-base/codebase/development-guide.md#solid-principles)  
+**TypeScript Patterns**: [Development Guide](../../knowledge-base/codebase/development-guide.md#typescript-best-practices)
