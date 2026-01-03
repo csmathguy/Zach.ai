@@ -265,6 +265,139 @@ sqlite3 dev.db "SELECT * FROM _prisma_migrations;"
 
 ---
 
+## Database Selection by Environment
+
+### Development Environment
+
+**Database**: `dev.db`  
+**Location**: `backend/dev.db`  
+**Configuration**: Set via `DATABASE_URL` in `.env` or environment variable  
+**Purpose**: Local testing, experimentation, rapid iteration
+
+**How to Use**:
+
+```bash
+# Option 1: .env file (recommended for local dev)
+cd backend
+echo 'DATABASE_URL="file:./dev.db?journal_mode=WAL"' > .env
+
+# Option 2: npm run dev automatically uses dev.db via default
+npm run dev
+
+# Option 3: PM2 staging-backend process
+npm run staging
+# Uses DATABASE_URL from ecosystem.config.js env.DATABASE_URL
+```
+
+**Safe Operations**:
+
+- ✅ **Clear data**: `npm run db:reset` (safe, intended for testing)
+- ✅ **Fast iteration**: `npx prisma migrate dev` (interactive migrations)
+- ✅ **Seed test data**: `npm run db:seed`
+- ✅ **Experiment freely**: Data can be recreated anytime
+
+### Production Environment
+
+**Database**: `prod.db`  
+**Location**: `backend/prod.db` OR `deploy/current/backend/prod.db`  
+**Configuration**: Set via PM2 `ecosystem.config.js` `env_production.DATABASE_URL`  
+**Purpose**: Deployed application with persistent user data
+
+**How to Use**:
+
+```bash
+# Option 1: PM2 main process (recommended for production)
+npm run deploy
+# Sets DATABASE_URL="file:./prod.db" via ecosystem.config.js
+
+# Option 2: Manual .env override (not recommended - use PM2)
+cd backend
+echo 'DATABASE_URL="file:./prod.db?journal_mode=WAL"' > .env
+
+# Option 3: Environment variable
+export DATABASE_URL="file:./prod.db?journal_mode=WAL"
+npm start
+```
+
+**Safe Operations**:
+
+- ✅ **Migrations only**: `npx prisma migrate deploy` (preserves data)
+- ✅ **Backups before deployment**: Automatic via `main-deploy.ps1`
+- ❌ **NEVER** run `db:reset` on production database
+- ❌ **NEVER** manually delete `prod.db`
+
+### Configuration Reference
+
+**`.env` File** (development default):
+
+```env
+# Development database (local testing, can be cleared)
+DATABASE_URL="file:./dev.db?journal_mode=WAL"
+
+# Production database (deployed, persistent data)
+# Uncomment for production (NOT RECOMMENDED - use PM2):
+# DATABASE_URL="file:./prod.db?journal_mode=WAL"
+```
+
+**`ecosystem.config.js`** (PM2 configuration):
+
+```javascript
+// Staging backend - uses dev.db
+{
+  name: 'staging-backend',
+  env: {
+    DATABASE_URL: 'file:./dev.db',
+  }
+}
+
+// Production main - uses prod.db
+{
+  name: 'main',
+  env_production: {
+    DATABASE_URL: 'file:./prod.db',
+  }
+}
+```
+
+### Switching Between Databases
+
+**Development → Production** (local testing):
+
+```bash
+# Stop any running processes
+pm2 stop all
+
+# Update .env to use prod.db
+cd backend
+echo 'DATABASE_URL="file:./prod.db?journal_mode=WAL"' > .env
+
+# Restart application
+npm run dev
+```
+
+**Production → Development** (back to testing):
+
+```bash
+# Restore dev.db configuration
+cd backend
+echo 'DATABASE_URL="file:./dev.db?journal_mode=WAL"' > .env
+
+# Or just delete .env (defaults to dev.db)
+rm .env
+
+npm run dev
+```
+
+### Best Practices
+
+1. **Use `.env` for local development** - Easy to switch, gitignored by default
+2. **Use PM2 for production** - Environment variables set per process, no `.env` conflicts
+3. **Never commit `.env`** - Already in `.gitignore`, use `.env.example` for templates
+4. **Document overrides** - If using non-standard setup, document in team wiki
+5. **Test with prod.db locally** - Before deployment, verify migrations work with prod.db structure
+
+---
+
 ## Database Backup & Restore
 
 ### Automatic Backups (Production)

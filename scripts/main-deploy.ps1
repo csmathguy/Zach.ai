@@ -11,32 +11,6 @@ try {
   npm run setup
   npm run build
 
-  # Database setup BEFORE creating snapshot
-  Write-Host "[deploy] Setting up production database..." -ForegroundColor Cyan
-  
-  # Backup existing database if present
-  if (Test-Path "backend/dev.db") {
-    Write-Host "[deploy] Creating database backup..." -ForegroundColor Yellow
-    & "$PSScriptRoot/database/db-backup.ps1" -DatabasePath "backend/dev.db"
-  }
-  
-  # Check if database exists
-  & "$PSScriptRoot/database/db-check.ps1"
-  if ($LASTEXITCODE -ne 0) {
-    Write-Host "[deploy] Database not found, initializing..." -ForegroundColor Yellow
-    & "$PSScriptRoot/database/db-init.ps1" -Environment production
-  } else {
-    Write-Host "[deploy] Database exists, running migrations..." -ForegroundColor Yellow
-    & "$PSScriptRoot/database/db-migrate.ps1" -Environment production
-  }
-  
-  if ($LASTEXITCODE -ne 0) {
-    Write-Host "[deploy] Database operation failed!" -ForegroundColor Red
-    exit 1
-  }
-  
-  Write-Host "[deploy] Database ready" -ForegroundColor Green
-
   $deployRoot = "deploy/current"
   $frontendSrc = "frontend/dist"
   $backendSrc = "backend/dist"
@@ -62,13 +36,10 @@ try {
   if (Test-Path "backend/prisma/schema.prisma") {
     Copy-Item -Path "backend/prisma/schema.prisma" -Destination $prismaDest -Force
   }
-  
-  # Copy database files (dev.db + WAL files)
-  if (Test-Path "backend/dev.db") {
-    Copy-Item -Path "backend/dev.db*" -Destination "$deployRoot/backend/" -Force
-    Write-Host "[deploy] Database copied to snapshot" -ForegroundColor Green
-  } else {
-    Write-Host "[deploy] WARNING: No database found at backend/dev.db" -ForegroundColor Yellow
+
+  # Copy migrations directory (required for prisma migrate deploy)
+  if (Test-Path "backend/prisma/migrations") {
+    Copy-Item -Path "backend/prisma/migrations" -Destination $prismaDest -Recurse -Force
   }
 
   # Copy package.json to snapshot, then run npm install there
@@ -80,14 +51,53 @@ try {
   npm install --production --no-save
   Pop-Location
 
-  Write-Host "[deploy] Snapshot created at: $deployRoot" -ForegroundColor Green
-  Write-Host "[deploy] Reloading PM2 process..." -ForegroundColor Cyan
+  # Database setup AFTER snapshot is ready
+  Write-Host "[deploy] Setting up production database..." -ForegroundColor Cyan
+  
+  # Get absolute path to deployment directory
+  $deployFullPath = Resolve-Path $deployRoot | Select-Object -ExpandProperty Path
+  $prodDbPath = "$deployFullPath\backend\prod.db"
+  
+  # Backup existing production database if present in deployment
+  if (Test-Path $prodDbPath) {
+    Write-Host "[deploy] Creating database backup..." -ForegroundColor Yellow
+    & "$PSScriptRoot/database/db-backup.ps1" -DatabasePath $prodDbPath
+  }
+  
+  # Run migrations from source backend (has prisma CLI) but target deployed database
+  Push-Location backend
+  try {
+    $dbUrl = "file:$prodDbPath"
+    Write-Host "[deploy] Using production database: $dbUrl" -ForegroundColor Cyan
+    
+    if (-not (Test-Path $prodDbPath)) {
+      Write-Host "[deploy] Production database not found, running migrations to create..." -ForegroundColor Yellow
+    } else {
+      Write-Host "[deploy] Production database exists, running migrations..." -ForegroundColor Yellow
+    }
+    
+    # Set DATABASE_URL as environment variable for Prisma
+    $env:DATABASE_URL = $dbUrl
+    npx prisma migrate deploy
+    
+    if ($LASTEXITCODE -ne 0) { throw "Database migration failed" }
+    
+    Write-Host "[deploy] Production database ready at $prodDbPath" -ForegroundColor Green
+  } finally { 
+    Remove-Variable -Name DATABASE_URL -ErrorAction SilentlyContinue
+    Pop-Location 
+  }
+  
+  Write-Host "[deploy] Production database ready at $deployRoot/backend/prod.db" -ForegroundColor Green
 
-  if (Get-Command pm2 -ErrorAction SilentlyContinue) {
-    pm2 reload main
+  Write-Host "[deploy] Snapshot created at: $deployRoot" -ForegroundColor Green
+  Write-Host "[deploy] Starting/reloading PM2 process..." -ForegroundColor Cyan
+
+  if (Get-Command pm2 -ErrorAction SilentlyContiny) {
+    pm2 startOrReload ecosystem.config.js --only main --env production --update-env
     pm2 save
   } else {
-    npx pm2 reload main
+    npx pm2 startOrReload ecosystem.config.js --only main --env production --update-env
     npx pm2 save
   }
 

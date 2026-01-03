@@ -24,7 +24,7 @@ declare global {
 function createPrismaClient(): PrismaClient {
   // LibSQL adapter doesn't support URL query parameters like journal_mode
   // Strip them from the DATABASE_URL
-  let dbUrl = process.env.DATABASE_URL || 'file:./prisma/dev.db';
+  let dbUrl = process.env.DATABASE_URL || 'file:./dev.db';
   dbUrl = dbUrl.split('?')[0]; // Remove query parameters
 
   const adapter = new PrismaLibSql({
