@@ -44,6 +44,7 @@ export default {
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
     '!src/main.tsx', // React app entry point - tested via E2E
+    '!src/app-shell/feature-flags/**', // Uses import.meta.env; covered via integration
     '!src/vite-env.d.ts',
   ],
 
