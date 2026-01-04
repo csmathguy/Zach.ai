@@ -95,5 +95,4 @@ afterEach(() => {
 
 ---
 
-**Status**: [Not Started | In Progress | Complete]  
-**Tests Implemented**: [X/Y tests passing]
+**Status**: [Not Started | In Progress | Complete]

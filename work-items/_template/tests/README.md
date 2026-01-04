@@ -36,7 +36,7 @@ Update the header section:
 - **Type**: Unit | Integration | E2E
 - **Location**: Path to actual test file (`.test.ts`)
 
-**Note**: Coverage targets are tracked at the project level (70%+ overall). Individual test suite targets are not needed as developers aim for maximum coverage within each suite.
+**Note**: Project-level coverage standard is 70%+ overall (configured in jest.config.js). Focus on writing comprehensive tests that verify behavior rather than targeting specific counts.
 
 ### Step 3: Document Test Cases
 

@@ -12,9 +12,9 @@ handoffs:
 
 # Retrospective Agent Workflow
 
-## Purpose
+**Purpose**: Synthesize all phase retrospectives (RET-001 through RET-005) into comprehensive feature-level learnings, identify cross-phase themes, consolidate action items, and provide recommendations for future features.
 
-Synthesize all phase retrospectives (RET-001 through RET-005) into comprehensive feature-level learnings, identify cross-phase themes, consolidate action items, and provide recommendations for future features.
+**Reference**: [Retrospective Best Practices](../../knowledge-base/copilot/workflows-apr-retro.md#retrospective-best-practices) | [Continuous Retrospectives](../../knowledge-base/copilot/workflows-apr-retro.md#continuous-retrospectives-phase-by-phase)
 
 ---
 

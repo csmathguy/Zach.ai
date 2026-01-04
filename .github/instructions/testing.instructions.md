@@ -34,6 +34,74 @@ import '@testing-library/jest-dom/jest-globals'; // ✅ Correct for @jest/global
 
 ---
 
+## Jest Setup Files: setupFilesAfterEnv vs setupFiles
+
+**Critical Distinction**:
+
+- **setupFiles**: Runs BEFORE Jest environment is initialized (use for polyfills, global mocks)
+- **setupFilesAfterEnv**: Runs AFTER Jest environment (use for jest-dom, test utilities, global test config)
+
+**Standard Pattern** (backend/frontend):
+
+```javascript
+// jest.config.js
+module.exports = {
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'], // ✅ For jest-dom and test utilities
+};
+```
+
+```typescript
+// jest.setup.ts
+import '@testing-library/jest-dom/jest-globals'; // Extend matchers after Jest loads
+
+// Optional: Global test configuration
+beforeAll(() => {
+  // Runs once before all tests
+});
+```
+
+**When to use setupFiles** (rare):
+
+- Polyfills required before test environment loads
+- Global mocks that must exist before Jest initializes
+
+**Deep Dive**: [Jest KB - Setup Files](../../knowledge-base/jest/README.md#setup-instructions)
+
+---
+
+## Console Suppression for Expected Errors
+
+**Pattern**: Suppress expected error logs in integration tests (e.g., duplicate email constraint tests)
+
+```typescript
+describe('Repository Integration Tests', () => {
+  let originalConsoleLog: typeof console.log;
+
+  beforeAll(() => {
+    originalConsoleLog = console.log;
+    console.log = (...args: unknown[]) => {
+      const message = String(args[0]);
+      // Suppress expected Prisma errors
+      if (message.includes('prisma:error')) return;
+      originalConsoleLog(...args);
+    };
+  });
+
+  afterAll(() => {
+    console.log = originalConsoleLog;
+  });
+
+  it('should throw on duplicate email', async () => {
+    // This test expects an error - suppress the Prisma log
+  });
+});
+```
+
+**When to use**: Integration tests that deliberately trigger errors (constraint violations, not found scenarios)
+**When NOT to use**: Unit tests, tests where errors are unexpected
+
+---
+
 ## Test Structure - AAA Pattern
 
 ```typescript

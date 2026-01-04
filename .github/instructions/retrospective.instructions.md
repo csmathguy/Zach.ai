@@ -134,98 +134,18 @@ Add an entry in `work-items/<branch>/retro/retrospective.md`:
 
 ## Agent-Specific Guidelines
 
-### Planner Agent (RET-001)
+**Reference**: [Retrospective Template](../../work-items/_template/retro/RET-001-example-phase.md)
 
-**Focus**:
+**Focus Areas by Agent**:
 
-- APR quality and completeness
-- User story clarity
-- Requirements gathering effectiveness
-- Accessibility requirements captured
+- **Planner**: APR quality, requirements completeness, accessibility captured
+- **Architect**: ADR quality, contract clarity, design patterns effectiveness
+- **Researcher**: Research efficiency, KB documentation quality, time vs value
+- **Tester**: Test strategy completeness, contract utilization, edge cases
+- **Developer**: TDD effectiveness, SOLID compliance, code quality, technical debt
+- **Retro**: Cross-phase themes, consolidated actions, future recommendations
 
-**Action Items**:
-
-- APR template improvements
-- Planning workflow enhancements
-- Requirements documentation patterns
-
-### Architect Agent (RET-002)
-
-**Focus**:
-
-- ADR quality and completeness
-- Contract clarity for testers
-- Design pattern effectiveness
-- Architecture decision outcomes
-
-**Action Items**:
-
-- ADR template improvements
-- Architecture patterns documentation
-- Contract specification enhancements
-
-### Researcher Agent (RET-003)
-
-**Focus**:
-
-- Research efficiency
-- Knowledge base documentation quality
-- Technology evaluation thoroughness
-- Time spent vs value delivered
-
-**Action Items**:
-
-- Knowledge base template improvements
-- Research workflow optimizations
-- Technology documentation patterns
-
-### Tester Agent (RET-004)
-
-**Focus**:
-
-- Test strategy completeness
-- Test suite coverage adequacy
-- Contract utilization effectiveness
-- Edge case identification
-
-**Action Items**:
-
-- Test plan template improvements
-- Test suite patterns
-- Coverage strategies
-
-### Developer Agent (RET-005)
-
-**Focus**:
-
-- TDD cycle effectiveness
-- Task breakdown quality
-- SOLID compliance
-- Code quality metrics
-- Technical debt introduced
-
-**Action Items**:
-
-- Development workflow improvements
-- Task template enhancements
-- Code quality patterns
-- Refactoring needs
-
-### Retro Agent (RET-006)
-
-**Focus**:
-
-- Cross-phase themes and patterns
-- Overall feature success
-- Consolidated action items
-- Recommendations for future features
-
-**Action Items**:
-
-- High-priority improvements
-- Knowledge base promotions
-- Process refinements
-- Template updates
+**Action Items** should target: Template improvements, workflow enhancements, KB updates, pattern documentation
 
 ---
 
@@ -250,31 +170,11 @@ Add an entry in `work-items/<branch>/retro/retrospective.md`:
 
 ---
 
-## Example Action Items
+## Action Items Format
 
-### Template Updates
+**Categories**: Template updates, KB updates, workflow improvements (see template for examples)
 
-```markdown
-- [ ] Add "accessibility requirements" section to APR template
-- [ ] Update ADR template with "alternatives considered" section
-- [ ] Enhance test suite template with edge case checklist
-```
-
-### Knowledge Base Updates
-
-```markdown
-- [ ] Create KB entry for Zod validation patterns
-- [ ] Document React Testing Library best practices
-- [ ] Add troubleshooting guide for Prisma migrations
-```
-
-### Workflow Improvements
-
-```markdown
-- [ ] Add "verify environment" step to developer agent
-- [ ] Update tester agent to require contract references
-- [ ] Clarify handoff checklist for architect agent
-```
+**Pattern**: `- [ ] [Specific action] ([Owner if applicable])`
 
 ---
 

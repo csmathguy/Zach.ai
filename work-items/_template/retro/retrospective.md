@@ -3,8 +3,7 @@
 **Feature**: [Feature Name]  
 **Work Item**: [O#-feature-name]  
 **Start Date**: YYYY-MM-DD  
-**Completion Date**: YYYY-MM-DD  
-**Total Duration**: X days/weeks
+**Completion Date**: YYYY-MM-DD
 
 ---
 
@@ -72,14 +71,6 @@ This document provides a high-level summary of the retrospectives conducted thro
 
 ## High-Level Metrics
 
-**Timeline Performance**:
-
-- Estimated Duration: X days
-- Actual Duration: Y days
-- Variance: +/- Z days (% over/under)
-- Phases on time: X/6
-- Phases delayed: Y/6
-
 **Quality Metrics**:
 
 - Tests passing: X/Y (Z%)
@@ -122,19 +113,19 @@ This document provides a high-level summary of the retrospectives conducted thro
 
 1. **Theme 1**: Consistent challenge or friction point
    - Evidence from RET-001, RET-002, RET-005
-   - Impact on timeline/quality: [Description]
+   - Impact on quality: [Description]
    - Root cause: [Analysis]
    - Recommendation: [Improvement]
 
-2. **Theme 2**: Process that caused delays
+2. **Theme 2**: Process that caused friction
    - Evidence from RET-003, RET-004
-   - Impact on timeline/quality: [Description]
+   - Impact on quality: [Description]
    - Root cause: [Analysis]
    - Recommendation: [Improvement]
 
 3. **Theme 3**: Tool or gap that hindered progress
    - Evidence from RET-002, RET-005
-   - Impact on timeline/quality: [Description]
+   - Impact on quality: [Description]
    - Root cause: [Analysis]
    - Recommendation: [Improvement]
 
@@ -188,14 +179,6 @@ This document provides a high-level summary of the retrospectives conducted thro
 
 - [ ] [Enhancement from RET-001] - Owner: [Name] - Due: [Date]
 - [ ] [Exploration from RET-005] - Owner: [Name] - Due: [Date]
-
-**Action Item Status Tracking**:
-
-- Total Action Items: X
-- Completed: Y (Z%)
-- In Progress: A
-- Blocked: B
-- Not Started: C
 
 ---
 

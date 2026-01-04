@@ -16,6 +16,8 @@ handoffs:
 
 **When to Use**: After feature completion and final retrospective, before archiving work item.
 
+**Reference**: [Agent Architecture Best Practices](../../knowledge-base/copilot/agent-architecture-best-practices.md) (comprehensive 800+ line guide)
+
 ---
 
 ## Step 1: Gather Context from Completed Work
@@ -71,124 +73,244 @@ Identify:
 - Gaps in existing documentation
 - Duplication between KB articles
 
----
+### 1.5 Apply Historical Learnings
 
-## Step 2: Research Best Practices
+**Check previous refinement reports** for recurring patterns:
 
-**Before refining agents, research current best practices.**
+**From O2-Thought-Capture (January 2025)**:
 
-### 2.1 GitHub Copilot Agent Best Practices
+- TDD RED phase confusion → Clarify RED = assertion failures, not TS errors
+- Validation not in Definition of Done → Make validation mandatory pre-commit step
+- Jest setupFilesAfterEnv confusion → Standardize in testing.instructions.md
+- Multi-file edit sequencing issues → Add sequencing checklist
+- Documentation discipline drift → Enforce KB-first documentation pattern
+- Per-task retrospectives valuable → Continue RET-### pattern
 
-**Research Query**: "GitHub Copilot agent management best practices 2025 2026"
-
-Search for:
-
-- Agent design patterns (workflow separation, responsibility boundaries)
-- Instruction file organization (when to use .instructions.md vs agent.md)
-- Skill file patterns (reusable functions vs agent-specific workflows)
-- Handoff patterns (when to hand off, how to preserve context)
-- Agent communication (markdown format, tool usage, context management)
-
-**Key Sources**:
-
-- GitHub Copilot documentation
-- VSCode Copilot extension docs
-- Community best practices (GitHub discussions, blogs)
-
-### 2.2 Agent Workflow Patterns
-
-**Research Query**: "AI agent workflow patterns orchestration best practices"
-
-Focus on:
-
-- Single Responsibility Principle for agents
-- Workflow decomposition (phases, checkpoints, handoffs)
-- Context preservation across handoffs
-- Error handling and recovery patterns
-- Documentation patterns (what goes where)
-
-### 2.3 Knowledge Management Patterns
-
-**Research Query**: "technical knowledge base organization software engineering"
-
-Focus on:
-
-- Knowledge base structure (technology-based, pattern-based, workflow-based)
-- Documentation hierarchy (overview → details → examples)
-- Cross-referencing strategies
-- Maintenance patterns (keep updated, avoid staleness)
-- Duplication avoidance
+**Action**: For each theme above, verify corresponding agent/instruction/KB updates exist. If refinement hasn't addressed it yet, add to current refinement scope.
 
 ---
 
-## Step 3: Analyze Current Agent System
+## Step 2: Apply Best Practices Framework
 
-### 3.1 Map Agent Workflows
+**Reference**: [Agent Architecture Best Practices](../../knowledge-base/copilot/agent-architecture-best-practices.md)
 
-Create mental model of current agent system:
+### 2.1 Review Framework Principles
 
-**Agents** (`.github/agents/`):
+Read the comprehensive best practices guide to understand:
 
-- planner → architect → researcher → tester → developer → retro
+- **Documentation Hierarchy**: Agents (small) → Instructions (medium) → KB (large)
+- **Diátaxis Framework**: Tutorial, How-To, Reference, Explanation quadrants
+- **Single Responsibility**: Each agent has ONE clear purpose
+- **Reference Flow**: One-way (Agent → Instruction → KB, never reverse)
+- **Duplication Prevention**: Each concept documented once (in KB)
 
-**For each agent, identify**:
+### 2.2 Research Current Best Practices (Optional)
 
-- Primary responsibility (what is this agent's single purpose?)
-- Inputs (what does it receive from previous agent?)
-- Outputs (what does it produce for next agent?)
-- Handoff triggers (when does it hand off?)
-- Tools used (which tool-set?)
+If significant time has passed since last refinement or new patterns emerged:
+
+**Query**: "GitHub Copilot agent architecture patterns 2025 2026"
+
+**Focus**:
+
+- Agent design patterns (VS Code Chat Participant API)
+- Knowledge management (Diátaxis framework)
+- Workflow orchestration patterns
+
+**Document** findings in refinement report with links.
+
+---
+
+## Step 3: Analyze Current System Against Best Practices
+
+## Step 3: Analyze Current System Against Best Practices
+
+### 3.1 Check Hierarchy Compliance
+
+**Reference**: [Best Practices - Documentation Hierarchy](../../knowledge-base/copilot/agent-architecture-best-practices.md#2-documentation-hierarchy-inverted-pyramid)
+
+For each agent file:
+
+- **Size check**: Is it 50-200 lines (workflow only)?
+- **Workflow check**: Does it orchestrate steps without teaching?
+- **Reference check**: Does it link to instructions/KB instead of duplicating?
+
+For each instruction file:
+
+- **Size check**: Is it 100-300 lines (integration + quick ref)?
+- **ApplyTo check**: Does it have clear file patterns?
+- **Reference check**: Does it link to KB for deep dive?
+
+For each KB article:
+
+- **Size check**: Is it 400-800+ lines (comprehensive)?
+- **Diátaxis check**: Does it cover Tutorial, How-To, Reference, Explanation?
+- **Examples check**: Does it have real code examples?
 
 ### 3.2 Identify Duplication
 
-**Check for content duplicated across**:
+**Reference**: [Best Practices - Anti-Patterns #2](../../knowledge-base/copilot/agent-architecture-best-practices.md#2--duplicated-content)
 
-1. Agent files (`.github/agents/*.agent.md`)
-2. Instruction files (`.github/instructions/*.instructions.md`)
-3. Knowledge base articles (`knowledge-base/**/README.md`)
+Create duplication matrix:
 
-**Common duplication patterns**:
+| Content | Agent File | Instructions | Knowledge Base | Action                       |
+| ------- | ---------- | ------------ | -------------- | ---------------------------- |
+| [Topic] | ✅ Found   | ✅ Found     | ✅ Found       | Keep in KB, link from others |
 
-- Technology setup instructions in multiple places
-- Testing patterns repeated in tester agent + testing.instructions.md + knowledge-base/jest/
-- SOLID principles in developer agent + typescript.instructions.md + knowledge-base/codebase/development-guide.md
-- Git workflow in multiple agents
+**Common duplication patterns** (from best practices guide):
 
-**Document findings**: Create duplication matrix showing what's repeated where
+- Technology setup (Jest, TypeScript, Prisma)
+- Testing patterns
+- SOLID principles
+- Git workflow
 
-### 3.3 Identify Gaps
+### 3.3 Verify Reference Flow
 
-**Missing guidance that caused issues**:
+**Reference**: [Best Practices - Pattern 3](../../knowledge-base/copilot/agent-architecture-best-practices.md#pattern-3-avoid-circular-references)
 
-- Review retrospective "What Didn't Go Well" sections
-- Review process logs for repeated questions/confusion
-- Review implementation notes for undocumented decisions
+Check reference direction:
 
-**Examples from retrospectives**:
+- ✅ Agents CAN reference instructions and KB
+- ✅ Instructions CAN reference KB
+- ✅ KB articles CAN reference each other
+- ❌ KB CANNOT reference agents/instructions
+- ❌ Instructions CANNOT reference agents
+- ❌ Agents CANNOT reference each other (use handoffs)
 
-- "Had to search for file locations" → Add file verification to pre-implementation
-- "PowerShell version mismatch" → Add tool version checks to Phase -1
-- "Knowledge base structure unclear" → Add KB organization guide
+### 3.4 Verify Single Responsibility
+
+**Reference**: [Best Practices - Principle 1](../../knowledge-base/copilot/agent-architecture-best-practices.md#1-single-responsibility-principle-for-agents)
+
+For each agent:
+
+- Can you describe its purpose in one sentence?
+- Does it do only ONE type of work?
+- Are there overlapping responsibilities with other agents?
 
 ---
 
-## Step 4: Refine Agent Files
+## Step 4: Apply Refinements
 
-### 4.1 Agent File Structure (Best Practice)
+**Reference**: [Best Practices - Implementation Checklist](../../knowledge-base/copilot/agent-architecture-best-practices.md#implementation-checklist)
 
-Each agent file should follow this pattern:
+### 4.1 Refine Agent Files
+
+**Target**: 50-200 lines, workflow only
+
+For each agent file that needs refinement:
+
+1. **Remove Duplicated Content**
+   - Extract comprehensive guides to KB
+   - Replace with one-line reference: `**Reference**: [Article Link]`
+
+2. **Streamline Workflow**
+   - Keep: Steps, decision points, handoff criteria
+   - Remove: Tutorials, examples, setup instructions
+
+3. **Add Missing Workflow Steps**
+   - From retrospective learnings
+   - From process log patterns
+
+4. **Strengthen Handoffs**
+   - Explicit deliverables list
+   - Verification checklist
+   - Context preservation notes
+
+**Example Pattern**:
 
 ```markdown
----
-name: agent-name
-description: One-sentence purpose (what, not how)
-tool-set: agent-toolset-name
-argument-hint: 'What user should provide'
+## Step X: Do Something
+
+**Reference**: [Instructions](../instructions/tech.instructions.md) | [KB](../../knowledge-base/tech/README.md)
+
+1. Check preconditions
+2. Execute step
+3. Verify result
+
+**Deep Dive**: See KB article for comprehensive guide.
+```
+
+### 4.2 Refine Instruction Files
+
+**Reference**: [Best Practices - Instruction File Patterns](../../knowledge-base/copilot/agent-architecture-best-practices.md#instruction-file-patterns)
+
+**Target**: 100-300 lines, technology integration + quick ref
+
+For each instruction file:
+
+1. **Remove Comprehensive Tutorials**
+   - Keep: Quick reference, workflow integration
+   - Remove: Complete setup guides, extensive examples
+   - Add: Link to KB for deep dive
+
+2. **Add Workflow Integration**
+   - How does this tech fit in agent workflow?
+   - When to use during TDD cycle?
+   - Common commands during development?
+
+3. **Strengthen ApplyTo Patterns**
+   - Clear glob patterns
+   - File type targeting
+
+### 4.3 Update Knowledge Base
+
+**Reference**: [Best Practices - Knowledge Base Organization](../../knowledge-base/copilot/agent-architecture-best-practices.md#knowledge-base-organization)
+
+**Target**: 400-800+ lines per major technology
+
+1. **Create Missing Articles**
+   - From gaps identified in Step 1.4
+   - Use Diátaxis framework (Tutorial, How-To, Reference, Explanation)
+
+2. **Update Existing Articles**
+   - Add missing Diátaxis quadrants
+   - Add code examples
+   - Add cross-references
+
+3. **Extract Duplicated Content**
+   - Move agent/instruction content to KB
+   - Make comprehensive (400+ lines)
+
+**Diátaxis Template**:
+
+```markdown
+# Technology Name
+
+## Overview (Explanation)
+
+[What, why, when]
+
+## Quick Reference (How-To)
+
+[Commands, patterns]
+
+## Setup (Tutorial)
+
+[Step-by-step first use]
+
+## Best Practices (Explanation)
+
+[Enterprise patterns]
+
+## Patterns (Reference)
+
+[Code examples, API]
+
+## Troubleshooting (How-To)
+
+[Common issues]
+
+## References
+
+[External links]
+```
+
 handoffs:
-  - label: Next Step
-    agent: next-agent
-    prompt: Handoff context
-    send: true/false
+
+- label: Next Step
+  agent: next-agent
+  prompt: Handoff context
+  send: true/false
+
 ---
 
 # Agent Name - Brief Purpose
@@ -214,7 +336,8 @@ Don't duplicate knowledge base content.
 - [ ] Deliverable 1 complete
 - [ ] Deliverable 2 complete
 - [ ] Context preserved for next agent
-```
+
+````
 
 **What belongs in agent file**:
 
@@ -261,7 +384,7 @@ For each duplicated section found in Step 3.2:
    **Deep Dive**: [knowledge-base/typescript/README.md](../../knowledge-base/typescript/README.md)
 
    Follow TypeScript strict mode and type-safe patterns.
-   ```
+````
 
 3. **Preserve agent-specific workflow**:
    - Keep: "Step 1: Verify TypeScript configuration"
@@ -289,437 +412,148 @@ For each duplicated section found in Step 3.2:
 
 ---
 
-## Step 5: Refine Instruction Files
-
-### 5.1 Instruction File Purpose
-
-**Instructions** = Technology-specific or pattern-specific guidance that applies to specific file types.
-
-**Example**: `typescript.instructions.md` applies to `**/*.{ts,tsx}` files.
-
-**Structure**:
-
-```markdown
-# Technology Name Instructions
-
-**Apply to**: File patterns this applies to
-**Reference**: Link to knowledge base for deep dive
-
-## Core Principles (Brief)
-
-- 3-5 key principles specific to this technology
-
-## When to Use
-
-- Specific scenarios for these instructions
-
-## Quick Reference
-
-- Commands, patterns, common tasks
-
-## Detailed Guidance
-
-- Specific to agent workflow integration
-
-**Deep Dive**: See [knowledge-base/tech/README.md] for comprehensive guide
-```
-
-### 5.2 Remove Instruction Duplication
-
-**Common issue**: Instructions duplicate knowledge base content.
-
-**Fix**:
-
-1. Keep: Brief principles, quick reference, workflow integration
-2. Remove: Comprehensive tutorials, examples, troubleshooting (→ KB)
-3. Add: Link to KB for deep dive
-
-**Example**:
-
-```markdown
-# Before (200 lines of Jest setup, configuration, patterns)
-
-# After (focused instructions)
-
-# Jest Testing Instructions
-
-**Apply to**: `**/*.test.{ts,tsx}`
-**Reference**: [knowledge-base/jest/README.md](../../knowledge-base/jest/README.md) (470+ lines)
-
-## Core Testing Principles
-
-- Test behavior, not implementation
-- AAA pattern (Arrange, Act, Assert)
-- One assertion per test when possible
-
-## Quick Commands
-
-- `npm test` - Run all tests
-- `npm test -- --watch` - Watch mode
-- `npm test -- --coverage` - Coverage report
-
-## Workflow Integration
-
-- Write tests FIRST (RED phase of TDD)
-- Run tests continuously during GREEN phase
-- See [TDD Instructions](tdd.instructions.md) for complete workflow
-
-**Deep Dive**: See [knowledge-base/jest/README.md](../../knowledge-base/jest/README.md) for comprehensive setup, mocking, coverage, troubleshooting.
-```
-
----
-
-## Step 6: Validate Knowledge Base Organization
-
-### 6.1 Knowledge Base Structure
-
-**Best practice structure** (verify current KB follows this):
-
-```
-knowledge-base/
-├── README.md (index with links to all articles)
-├── codebase/ (this project's documentation)
-│   ├── development-guide.md (SOLID, DRY, KISS, patterns)
-│   ├── structure.md (repository organization)
-│   └── validation.md (quality checks)
-├── <technology>/ (per-technology folders)
-│   └── README.md (comprehensive 400-600+ line article)
-└── <framework>/ (per-framework folders)
-    └── README.md (comprehensive article)
-```
-
-**Each technology README should include**:
-
-1. Overview (what, why, when to use)
-2. Quick reference (commands, patterns)
-3. Setup instructions (installation, configuration)
-4. Best practices (dos and don'ts)
-5. Common patterns (code examples)
-6. Troubleshooting (common issues, solutions)
-7. References (official docs, resources)
-
-### 6.2 Identify Knowledge Base Gaps
-
-**From retrospectives and process logs, identify**:
-
-- Technologies used but not documented
-- Patterns repeated but not captured
-- Decisions made without KB reference
-- Questions asked multiple times
-
-**Create list of KB articles to add/update**.
-
-### 6.3 Verify Knowledge Base Links
-
-**Check that**:
-
-- Agent files link to KB articles (not duplicate content)
-- Instruction files link to KB articles (for deep dive)
-- KB README.md indexes all articles
-- KB articles link to related articles
-- No broken links
-
----
-
-## Step 7: Create Refinement Report
+## Step 5: Document Changes
 
 **Location**: `work-items/<branch>/refine/refinement-report.md`
 
-### 7.1 Report Structure
+**Reference**: [Best Practices - Metrics for Success](../../knowledge-base/copilot/agent-architecture-best-practices.md#metrics-for-success)
 
-```markdown
-# Agent System Refinement Report
+### 5.1 Refinement Report Structure
 
-**Feature**: [Feature name]
-**Work Item**: [Branch name]
-**Date**: [Completion date]
-**Refiner Agent**: [Your session timestamp]
+Create report with:
 
-## Executive Summary
+1. **Executive Summary** - Key findings, changes count, impact
+2. **Retrospective Analysis** - What worked, what didn't, learnings
+3. **Duplication Analysis** - Matrix of what was removed from where
+4. **Agent Refinements** - Per-agent changes + impact
+5. **Instruction Refinements** - Per-instruction changes + impact
+6. **Knowledge Base Updates** - Created, updated, gaps identified
 
-- Key findings (1-2 paragraphs)
-- Changes implemented (count: X agents, Y instructions, Z KB articles)
-- Impact (reduced duplication by X%, clarified Y workflows)
+7. **Best Practices Applied** - Framework principles from KB
+8. **Recommendations** - For future features
+9. **Metrics** - Lines reduced, references added, KB coverage improved
 
-## Retrospective Analysis
+### 5.2 Commit Strategy
 
-### What Worked Well
-
-- [Patterns that were effective]
-
-### What Needed Improvement
-
-- [Pain points identified]
-
-### Key Learnings
-
-- [Insights for future features]
-
-## Duplication Analysis
-
-### Duplication Matrix
-
-| Content | Agent File | Instructions | Knowledge Base | Recommendation  |
-| ------- | ---------- | ------------ | -------------- | --------------- |
-| [Topic] | ✅ Found   | ✅ Found     | ✅ Found       | Keep in KB only |
-
-### Removed Duplication
-
-- [What was removed from where]
-
-## Agent Refinements
-
-### [Agent Name]
-
-**Changes Made**:
-
-- Removed: [Duplicated content]
-- Added: [Missing workflow steps]
-- Clarified: [Confusing sections]
-- References: [Links added to KB/instructions]
-
-**Impact**: [How this improves workflow]
-
-## Instruction Refinements
-
-[Same structure as agent refinements]
-
-## Knowledge Base Updates
-
-### Articles Created
-
-- [New articles with purpose]
-
-### Articles Updated
-
-- [Updated articles with changes]
-
-### Gaps Identified
-
-- [Missing documentation to create in future]
-
-## Best Practices Applied
-
-- [List of best practices from research]
-- [How they were applied]
-
-## Recommendations for Future Features
-
-1. [Recommendation with rationale]
-2. [Recommendation with rationale]
-
-## Metrics
-
-- Agents reviewed: X
-- Instructions reviewed: Y
-- KB articles reviewed: Z
-- Duplication removed: X lines
-- References added: Y links
-- New KB articles: Z
-```
-
----
-
-## Step 8: Implement Refinements
-
-### 8.1 Edit Agent Files
-
-For each agent file that needs refinement:
-
-1. **Backup current version** (git will track, but note what's changing)
-2. **Remove duplicated content** (replace with KB/instruction references)
-3. **Add missing workflow steps** (from retrospective learnings)
-4. **Clarify confusing sections** (based on process log patterns)
-5. **Update handoff sections** (strengthen deliverables, verification)
-6. **Test links** (verify all KB/instruction references are valid)
-
-### 8.2 Edit Instruction Files
-
-For each instruction file that needs refinement:
-
-1. **Remove tutorial content** (move to KB if needed)
-2. **Keep workflow integration** (how instructions apply during agent work)
-3. **Add KB references** (link to comprehensive articles)
-4. **Update applyTo patterns** (ensure file patterns are correct)
-
-### 8.3 Update Knowledge Base
-
-For each KB update needed:
-
-1. **Create new articles** (for gaps identified)
-2. **Update existing articles** (add missing sections)
-3. **Add cross-references** (link related articles)
-4. **Update KB README.md** (add new articles to index)
-
-### 8.4 Commit Strategy
-
-**Separate commits for each category**:
+**Separate commits per category**:
 
 ```bash
 # Agent refinements
 git add .github/agents/
-git commit -m "refactor(agents): remove duplication, add KB references
+git commit -m "refactor(agents): apply best practices - workflow focus
 
-- [agent1]: Removed [X], added refs to [KB articles]
-- [agent2]: Clarified [workflow], linked [instructions]
-
-Based on [work-item] retrospective analysis.
-Reduces duplication by [X]%."
+- Reduced duplication by X%
+- Added KB references to [articles]
+- Based on [work-item] retrospective"
 
 # Instruction refinements
 git add .github/instructions/
-git commit -m "refactor(instructions): streamline and reference KB
+git commit -m "refactor(instructions): streamline with KB links"
 
-- [instruction1]: Removed tutorial, linked KB
-- [instruction2]: Added workflow integration
-
-Based on [work-item] retrospective analysis."
-
-# Knowledge base updates
+# KB updates
 git add knowledge-base/
-git commit -m "docs(kb): add [topic] documentation, update [topic]
-
-- Created [new-article] (400+ lines)
-- Updated [existing-article] with [additions]
-
-Based on [work-item] refinement analysis."
+git commit -m "docs(kb): add [topic], update [topic]"
 ```
 
 ---
 
-## Step 9: Validate Refinements
+## Step 6: Validate Changes
 
-### 9.1 Verify No Broken Links
+**Reference**: [Best Practices - Metrics for Success](../../knowledge-base/copilot/agent-architecture-best-practices.md#metrics-for-success)
 
-Check all files edited for:
+### 6.1 Verify Hierarchy Compliance
 
-- Valid relative paths to KB articles
-- Valid references to instruction files
-- No dead links
+Check each refined file against targets:
 
-### 9.2 Verify Workflow Continuity
+- **Agents**: 50-200 lines (workflow only)
+- **Instructions**: 100-300 lines (integration + quick ref)
+- **KB Articles**: 400-800+ lines (comprehensive reference)
 
-**Test agent workflow mentally**:
+### 6.2 Verify Links
 
-1. Start with planner agent - can it do its job with current guidance?
-2. Follow to architect - does it receive clear inputs? Can it produce clear outputs?
-3. Continue through tester → developer → retro
-4. Verify each handoff has clear deliverables
+Test all references:
 
-### 9.3 Check for Circular References
+- Agent → Instruction links work
+- Agent → KB links work
+- Instruction → KB links work
+- KB cross-references work
 
-**Ensure**:
+### 6.3 Verify Reference Flow
 
-- Agents reference instructions/KB (not vice versa)
-- Instructions reference KB (not vice versa)
-- KB articles reference each other (peer-to-peer)
-- No circular dependencies
+**Reference**: [Pattern #3 - Avoid Circular References](../../knowledge-base/copilot/agent-architecture-best-practices.md#pattern-3-avoid-circular-references)
 
-### 9.4 Verify Separation of Concerns
+Ensure one-way flow:
 
-**Check that**:
+- ✅ Agents reference instructions/KB
+- ✅ Instructions reference KB
+- ✅ KB articles cross-reference each other
+- ❌ KB never references agents/instructions
+- ❌ Instructions never drive workflow
 
-- Agents contain workflow only (what order, when to do things)
-- Instructions contain technology-specific guidance (how to work with tech)
-- KB contains comprehensive reference (deep technical knowledge)
-- No category does another category's job
+### 6.4 Test Workflow
+
+Mentally simulate agent workflow:
+
+1. Can planner complete its work with current guidance?
+2. Does architect receive clear inputs?
+3. Does tester receive contracts/ADRs?
+4. Does developer receive test plan?
+5. Are handoffs explicit?
 
 ---
 
-## Step 10: Document and Hand Off
+## Step 7: Final Documentation
 
-### 10.1 Complete Refinement Report
+### 7.1 Complete Refinement Report
 
-Finalize `work-items/<branch>/refine/refinement-report.md` with:
+Finalize with all sections filled, metrics calculated.
 
-- All sections filled
-- Metrics calculated
-- Recommendations documented
-- Links verified
+### 7.2 Update Work Item
 
-### 10.2 Update Work Item Status
-
-Update `work-items/<branch>/dev/implementation-notes.md`:
+In `work-items/<branch>/dev/implementation-notes.md`:
 
 - Add "Refinement Complete" section
 - Link to refinement report
-- Note number of agents/instructions/KB articles updated
+- Note agents/instructions/KB updated
 
-### 10.3 Create Final Retrospective Entry
+### 7.3 Create Final Retrospective
 
-**Location**: `work-items/<branch>/retro/[timestamp]-final.md`
+In `work-items/<branch>/retro/[timestamp]-final.md`:
 
-Reflect on:
-
-- Was refinement process effective?
-- What would improve refinement workflow?
-- Are agents now clearer and more maintainable?
-- Knowledge base gaps filled?
-
----
-
-## Best Practices Summary
-
-### Agent Design Principles
-
-1. **Single Responsibility**: Each agent has ONE clear purpose
-2. **Workflow Not Content**: Agents guide process, don't teach technology
-3. **Reference Not Duplicate**: Link to KB/instructions, don't copy
-4. **Clear Handoffs**: Explicit deliverables, verification, context preservation
-5. **Iterative Refinement**: Agents evolve based on retrospective learnings
-
-### Documentation Hierarchy
-
-```
-Agent (Workflow)
-  ↓ references
-Instructions (Technology Integration)
-  ↓ references
-Knowledge Base (Comprehensive Reference)
-```
-
-**Never reverse the flow**: KB should not reference agents, instructions should not drive workflow.
-
-### Duplication Prevention
-
-- **Before creating content**: Search for existing documentation
-- **When in doubt**: Put comprehensive content in KB, link from agent/instructions
-- **Regular review**: Refiner agent after each major feature completion
-
-### Maintenance Strategy
-
-- **After each feature**: Run refiner agent
-- **Quarterly**: Review entire agent system for systemic issues
-- **On-demand**: When retrospectives show repeated confusion/friction
+- Refinement process effectiveness
+- Agent clarity improvements
+- KB gaps filled
 
 ---
 
 ## Success Criteria
 
-Refinement is successful when:
+**Reference**: [Best Practices - Success Criteria](../../knowledge-base/copilot/agent-architecture-best-practices.md#success-criteria)
 
-✅ **Agent files are concise** - Focus on workflow, reference KB for details  
-✅ **No duplication** - Same content not repeated in agent/instructions/KB  
-✅ **Clear separation** - Workflow (agent) vs integration (instructions) vs reference (KB)  
-✅ **Links work** - All references to KB/instructions are valid  
-✅ **Workflow flows** - Each agent can hand off cleanly to next  
+Refinement complete when:
+
+✅ **Agent files concise** - 50-200 lines, workflow focus  
+✅ **No duplication** - Content not repeated across files  
+✅ **Clear hierarchy** - Agents → Instructions → KB  
+✅ **Links work** - All references valid  
+✅ **Workflow flows** - Clean handoffs  
 ✅ **Retrospective learnings applied** - Pain points addressed  
-✅ **Knowledge base complete** - Gaps filled, comprehensive articles  
-✅ **Best practices followed** - Researched patterns implemented
+✅ **KB complete** - Gaps filled, 400-800+ lines per tech  
+✅ **Framework followed** - Best practices applied
 
 ---
 
 ## Handoff
 
-**Work item is now ready for archival**.
+**Work item ready for archival**.
 
-Deliverables for archival:
+Deliverables:
 
-- ✅ Refined agents (duplication removed, KB references added)
-- ✅ Refined instructions (streamlined, KB-linked)
-- ✅ Updated knowledge base (gaps filled, comprehensive)
-- ✅ Refinement report (analysis, changes, recommendations)
-- ✅ All commits pushed to repository
-- ✅ Links verified, workflow tested
+- ✅ Refined agents (workflow-focused, KB-linked)
+- ✅ Refined instructions (streamlined, KB-referenced)
+- ✅ Updated KB (comprehensive, Diátaxis structure)
+- ✅ Refinement report (complete analysis)
+- ✅ Commits pushed
+- ✅ Links verified
 
-**No further agent work required** - Work item complete.
+**No further work required**.

@@ -72,7 +72,6 @@
 
 ### Timeline Assumptions
 
-- Estimated: X weeks
 - Target completion: YYYY-MM-DD
 
 ---

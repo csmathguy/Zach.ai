@@ -94,99 +94,40 @@ Design technical solutions that align with business requirements (APR) and exist
 
 ## Step 3: Create Architecture Decision Records (ADRs)
 
-**Template** - `work-items/<branch>/architecture/adr-<number>-<title>.md`:
+**Reference**: [ADR Best Practices](../../knowledge-base/copilot/workflows-apr-retro.md#architecture-decision-records-adr-essentials) | **Template**: `work-items/_template/architecture/adr-example.md`
 
-```markdown
-# ADR-001: [Decision Title]
+**Create one ADR per major decision**:
 
-**Status**: Proposed  
-**Date**: YYYY-MM-DD  
-**APR Reference**: [Link to requirement]
+- Database choice (SQLite vs PostgreSQL)
+- ORM selection (Prisma vs TypeORM)
+- Design pattern (Repository, Factory, Strategy)
+- Architectural pattern (Layered, Hexagonal, Clean)
 
-## Context
+**ADR Structure** (see KB for complete template):
 
-What problem are we solving? What factors influence this decision?
-
-## Decision
-
-What are we doing? Be specific and concrete.
-
-## Rationale
-
-Why this approach over alternatives? What are the benefits?
-
-## Alternatives Considered
-
-- **Option A**: [Pros/Cons]
-- **Option B**: [Pros/Cons]
-
-## Consequences
-
-**Positive**:
-
-- [Benefits]
-
-**Negative**:
-
-- [Trade-offs]
-
-**Risks & Mitigations**:
-
-- [Risk]: [How to mitigate]
-
-## Implementation Notes
-
-- Key classes/interfaces
-- Integration points
-- Migration path
-
-## Compliance
-
-- [ ] SOLID principles followed
-- [ ] Design patterns documented
-- [ ] Testability verified
-- [ ] Accessibility considered
-- [ ] Performance baseline defined
-```
-
-**Create one ADR per major decision**: Database choice, ORM selection, design pattern, architectural pattern.
+1. Context - Problem and factors
+2. Decision - Specific and concrete
+3. Rationale - Why this over alternatives
+4. Alternatives Considered - Options evaluated
+5. Consequences - Positive, negative, risks
+6. Implementation Notes - Key classes, integration
+7. Compliance - SOLID, patterns, testing, accessibility
 
 **Initial Status**: All ADRs start with `Status: Proposed` for user review.
 
-**After User Approval** - **RUN THE SCRIPT** to promote ADRs:
-
-**Process**:
+**After User Approval** - **Run `adr-promote.ps1` script**:
 
 1. Present ADRs to user for review (Status: Proposed)
 2. User provides approval decision for each ADR
-3. **You run the promotion script** with user's decision
-4. Script handles KB promotion, numbering, and status updates automatically
-
-**Script Usage**:
+3. Run promotion script for each ADR:
 
 ```powershell
-# APPROVED: Promotes to KB with next global number (e.g., 0004-validation-strategy.md)
-& "c:\Users\csmat\source\repos\Zach.ai\scripts\adr-promote.ps1" -FilePath "work-items/O2-thought-capture/architecture/adr-validation.md" -Status Approved
-
-# REJECTED: Deletes the ADR file
-& "c:\Users\csmat\source\repos\Zach.ai\scripts\adr-promote.ps1" -FilePath "work-items/O2-thought-capture/architecture/adr-bad-idea.md" -Status Rejected
-
-# DEFERRED: Creates new work item for future implementation
-& "c:\Users\csmat\source\repos\Zach.ai\scripts\adr-promote.ps1" -FilePath "work-items/O2-thought-capture/architecture/adr-rate-limiting.md" -Status Deferred -DeferredFeatureName "rate-limiting"
+& "c:\Users\csmat\source\repos\Zach.ai\scripts\adr-promote.ps1" -FilePath "work-items/<branch>/architecture/adr-<name>.md" -Status [Approved|Rejected|Deferred]
 ```
 
-**Script Benefits**:
+**Script handles**: Global numbering, KB promotion, status updates, deferred work items
 
-- ✅ Automatic global numbering (0001, 0002, 0003) - no conflicts
-- ✅ Deterministic KB promotion workflow
-- ✅ Deferred ADRs → new work items automatically
-- ✅ Status updates handled automatically
-- ✅ Extracts descriptive titles from filenames
-- ✅ Adds KB references to work item ADRs
-
-**Important**: Use full path with `&` operator in PowerShell commands.
-
-**Reference Development Guide** for SOLID principles and design patterns - don't duplicate them.
+**Reference**: [Development Guide](../../knowledge-base/codebase/development-guide.md) for SOLID principles and design patterns.
 
 ---
 
@@ -194,14 +135,14 @@ Why this approach over alternatives? What are the benefits?
 
 **File**: `work-items/<branch>/architecture/contracts.md`
 
-### 2. Interface Contracts
+**Reference**: [Repository Pattern](../../knowledge-base/codebase/development-guide.md#repository-pattern)
 
 **Include**:
 
-- **Domain Models**: Pure TypeScript classes (User, Thought, Project)
-- **Repository Interfaces**: CRUD operations with contract guarantees
-- **DTOs**: Data transfer objects for API/service boundaries
-- **Error Types**: Custom exceptions and error handling
+- Domain Models - Pure TypeScript classes
+- Repository Interfaces - CRUD operations with contract guarantees
+- DTOs - Data transfer objects
+- Error Types - Custom exceptions
 
 **Contract Guarantees** (specify behavior):
 
@@ -209,17 +150,7 @@ Why this approach over alternatives? What are the benefits?
 - "throws on duplicate email" (explicit error)
 - "idempotent operation" (safe to retry)
 
-**Example**:
-
-```typescript
-interface IUserRepository {
-  create(data: CreateUserDto): Promise<User>; // Throws on duplicate email
-  findById(id: string): Promise<User | null>; // Returns null if not found, never throws
-  delete(id: string): Promise<void>; // Idempotent
-}
-```
-
-**These contracts drive test specifications** - testers write scenarios against them.
+**These contracts drive test specifications** - testers write Gherkin scenarios against them.
 
 ---
 
@@ -227,11 +158,11 @@ interface IUserRepository {
 
 **File**: `work-items/<branch>/architecture/diagrams.md`
 
-**Include**:
+**Create**:
 
-- **ERD** (Entity-Relationship Diagram) - Database schema with Mermaid
-- **Component Diagram** - How layers interact
-- **Sequence Diagram** - Request flow through layers (optional)
+- ERD (Entity-Relationship) - Database schema
+- Component Diagram - Layer interactions
+- Sequence Diagram - Request flow (optional)
 
 **Use Mermaid** for version-controlled diagrams.
 
@@ -241,15 +172,11 @@ interface IUserRepository {
 
 **File**: `work-items/<branch>/architecture/layers.md`
 
-**Document**:
+**Reference**: [Layered Architecture](../../knowledge-base/codebase/development-guide.md#layered-architecture--modularity)
 
-- Which code goes in which layer
-- Dependencies between layers
-- Testing strategy per layer
+**Document**: Which code goes in which layer, dependencies, testing strategy
 
-**Reference**: [Development Guide - Layered Architecture](../../knowledge-base/codebase/development-guide.md#layered-architecture--modularity)
-
-**Dependency Rule**: `API → Application → Domain ← Infrastructure` (inner layers never import outer)
+**Dependency Rule**: `API → Application → Domain ← Infrastructure`
 
 ---
 
@@ -257,12 +184,7 @@ interface IUserRepository {
 
 **File**: `work-items/<branch>/architecture/integration.md`
 
-**Document**:
-
-- Existing architecture affected
-- New dependencies added
-- Configuration changes needed
-- Migration/rollback strategy
+**Document**: Existing architecture affected, new dependencies, configuration changes, migration/rollback
 
 ---
 

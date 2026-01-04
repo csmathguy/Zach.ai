@@ -46,8 +46,6 @@
 - [ ] Update to existing guide (specific sections)
 - [ ] Enhancement/addition to existing guide
 
-**Estimated Effort**: [X hours] for [scope description]
-
 ---
 
 ## Documentation Scope
@@ -196,8 +194,6 @@
 
 **Date Started**: [YYYY-MM-DD]  
 **Date Completed**: [YYYY-MM-DD]
-
-**Actual Effort**: [X hours]
 
 **Research Sources Used**:
 
