@@ -80,58 +80,11 @@ Use web searches to gather:
 
 ### B. Documentation Standards
 
-All knowledge base entries must follow this structure (see examples in `knowledge-base/jest/`, `knowledge-base/eslint/`):
+**Reference**: [Agent Architecture Best Practices - KB Organization](../../knowledge-base/copilot/agent-architecture-best-practices.md#knowledge-base-organization) | [Diátaxis Framework](../../knowledge-base/copilot/agent-architecture-best-practices.md#2-diataxis-framework-for-kb-articles)
 
-```markdown
-# <Technology> Knowledge Base
+**All KB entries must** follow Diátaxis structure (Tutorial, How-To, Reference, Explanation) with 400+ lines minimum.
 
-## Overview
-
-- What it is, why we use it, key benefits
-- Official docs link, current version
-- Philosophy/core concepts
-
-## Quick Reference
-
-- Essential commands/APIs
-- Common use cases
-- File naming conventions
-
-## Enterprise Best Practices
-
-1. Configuration approach
-2. Recommended rule sets/patterns
-3. CI/CD integration
-4. Editor integration
-5. Team guidelines
-
-## Setup Instructions
-
-- Step-by-step installation
-- Configuration files with comments
-- npm scripts
-- TypeScript integration
-
-## Common Patterns
-
-- Real-world examples
-- Do's and don'ts
-- Integration with existing stack
-
-## Troubleshooting
-
-- Common issues with solutions
-- Debug strategies
-- Performance tips
-
-## References
-
-- Official docs
-- Related tools
-- Further reading
-```
-
-**Minimum length**: 400 lines (comprehensive, not filler)
+**See examples**: `knowledge-base/jest/README.md` (470 lines), `knowledge-base/eslint/README.md` (400+ lines)
 
 ## Step 4: Create/Update Knowledge Base Files
 
@@ -207,12 +160,13 @@ Create `work-items/<feature-branch>/research/research-findings.md`:
 
 ## Step 5: Validate Documentation Quality
 
+**Reference**: [Best Practices - KB Quality Metrics](../../knowledge-base/copilot/agent-architecture-best-practices.md#metrics-for-success)
+
 Before completing research phase:
 
-- [ ] Each technology has 400+ line README.md
-- [ ] Follows standard structure (Overview, Quick Reference, Best Practices, Setup, etc.)
+- [ ] Each technology has 400-800+ line README.md with Diátaxis structure
 - [ ] Includes TypeScript integration examples
-- [ ] Has troubleshooting section with real issues
+- [ ] Has troubleshooting section
 - [ ] Links to official documentation
 - [ ] Covers enterprise use cases (CI/CD, team workflows)
 - [ ] Updated `knowledge-base/README.md` index
@@ -234,30 +188,27 @@ Before completing research phase:
 
 ## Best Practices
 
+**Reference**: [KB Organization Patterns](../../knowledge-base/copilot/agent-architecture-best-practices.md#knowledge-base-organization)
+
 ### Research Depth
 
-- **Don't**: Copy-paste from docs or create shallow summaries
-- **Do**: Synthesize multiple sources, provide context, explain trade-offs
+- Synthesize multiple sources, provide context, explain trade-offs (not shallow summaries)
 
 ### Documentation Style
 
-- **Don't**: Use marketing language or hype
-- **Do**: Focus on practical guidance, real code examples, known issues
+- Practical guidance, real code examples, known issues (not marketing hype)
 
 ### Enterprise Focus
 
-- **Don't**: Document every feature or configuration option
-- **Do**: Focus on patterns used in production, CI/CD integration, team workflows
+- Production patterns, CI/CD integration, team workflows (not every feature)
 
 ### Knowledge Base Maintenance
 
-- **Don't**: Create orphaned documentation that gets outdated
-- **Do**: Link technologies together (e.g., Jest + React Testing Library + TypeScript)
+- Link technologies together (e.g., Jest + React Testing Library + TypeScript)
 
 ### Version Awareness
 
-- **Don't**: Document outdated APIs or deprecated patterns
-- **Do**: Check current stable version, note breaking changes, migration paths
+- Check current stable version, note breaking changes, migration paths
 
 ## Tools Available
 

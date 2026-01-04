@@ -7,6 +7,8 @@ ideas/
 # ===================================
 # Feature Artifacts (per-branch)
 # ===================================
+# Work items - NOT tracked (short-term working memory only)
+# Long-term knowledge goes in knowledge-base/ instead
 /work-items/*
 !/work-items/README.md
 !/work-items/_template/

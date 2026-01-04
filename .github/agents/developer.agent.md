@@ -124,9 +124,31 @@ handoffs:
 - [ ] Document any deviations from standard patterns
 - [ ] Note file locations, library versions, PowerShell compatibility
 
+### 3.4 Multi-File Edit Sequencing Checklist
+
+**When making changes that touch multiple files in one operation**:
+
+- [ ] List all files that need changes (interfaces, implementations, tests)
+- [ ] Determine dependency order (interfaces → implementations → tests)
+- [ ] Make changes in sequence (don't interleave edits)
+- [ ] Run `npm run typecheck` after each file group
+- [ ] Verify tests still compile after each change
+- [ ] Document the change sequence in implementation-notes.md
+
+**Why**: Prevents cascading type errors, ensures compilation at each step, reduces rework from partial edits.
+
+**Example Sequence**:
+
+1. Update interface → typecheck → GREEN
+2. Update implementation → typecheck → GREEN
+3. Update tests → typecheck → GREEN
+4. Run tests → fix failures → GREEN
+
 ---
 
 ## Step 4: TDD Cycle - RED → GREEN → REFACTOR
+
+**Reference**: [TDD Instructions](../instructions/tdd.instructions.md) | [Refactor Instructions](../instructions/refactor.instructions.md) | [Development Guide](../../knowledge-base/codebase/development-guide.md)
 
 ### Phase 0: List Test Cases
 
@@ -135,6 +157,22 @@ handoffs:
 ### Phase 1: RED - Write Failing Tests
 
 **Purpose**: Define what you want to build. Tests drive interface.
+
+**CRITICAL**: RED phase means tests **compile and run** but **fail with assertion errors**.
+
+**Not RED** ❌:
+
+- "Cannot find module" errors → Create stubs first
+- TypeScript compilation errors → Fix types first
+- Test files that don't run → Fix setup first
+
+**Proper RED** ✅:
+
+- Tests compile successfully
+- Tests run without crashes
+- Tests fail with assertion errors: `Expected undefined to be defined`
+
+**Process**: Create minimal stubs (return `undefined`) → Write test → Run → See assertion failure
 
 **Test Location Pattern** ⚠️:
 
@@ -146,7 +184,7 @@ handoffs:
 
 **Outside-In Order**: API → Services → Domain → Infrastructure
 
-**Expected**: All tests written, all failing (RED). **See TDD instructions for detailed guidance.**
+**Expected**: All tests written, all failing with **assertion errors** (RED). **See TDD instructions for detailed guidance.**
 
 ### Phase 2: GREEN - Make Tests Pass
 
@@ -162,11 +200,32 @@ handoffs:
 
 **Purpose**: Optimize while maintaining GREEN status.
 
-**Refactor**: Extract functions, rename for clarity, simplify conditionals, extract mappers, apply patterns.
+**CRITICAL**: Don't skip this phase - most common TDD failure mode.
+
+**Reference**: [Refactor Instructions](../instructions/refactor.instructions.md) - Complete refactoring workflow and best practices
+
+**Refactor Continuously**:
+
+- After each test passes (quick wins: rename, extract small functions)
+- **Mid-implementation**: Major refactoring (SRP/OCP fixes, pattern application)
+- **Pre-commit**: Final cleanup (remove dead code, simplify)
+
+**Refactor Loop** (from refactor.instructions.md):
+
+1. Confirm baseline (tests green)
+2. Identify smallest improvement (one code smell)
+3. Apply one refactoring move (rename, extract, inline, move)
+4. Run tests immediately (revert if red)
+5. Re-assess (coupling, readability, duplication)
 
 **SOLID Checkpoints**:
 
-- After each test (quick wins)
+- After each test (quick wins: rename, extract)
+- **Mid-implementation**: SRP and OCP compliance review
+- **Pre-commit**: Full SOLID assessment (ISP, DIP violations)
+
+**Deep Dive**: [Refactor Instructions](../instructions/refactor.instructions.md) for complete refactor workflow, non-negotiables, and design principles
+
 - **Mid-implementation**: SRP and OCP compliance
 - Before next feature: Full SOLID assessment (LSP, ISP, DIP)
 
@@ -217,20 +276,35 @@ handoffs:
 
 ---
 
-## Step 7: Continuous Quality Validation
+## Step 7: Continuous Quality Validation (Definition of Done)
 
-**Before each commit (from root directory)**:
+**Run BEFORE EVERY COMMIT (from root directory)**:
+
+```bash
+npm run validate
+```
+
+**This command runs**:
+
+- `npm run typecheck` - Zero TypeScript errors required
+- `npm run lint` - Zero linting errors/warnings required
+- `npm run format` - Code must be formatted
+- `npm test` - All tests must pass
+
+**Definition of Done Checklist**:
 
 - [ ] All tests pass: `npm test`
-- [ ] No TypeScript errors: `npm run typecheck`
-- [ ] No linting errors: `npm run lint`
+- [ ] No TypeScript errors: `npm run typecheck` (zero errors policy)
+- [ ] No linting errors: `npm run lint` (zero warnings policy)
 - [ ] Code formatted: `npm run format`
-- [ ] Test coverage maintained
-- [ ] Git hooks pass (Husky)
+- [ ] Test coverage maintained (70%+ minimum)
+- [ ] Git hooks pass (Husky pre-commit)
 
 **Monorepo Rule**: ✅ Run from root | ❌ Never from subdirectories (incomplete validation)
 
 **Dead Code Removal**: Clean as you go - unused imports, unreferenced functions, commented code. Zero technical debt policy.
+
+**Validation is NOT optional** - it's the baseline quality gate. Features not meeting validation cannot be committed.
 
 ---
 

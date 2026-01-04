@@ -96,12 +96,18 @@ async create(data: { email: string; name: string }): Promise<User> {
 
 ## Phase 3: REFACTOR - Improve Code
 
-Clean up while maintaining GREEN:
+**CRITICAL**: Don't skip this phase - most common TDD failure mode. Without refactoring, code becomes unmaintainable.
 
-- Extract duplicated code
-- Rename for clarity
+**Reference**: [Refactor Instructions](refactor.instructions.md) for complete workflow, non-negotiables, and refactor loop
+
+**Clean up while maintaining GREEN**:
+
+- Extract duplicated code into functions/classes
+- Rename for clarity (variables, functions, classes)
+- Simplify complex conditionals
 - Optimize performance
 - Apply SOLID principles
+- Remove dead code aggressively
 
 ```typescript
 // Extract mapper (refactor while GREEN)
@@ -109,6 +115,20 @@ private toDomain(prismaUser: any): User {
   return new User(prismaUser.id, prismaUser.email, prismaUser.name);
 }
 ```
+
+**When to Refactor**:
+
+- After each test passes (quick wins: rename, extract small functions)
+- Mid-implementation (major refactoring: SRP/OCP fixes, pattern application)
+- Pre-commit (final cleanup: remove dead code, simplify)
+
+**Refactor Loop** (see refactor.instructions.md for details):
+
+1. Confirm baseline - tests must be green
+2. Identify smallest improvement - one code smell at a time
+3. Apply one refactoring move - rename, extract, inline, move
+4. Run tests immediately - revert if anything breaks
+5. Re-assess - did coupling/readability/duplication improve?
 
 **Deep Dive**: [knowledge-base/tdd/README.md - Complete Workflow Example](../../knowledge-base/tdd/README.md#tdd-example-complete-workflow)
 

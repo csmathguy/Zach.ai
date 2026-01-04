@@ -9,34 +9,15 @@
 
 ### 1. Separation of Concerns
 
-**Three-tier documentation system**:
+**Reference**: [Agent Architecture Best Practices - Documentation Hierarchy](../../knowledge-base/copilot/agent-architecture-best-practices.md#2-documentation-hierarchy-inverted-pyramid)
 
-```
-┌─────────────────────────────────┐
-│  AGENT (Workflow)               │  What order to do things
-│  - Process steps                │  When to take action
-│  - Decision points              │  Where to hand off
-│  - References to details        │
-└────────┬────────────────────────┘
-         │ references
-         ▼
-┌─────────────────────────────────┐
-│  INSTRUCTIONS (Integration)     │  How to work with technology
-│  - Technology-specific          │  Patterns for this project
-│  - Apply to file patterns       │  Workflow integration
-│  - Brief, actionable            │
-└────────┬────────────────────────┘
-         │ references
-         ▼
-┌─────────────────────────────────┐
-│  KNOWLEDGE BASE (Reference)     │  Deep technical knowledge
-│  - Comprehensive articles       │  400-600+ lines per tech
-│  - Setup, patterns, examples    │  Troubleshooting
-│  - Long-term reference          │
-└─────────────────────────────────┘
-```
+**Three-tier system**:
 
-**Golden Rule**: Content flows DOWN, references flow UP. Never reverse this hierarchy.
+- **Agents** (50-200 lines): Workflow orchestration, decision points, handoffs
+- **Instructions** (100-300 lines): Technology integration, quick reference, project patterns
+- **Knowledge Base** (400-800+ lines): Comprehensive reference with Diátaxis structure
+
+**Golden Rule**: Agents → Instructions → KB (one-way references only)
 
 ### 2. Duplication is the Enemy
 
@@ -120,31 +101,16 @@ ls work-items/<branch>/retro/*.md
 
 ### Phase 2: Duplication Detection
 
-**Automated search for common duplications**:
+**Reference**: [Best Practices - Anti-Patterns #2](../../knowledge-base/copilot/agent-architecture-best-practices.md#2--duplicated-content)
 
-```bash
-# Search for duplicated TypeScript guidance
-grep -r "TypeScript strict mode" .github/agents/ .github/instructions/ knowledge-base/
+**Quick checks**:
 
-# Search for duplicated Jest patterns
-grep -r "AAA pattern" .github/agents/ .github/instructions/ knowledge-base/
+- Agents >200 lines likely contain duplication
+- Instructions >300 lines likely contain tutorials
+- Search for technology names across all files
+- Create duplication matrix (see KB for template)
 
-# Search for duplicated SOLID principles
-grep -r "Single Responsibility" .github/agents/ .github/instructions/ knowledge-base/
-```
-
-**Manual review**:
-
-- Read each agent file - note sections over 20 lines
-- Read each instruction file - note tutorial-style content
-- Compare to KB articles - identify redundancy
-
-**Create duplication matrix**:
-
-| Content          | Agent                 | Instructions                  | KB                      | Action                                    |
-| ---------------- | --------------------- | ----------------------------- | ----------------------- | ----------------------------------------- |
-| TypeScript setup | ✅ developer.agent.md | ✅ typescript.instructions.md | ✅ typescript/README.md | Keep in KB only, link from others         |
-| Jest AAA pattern | ✅ developer.agent.md | ✅ testing.instructions.md    | ✅ jest/README.md       | Keep in KB, brief mention in instructions |
+**Common duplications**: TypeScript setup, Jest patterns, SOLID principles, TDD cycle, testing workflows
 
 ### Phase 3: Best Practices Research
 
@@ -200,41 +166,11 @@ grep -r "Single Responsibility" .github/agents/ .github/instructions/ knowledge-
    - Specify context to preserve
    - Document where deliverables are stored
 
-**Example refinement**:
+**Pattern**: Remove technology explanations → Replace with KB references + workflow steps only
 
-```markdown
-# Before (bloated agent)
+**Example**: Testing step reduces from 150 lines (Jest tutorial) → 20 lines (workflow + references)
 
-## Step 3: Write Tests
-
-Jest is a testing framework with built-in mocking...
-[100 lines of Jest explanation]
-
-To write tests, follow AAA pattern:
-
-- Arrange: Set up test data
-- Act: Execute the function
-- Assert: Verify results
-
-[50 lines of test examples]
-
-# After (clean agent)
-
-## Step 3: Write Tests
-
-**Reference**: [TDD Instructions](../instructions/tdd.instructions.md)
-**Testing Guide**: [knowledge-base/jest/README.md](../../knowledge-base/jest/README.md)
-
-Follow RED-GREEN-REFACTOR cycle:
-
-1. Write failing test (RED)
-2. Implement minimum code (GREEN)
-3. Refactor (maintain GREEN)
-
-Run `npm test -- --watch` for continuous feedback.
-
-See TDD instructions for complete workflow and testing patterns.
-```
+**See**: [Best Practices - Agent Patterns](../../knowledge-base/copilot/agent-architecture-best-practices.md#agent-design-patterns)
 
 ### Phase 5: Instruction File Refinement
 
@@ -255,55 +191,11 @@ See TDD instructions for complete workflow and testing patterns.
    - Note article length ("470+ lines")
    - Make it clear KB is the deep dive
 
-**Example refinement**:
+**Pattern**: Remove "What is X" tutorials → Keep quick reference, workflow integration, project-specific patterns
 
-```markdown
-# Before (tutorial-style)
+**Target**: 100-300 lines with `applyTo` patterns and KB references
 
-# Jest Testing Instructions
-
-## What is Jest?
-
-Jest is a delightful JavaScript testing framework...
-[200 lines of Jest tutorial]
-
-## Setup
-
-Install Jest with:
-npm install --save-dev jest
-[50 lines of setup instructions]
-
-## Writing Tests
-
-[100 lines of test examples]
-
-# After (workflow-focused)
-
-# Jest Testing Instructions
-
-**Apply to**: `**/*.test.{ts,tsx}`
-**Reference**: [knowledge-base/jest/README.md](../../knowledge-base/jest/README.md) (470+ lines comprehensive guide)
-
-## Quick Reference
-
-- `npm test` - Run all tests
-- `npm test -- --watch` - Watch mode
-- `npm test -- --coverage` - Coverage report
-
-## Workflow Integration
-
-- Write tests FIRST (RED phase)
-- Run continuously during GREEN phase
-- Address `act()` warnings immediately
-
-## Project Patterns
-
-- Use `@jest/globals` imports
-- In-memory SQLite for integration tests
-- maxWorkers: 1 for file-based databases
-
-**Deep Dive**: See KB article for setup, configuration, mocking, troubleshooting.
-```
+**See**: [Best Practices - Instruction Patterns](../../knowledge-base/copilot/agent-architecture-best-practices.md#instruction-file-patterns)
 
 ### Phase 6: Knowledge Base Validation
 
@@ -343,41 +235,17 @@ knowledge-base/
 
 ---
 
-## Common Duplication Patterns to Fix
+## Common Duplication Patterns
 
-### Pattern 1: TypeScript Guidance
+**Reference**: [Best Practices - Common Anti-Patterns](../../knowledge-base/copilot/agent-architecture-best-practices.md#common-anti-patterns)
 
-**Duplicated across**:
+**Typical duplications**:
 
-- developer.agent.md ("Use strict mode, avoid `any`...")
-- typescript.instructions.md ("TypeScript is a typed superset...")
-- knowledge-base/typescript/README.md (comprehensive guide)
-
-**Fix**:
-
-- **Keep in KB**: Comprehensive TypeScript guide (setup, types, patterns)
-- **Keep in instructions**: Brief principles, workflow integration, quick reference
-- **Keep in agent**: "Follow TypeScript instructions, run typecheck before commit"
-
-### Pattern 2: Testing Workflows
-
-**Duplicated across**:
-
-- developer.agent.md (TDD RED-GREEN-REFACTOR explanation)
-- tdd.instructions.md (TDD principles, test-first approach)
-- testing.instructions.md (Jest patterns, test structure)
-- knowledge-base/tdd/README.md (800+ lines TDD guide)
-- knowledge-base/jest/README.md (470+ lines Jest guide)
-
-**Fix**:
-
-- **Keep in KB**: Comprehensive TDD and Jest guides
-- **Keep in instructions**: Workflow integration, when to use which pattern
-- **Keep in agent**: "Follow TDD cycle, see TDD instructions for details"
-
-### Pattern 3: SOLID Principles
-
-**Duplicated across**:
+1. **TypeScript guidance** - Keep comprehensive guide in KB, workflow in instructions, checklist in agent
+2. **Testing workflows** - TDD/Jest/Testing Library guides in KB, integration in instructions, cycle in agent
+3. **SOLID principles** - Development guide in KB, checkpoints in instructions, reviews in agent
+4. **Git workflows** - Complete guide in KB, commands in instructions, steps in agent
+5. **Setup instructions** - Detailed setup in KB, quick reference in instructions, verification in agent
 
 - developer.agent.md (SOLID compliance checkpoints)
 - typescript.instructions.md (SOLID examples)

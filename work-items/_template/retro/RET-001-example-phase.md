@@ -11,8 +11,6 @@
 
 **Phase Summary**: Brief description of what was accomplished in this phase.
 
-**Duration**: [Estimated time vs Actual time]
-
 **Key Deliverables**:
 
 - Deliverable 1 (e.g., APR document, ADRs, Test Plan, Task breakdown)
@@ -42,9 +40,7 @@
 
 **Quantifiable Metrics** (where applicable):
 
-- Tests passed: X/Y
-- Coverage: X%
-- Time saved: X hours vs estimate
+- Coverage: X% (target: 70%+)
 - Quality gates: All passed ✅
 
 ---
@@ -55,21 +51,18 @@
 
 1. **[Challenge Category]**: Specific issue encountered
    - What went wrong
-   - Impact on timeline/quality
+   - Impact on quality
    - Root cause (if known)
-   - Time lost: X hours
 
 2. **[Challenge Category]**: Specific issue encountered
    - What went wrong
-   - Impact on timeline/quality
+   - Impact on quality
    - Root cause (if known)
-   - Time lost: X hours
 
 3. **[Challenge Category]**: Specific issue encountered
    - What went wrong
-   - Impact on timeline/quality
+   - Impact on quality
    - Root cause (if known)
-   - Time lost: X hours
 
 **Blockers Encountered**:
 

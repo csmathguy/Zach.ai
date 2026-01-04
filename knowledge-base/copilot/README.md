@@ -4,6 +4,7 @@ Start here for GitHub Copilot (VS Code) concepts we’ll use in Zach.ai.
 
 ## Core Documentation
 
+- **agent-architecture-best-practices.md** — **START HERE** - Comprehensive guide to agent/instruction/KB hierarchy, Diátaxis framework, and separation of concerns
 - **summary.md** — What Copilot offers and how we'll use it
 - **setup.md** — Enable Copilot, agents, tools, MCP servers, prompts
 - **best-practices.md** — Prompting, security, tool usage, model selection
