@@ -11,6 +11,7 @@
 - [Official Site](https://expressjs.com/)
 - [4.x API Reference](https://expressjs.com/en/4x/api.html)
 - [GitHub Repository](https://github.com/expressjs/express)
+- **[Error Handling Guide](error-handling.md)** - Custom error classes, middleware patterns, request ID correlation
 
 ---
 
