@@ -2,7 +2,8 @@ import type { KnowledgePlaceholderContent } from '@/app-shell/placeholders/types
 
 export const knowledgePlaceholderContent: KnowledgePlaceholderContent = {
   heroTitle: 'Knowledge Base',
-  heroBody: 'A curated knowledge hub is coming soon. For now, explore the docs and architecture notes.',
+  heroBody:
+    'A curated knowledge hub is coming soon. For now, explore the docs and architecture notes.',
   primaryCta: {
     label: 'Open Knowledge Base Docs',
     href: 'https://example.com/knowledge-base',

@@ -3,10 +3,10 @@ export interface KnowledgePlaceholderContent {
   heroBody: string;
   primaryCta: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
-  roadmapHighlights: Array<{
+  roadmapHighlights: {
     title: string;
     description: string;
-  }>;
+  }[];
 }
 
 export interface KnowledgeComingSoonProps {

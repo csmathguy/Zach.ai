@@ -12,18 +12,21 @@ describe('KnowledgeComingSoon', () => {
   it('renders hero content and CTAs from the content contract', () => {
     render(<KnowledgeComingSoon content={knowledgePlaceholderContent} />);
 
-    expect(screen.getByRole('heading', { name: knowledgePlaceholderContent.heroTitle })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: knowledgePlaceholderContent.heroTitle })
+    ).toBeInTheDocument();
     expect(screen.getByText(knowledgePlaceholderContent.heroBody)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: knowledgePlaceholderContent.primaryCta.label })).toHaveAttribute(
-      'href',
-      knowledgePlaceholderContent.primaryCta.href
-    );
+    expect(
+      screen.getByRole('link', { name: knowledgePlaceholderContent.primaryCta.label })
+    ).toHaveAttribute('href', knowledgePlaceholderContent.primaryCta.href);
   });
 
   it('adds rel noopener for external CTA links', () => {
     render(<KnowledgeComingSoon content={knowledgePlaceholderContent} />);
 
-    const primary = screen.getByRole('link', { name: knowledgePlaceholderContent.primaryCta.label });
+    const primary = screen.getByRole('link', {
+      name: knowledgePlaceholderContent.primaryCta.label,
+    });
     expect(primary).toHaveAttribute('rel', expect.stringContaining('noopener'));
   });
 
