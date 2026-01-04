@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
+import { requestLogger } from './middleware/requestLogger';
+import { errorHandler } from './middleware/errorHandler';
+import { thoughtsRouter } from './api/routes';
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
@@ -12,7 +15,14 @@ const startTime = Date.now();
 const requestTimes: number[] = [];
 const MAX_REQUEST_SAMPLES = 100;
 
-// Enable CORS for development (frontend on different port)
+// MIDDLEWARE PIPELINE (order matters!)
+// 1. Request logging with ID
+app.use(requestLogger);
+
+// 2. Body parsing - must come before routes
+app.use(express.json({ limit: '1mb' }));
+
+// 3. CORS for development (frontend on different port)
 if (NODE_ENV === 'development') {
   app.use(
     cors({
@@ -22,7 +32,7 @@ if (NODE_ENV === 'development') {
   );
 }
 
-// Middleware to track response times
+// 4. Response time tracking for metrics
 app.use((req, res, next) => {
   const start = Date.now();
   res.on('finish', () => {
@@ -35,6 +45,7 @@ app.use((req, res, next) => {
   next();
 });
 
+// ROUTES
 // Health check endpoint
 app.get('/health', (_req, res) => {
   res.json({
@@ -88,6 +99,9 @@ app.get('/api/metrics', (_req, res) => {
   });
 });
 
+// Thoughts API endpoint
+app.use('/api/thoughts', thoughtsRouter);
+
 // In production, serve built frontend. Prefer snapshot dir if available/env-provided.
 if (NODE_ENV === 'production') {
   const envDir = process.env.FRONTEND_DIR;
@@ -107,6 +121,9 @@ if (NODE_ENV === 'production') {
     res.sendFile(path.join(frontendDist, 'index.html'));
   });
 }
+
+// ERROR HANDLING (must be last middleware)
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`[backend] listening on http://localhost:${PORT} (${NODE_ENV})`);
