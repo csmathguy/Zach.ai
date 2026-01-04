@@ -12,6 +12,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
   // Generate or use existing request ID
   const requestId = (req.headers['x-request-id'] as string) || crypto.randomUUID();
   req.id = requestId;
+  res.setHeader('x-request-id', requestId);
 
   const startTime = Date.now();
 

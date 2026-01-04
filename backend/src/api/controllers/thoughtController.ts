@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
+import { Prisma } from '@prisma/client';
 import { IThoughtRepository } from '@domain/repositories/IThoughtRepository';
+import { ValidationError } from '@/errors';
 import { CreateThoughtInput } from '@/validators/thoughtSchema';
 
 /**
@@ -41,6 +43,14 @@ export class ThoughtController {
         processedState: thought.processedState,
       });
     } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        (error.code === 'P2003' || error.code === 'P2025')
+      ) {
+        next(new ValidationError('User not found', { userId: ThoughtController.MVP_USER_ID }));
+        return;
+      }
+
       next(error);
     }
   };

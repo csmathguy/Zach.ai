@@ -47,6 +47,7 @@ describe('requestLogger Middleware', () => {
       }
     };
 
+    res.setHeader = jest.fn() as unknown as Response['setHeader'];
     res.statusCode = 200;
     return res;
   };
@@ -87,6 +88,18 @@ describe('requestLogger Middleware', () => {
     // Assert
     expect(req.id).toBe(existingId);
     expect(crypto.randomUUID).not.toHaveBeenCalled();
+  });
+
+  it('should set X-Request-Id response header', () => {
+    const mockUUID = '12345678-1234-1234-1234-123456789012';
+    (crypto.randomUUID as jest.Mock).mockReturnValue(mockUUID);
+
+    const req = mockRequest({}) as Request;
+    const res = mockResponse() as Response;
+
+    requestLogger(req, res, mockNext);
+
+    expect(res.setHeader).toHaveBeenCalledWith('x-request-id', mockUUID);
   });
 
   it('should log request start with timestamp', () => {

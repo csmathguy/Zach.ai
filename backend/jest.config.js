@@ -13,6 +13,7 @@ module.exports = {
 
   // Global setup - apply database schema before tests run
   globalSetup: '<rootDir>/jest.setup.ts',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.afterEnv.ts'],
 
   // TypeScript path alias mapping for Jest
   moduleNameMapper: {

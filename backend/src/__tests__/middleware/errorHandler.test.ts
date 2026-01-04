@@ -11,6 +11,14 @@ import { Request, Response, NextFunction } from 'express';
 import { errorHandler } from '../../middleware/errorHandler';
 import { ValidationError, DatabaseError } from '../../errors';
 
+jest.mock('../../utils/logger', () => ({
+  logger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  },
+}));
+
 // Mock request, response, next helpers
 const mockRequest = (overrides?: {
   id?: string;
