@@ -2,17 +2,17 @@ import { useEffect } from 'react';
 
 import { trackEvent } from '@/app-shell/analytics/analytics';
 import { relForHref } from '@/app-shell/placeholders/link-utils';
-import type { KnowledgeComingSoonProps } from '@/app-shell/placeholders/types';
+import type { IdeasPlaceholderProps } from '@/app-shell/placeholders/types';
 
-export const KnowledgeComingSoon = ({ content }: KnowledgeComingSoonProps): JSX.Element => {
+export const IdeasPlaceholder = ({ content }: IdeasPlaceholderProps): JSX.Element => {
   useEffect(() => {
-    trackEvent('knowledgePlaceholder.view');
+    trackEvent('ideasPlaceholder.view');
   }, []);
 
   return (
-    <section aria-labelledby="knowledge-placeholder-title">
+    <section aria-labelledby="ideas-placeholder-title">
       <header>
-        <h1 id="knowledge-placeholder-title">{content.heroTitle}</h1>
+        <h1 id="ideas-placeholder-title">{content.heroTitle}</h1>
         <p>{content.heroBody}</p>
       </header>
 
@@ -27,7 +27,7 @@ export const KnowledgeComingSoon = ({ content }: KnowledgeComingSoonProps): JSX.
         ) : null}
       </div>
 
-      <div aria-label="Roadmap highlights">
+      <div aria-label="Ideas roadmap">
         {content.roadmapHighlights.map((item) => (
           <article key={item.title}>
             <h2>{item.title}</h2>

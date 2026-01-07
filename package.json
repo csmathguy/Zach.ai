@@ -29,6 +29,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
     "@eslint/js": "9.39.2",
     "@playwright/test": "^1.49.0",
     "concurrently": "^8.2.2",

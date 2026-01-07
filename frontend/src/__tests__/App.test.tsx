@@ -2,14 +2,19 @@ import { render, screen } from '@testing-library/react';
 import { App } from '../app/App';
 
 describe('App', () => {
-  it('should render the header with navigation', () => {
+  it('renders the modern app shell header and utility navigation', () => {
     render(<App />);
 
+    expect(screen.getByTestId('app-shell')).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { level: 1, name: /application dashboard/i })
+      screen.getByRole('tablist', {
+        name: /utility navigation/i,
+      })
     ).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /codebase analysis/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /health/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /knowledge/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /ideas/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument();
   });
 
   it('should render the home page by default', () => {

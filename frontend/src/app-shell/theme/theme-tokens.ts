@@ -2,25 +2,25 @@ import type { ThemeTokens } from './types';
 
 export const lightThemeTokens: ThemeTokens = {
   elevation: {
-    surface: '#f8f9fb',
+    surface: '#f4f2ee',
     panel: '#ffffff',
-    sunken: '#eef1f5',
+    sunken: '#ebe7e1',
   },
   text: {
-    primary: '#0d1117',
-    secondary: '#3b424d',
-    accent: '#1f6feb',
+    primary: '#1c1f24',
+    secondary: '#5a6472',
+    accent: '#2b6b7f',
     inverted: '#ffffff',
   },
   brand: {
-    heart: '#ff4d6d',
-    brain: '#8e44ad',
-    bulb: '#f4d03f',
+    heart: '#d1495b',
+    brain: '#5b4e8c',
+    bulb: '#f4b860',
   },
   feedback: {
-    success: '#2ecc71',
-    warning: '#f39c12',
-    danger: '#e74c3c',
+    success: '#2f9f6b',
+    warning: '#d7893a',
+    danger: '#d84a4a',
   },
   borderRadius: '12px',
   spacingUnit: 8,
@@ -28,24 +28,24 @@ export const lightThemeTokens: ThemeTokens = {
 
 export const darkThemeTokens: ThemeTokens = {
   elevation: {
-    surface: '#0f1115',
-    panel: '#141821',
-    sunken: '#0b0e12',
+    surface: '#0d1116',
+    panel: '#151b23',
+    sunken: '#0a0d12',
   },
   text: {
-    primary: '#f4f6fb',
-    secondary: '#c7cedb',
-    accent: '#6ea8ff',
-    inverted: '#0f1115',
+    primary: '#e7ecf2',
+    secondary: '#9aa6b2',
+    accent: '#7cc4d8',
+    inverted: '#0d1116',
   },
   brand: {
-    heart: '#ff6b88',
-    brain: '#b07ad9',
-    bulb: '#f5e08a',
+    heart: '#ff7a92',
+    brain: '#9b86d6',
+    bulb: '#f3c97b',
   },
   feedback: {
-    success: '#44d07a',
-    warning: '#f5b041',
+    success: '#3fbf7f',
+    warning: '#e0a359',
     danger: '#ff6b6b',
   },
   borderRadius: '12px',

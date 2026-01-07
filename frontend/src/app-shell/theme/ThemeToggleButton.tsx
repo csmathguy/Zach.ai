@@ -1,4 +1,5 @@
 import { useTheme } from '@/app-shell/theme/ThemeProvider';
+import styles from '@/app-shell/theme/ThemeToggleButton.module.css';
 
 export const ThemeToggleButton = (): JSX.Element => {
   const { theme, setPreference } = useTheme();
@@ -9,12 +10,15 @@ export const ThemeToggleButton = (): JSX.Element => {
     <button
       aria-pressed={isDark}
       aria-label="Toggle theme"
+      className={styles.button}
       data-testid="theme-toggle"
       type="button"
       onClick={() => setPreference(isDark ? 'light' : 'dark')}
     >
-      {label}
-      <span aria-live="polite">{`${label} theme enabled`}</span>
+      Theme: {label}
+      <span aria-live="polite" className={styles.srOnly}>
+        {`${label} theme enabled`}
+      </span>
     </button>
   );
 };

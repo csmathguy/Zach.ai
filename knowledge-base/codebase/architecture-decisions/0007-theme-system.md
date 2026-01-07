@@ -67,7 +67,7 @@ export interface ThemeTokens {
 - **Performance**: CSS variables toggle instantly without triggering React tree re-rendering or recomputing styles in JS.
 - **DX**: Existing CSS Modules can read `var(--color-text-primary)` with no new tooling. Components needing dynamic styling can still import the token map.
 - **Accessibility**: Having both system-respecting default and persisted overrides satisfies WCAG 2.1 AA (Contrast + user control) and Test Plan TS-001 requirements.
-- **Rollout**: Feature flag `appShell.refresh` can switch the entire shell while still loading the provider lazily; the legacy shell remains untouched because the provider is scoped to the new tree.
+- **Rollout**: The modern shell (and ThemeProvider) now ship always-on; the former `appShell.refresh` flag was retired after the January 2026 rollout when legacy chrome support was removed.
 
 ---
 

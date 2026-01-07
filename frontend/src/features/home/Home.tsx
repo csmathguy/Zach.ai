@@ -16,32 +16,40 @@ export const Home: FC = () => {
         </p>
       </section>
 
-      <section className={styles.features}>
-        <div className={styles.featureCard}>
-          <div className={styles.featureIcon}>📊</div>
-          <h3 className={styles.featureTitle}>Codebase Analysis</h3>
-          <p className={styles.featureDescription}>
-            Monitor test coverage and server health in real-time
-          </p>
-          <Link to="/codebase-analysis" className={styles.featureLink}>
-            View Dashboard →
-          </Link>
-        </div>
+      <section className={styles.features} aria-labelledby="features-title">
+        <h2 id="features-title" className={styles.sectionTitle}>
+          Product pillars at a glance
+        </h2>
+        <p className={styles.sectionSubtitle}>
+          Navigate between health insights, the upcoming knowledge hub, and our ideation surface.
+        </p>
+        <div className={styles.featureGrid}>
+          <div className={styles.featureCard}>
+            <div className={styles.featureIcon}>dY"S</div>
+            <h3 className={styles.featureTitle}>Codebase Analysis</h3>
+            <p className={styles.featureDescription}>
+              Monitor test coverage and server health in real-time
+            </p>
+            <Link to="/codebase-analysis" className={styles.featureLink}>
+              View Dashboard ƒ+'
+            </Link>
+          </div>
 
-        <div className={styles.featureCard}>
-          <div className={styles.featureIcon}>🚀</div>
-          <h3 className={styles.featureTitle}>Ready to Build</h3>
-          <p className={styles.featureDescription}>
-            TypeScript, React, Vite, Express, PM2 - everything configured and ready to go
-          </p>
-        </div>
+          <div className={styles.featureCard}>
+            <div className={styles.featureIcon}>dYs?</div>
+            <h3 className={styles.featureTitle}>Ready to Build</h3>
+            <p className={styles.featureDescription}>
+              TypeScript, React, Vite, Express, PM2 - everything configured and ready to go
+            </p>
+          </div>
 
-        <div className={styles.featureCard}>
-          <div className={styles.featureIcon}>⚡</div>
-          <h3 className={styles.featureTitle}>Fast Development</h3>
-          <p className={styles.featureDescription}>
-            Hot module replacement, instant feedback, and optimized builds
-          </p>
+          <div className={styles.featureCard}>
+            <div className={styles.featureIcon}>ƒs­</div>
+            <h3 className={styles.featureTitle}>Fast Development</h3>
+            <p className={styles.featureDescription}>
+              Hot module replacement, instant feedback, and optimized builds
+            </p>
+          </div>
         </div>
       </section>
 

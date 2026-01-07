@@ -79,7 +79,7 @@ Mitigations: Component is small; lazy-load via `React.lazy` if necessary. Provid
    - `frontend/src/app-shell/placeholders/knowledge-placeholder-content.ts`
 2. **Routing**
    - Add `<Route path="/knowledge" element={<KnowledgeComingSoon />}>` under the new shell.
-   - Ensure legacy router either redirects or hides Brain icon when feature flag disabled.
+   - Ensure the Brain icon hides when the `knowledge.placeholder` feature flag is disabled.
 3. **Content Props**
 
 ```ts

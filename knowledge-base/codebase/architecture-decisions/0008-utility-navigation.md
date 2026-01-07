@@ -31,14 +31,14 @@ export interface UtilityNavItem {
   description: string;
   icon: IconComponent; // React component receiving { active: boolean }
   route: string;
-  featureFlag?: string; // e.g., 'appShell.refresh' or future flags
+  featureFlag?: string; // e.g., 'knowledge.placeholder' or future flags
   onSelect?: () => void; // optional analytics hook
   target?: '_blank';
 }
 ```
 
 2. **`UtilityNav.tsx`** renders the tray. It:
-   - Reads `appShell.refresh` feature flag to show/hide the entire tray.
+   - Filters placeholder-level feature flags so unfinished surfaces hide cleanly.
    - Filters items with `featureFlag` set when the flag is disabled.
    - Uses `useLocation()` from React Router to highlight the active icon.
    - Emits analytics events via optional `onSelect` callbacks.
@@ -51,7 +51,7 @@ export interface UtilityNavItem {
    - Each target route owns its own placeholder or existing view, enabling deep links and future replacement without shell changes.
 
 4. **Feature Flag Compatibility**
-   - If `import.meta.env.VITE_FEATURE_APPSHELL_REFRESH !== 'true'`, the existing header nav renders (legacy). When enabled, the shell shows both top nav and icon tray.
+   - Placeholder entries (`knowledge.placeholder`, `ideas.placeholder`, etc.) remain flaggable so product can hide unfinished surfaces without re-cutting the nav.
 
 ---
 
@@ -100,7 +100,7 @@ export interface UtilityNavItem {
 3. **Analytics**
    - Provide a `fireUtilityNavEvent(id: string)` helper (no-op today) so future telemetry is centralized.
 4. **Feature Flag**
-   - Read from `window.__APP_FEATURES__?.appShell?.refresh` (server-injected) with fallback to `import.meta.env`. Provide helper `isFeatureEnabled('appShell.refresh')` so nav + shell align.
+   - Read placeholder flags from `window.__APP_FEATURES__` with fallback to `import.meta.env` (`VITE_FEATURE_KNOWLEDGE_PLACEHOLDER`, etc.) via `isFeatureEnabled`.
 
 ---
 
@@ -109,4 +109,4 @@ export interface UtilityNavItem {
 - **SOLID**: Config + render components separate (SRP). UtilityNav consumes navigation service instead of embedding logic.
 - **Accessibility**: Buttons advertise label/description, support keyboard roving, and meet focus contrast guidelines by leveraging theme tokens.
 - **Testing**: TS-002/TS-003 cover navigation + feature flag gating. Unit tests cover config filtering + analytics hook.
-- **Rollback**: Disable `appShell.refresh` to hide tray; legacy header continues to function.
+- **Rollback**: Toggle individual placeholder flags to hide unfinished icons; the utility tray itself no longer ships behind a kill switch.

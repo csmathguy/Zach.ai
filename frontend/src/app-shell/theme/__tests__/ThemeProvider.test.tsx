@@ -12,15 +12,26 @@ import {
 import { ThemeToggleButton } from '@/app-shell/theme/ThemeToggleButton';
 import { darkThemeTokens, lightThemeTokens } from '@/app-shell/theme/theme-tokens';
 
+const createMediaQueryList = (matches: boolean, query: string): MediaQueryList =>
+  ({
+    matches,
+    media: query,
+    onchange: null,
+    addListener: () => undefined,
+    removeListener: () => undefined,
+    addEventListener: () => undefined,
+    removeEventListener: () => undefined,
+    dispatchEvent: () => true,
+  }) as MediaQueryList;
+
 const mockMatchMedia = (matches: boolean) => {
+  const mockedMatchMedia = jest
+    .fn<(query: string) => MediaQueryList>()
+    .mockImplementation((query: string) => createMediaQueryList(matches, query));
+
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: jest.fn().mockImplementation((query: string) => ({
-      matches,
-      media: query,
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-    })),
+    value: mockedMatchMedia,
   });
 };
 
@@ -114,7 +125,7 @@ describe('ThemeProvider', () => {
   });
 
   it('falls back deterministically when storage is unavailable', () => {
-    const debugSpy = jest.spyOn(console, 'debug').mockImplementation(() => undefined);
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
     jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
       throw new Error('storage blocked');
     });
@@ -122,9 +133,9 @@ describe('ThemeProvider', () => {
     mockMatchMedia(true);
     const initial = resolveInitialTheme();
     expect(initial).toEqual({ theme: 'light', preference: 'system' });
-    expect(debugSpy).toHaveBeenCalledTimes(1);
+    expect(warnSpy).toHaveBeenCalledTimes(1);
 
-    debugSpy.mockRestore();
+    warnSpy.mockRestore();
   });
 
   it('swaps token maps when theme changes', async () => {

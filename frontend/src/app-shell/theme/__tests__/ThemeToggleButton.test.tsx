@@ -6,15 +6,26 @@ import { ThemeProvider } from '@/app-shell/theme/ThemeProvider';
 import { ThemeToggleButton } from '@/app-shell/theme/ThemeToggleButton';
 import { ThemeStorageKey } from '@/app-shell/theme/theme-storage';
 
+const createMediaQueryList = (matches: boolean, query: string): MediaQueryList =>
+  ({
+    matches,
+    media: query,
+    onchange: null,
+    addListener: () => undefined,
+    removeListener: () => undefined,
+    addEventListener: () => undefined,
+    removeEventListener: () => undefined,
+    dispatchEvent: () => true,
+  }) as MediaQueryList;
+
 const mockMatchMedia = (matches: boolean) => {
+  const mockedMatchMedia = jest
+    .fn<(query: string) => MediaQueryList>()
+    .mockImplementation((query: string) => createMediaQueryList(matches, query));
+
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: jest.fn().mockImplementation((query: string) => ({
-      matches,
-      media: query,
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-    })),
+    value: mockedMatchMedia,
   });
 };
 

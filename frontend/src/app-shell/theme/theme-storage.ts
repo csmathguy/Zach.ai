@@ -9,7 +9,7 @@ const warnStorageUnavailable = (error: unknown): void => {
     return;
   }
   storageWarningLogged = true;
-  console.debug('Theme storage unavailable; falling back to defaults.', error);
+  console.warn('Theme storage unavailable; falling back to defaults.', error);
 };
 
 export const readStoredPreference = (): {

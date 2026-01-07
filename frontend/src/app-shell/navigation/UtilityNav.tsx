@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { isFeatureEnabled } from '@/app-shell/feature-flags/featureFlags';
 import { utilityNavConfig } from '@/app-shell/navigation/utilityNavConfig';
 import type { UtilityNavItem, UtilityNavProps } from '@/app-shell/navigation/types';
+import styles from '@/app-shell/navigation/UtilityNav.module.css';
 
 const filterItems = (items: UtilityNavItem[]): UtilityNavItem[] =>
   items.filter((item) => !item.featureFlag || isFeatureEnabled(item.featureFlag));
@@ -71,14 +72,20 @@ export const UtilityNav = ({ items }: UtilityNavProps): JSX.Element => {
   );
 
   return (
-    <div aria-label="Utility navigation" data-testid="utility-nav" role="tablist">
+    <div
+      aria-label="Utility navigation"
+      className={styles.nav}
+      data-testid="utility-nav"
+      role="tablist"
+    >
       {navItems.map((item, index) => {
         const isActive = index === activeIndex;
         const Icon = item.icon;
         return (
           <button
             key={item.id}
-            aria-pressed={isActive}
+            aria-selected={isActive}
+            className={styles.button}
             data-nav-id={item.id}
             onClick={() => handleSelect(item)}
             onKeyDown={(event) => handleKeyDown(event, index)}
@@ -89,8 +96,10 @@ export const UtilityNav = ({ items }: UtilityNavProps): JSX.Element => {
             tabIndex={isActive ? 0 : -1}
             type="button"
           >
-            <Icon active={isActive} />
-            {item.label}
+            <span className={styles.icon}>
+              <Icon active={isActive} />
+            </span>
+            <span className={styles.label}>{item.label}</span>
           </button>
         );
       })}

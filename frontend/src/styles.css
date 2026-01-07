@@ -5,13 +5,28 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'IBM Plex Sans', 'Avenir Next', 'Segoe UI', sans-serif;
+  background:
+    radial-gradient(
+      circle at top left,
+      color-mix(in srgb, var(--color-panel) 60%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      var(--color-surface) 0%,
+      color-mix(in srgb, var(--color-sunken) 60%, transparent) 100%
+    );
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  padding: 32px;
+}
+
+a {
+  color: var(--color-text-accent);
+}
+
+a:hover {
+  color: color-mix(in srgb, var(--color-text-accent) 80%, var(--color-text-primary));
 }
 
 .status-badge {

@@ -127,11 +127,11 @@ describe('UtilityNav', () => {
     expect(knowledge).toHaveFocus();
   });
 
-  it('reflects active route via aria-pressed', () => {
+  it('reflects active route via aria-selected', () => {
     renderNav(createItems(), ['/knowledge']);
 
     const knowledge = screen.getByRole('tab', { name: 'Knowledge' });
-    expect(knowledge).toHaveAttribute('aria-pressed', 'true');
+    expect(knowledge).toHaveAttribute('aria-selected', 'true');
   });
 
   it('does not navigate when activating the already-active route', async () => {

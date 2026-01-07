@@ -12,12 +12,13 @@ This workspace-level knowledge base captures core references, summaries, and bes
 
 ### Technology Documentation
 
-- **[copilot/](./copilot/README.md)**: GitHub Copilot in VS Code — agents, tools, prompts, MCP servers, extension APIs
+- **[copilot/](./copilot/README.md)**: GitHub Copilot — VS Code integration, agents, tools, MCP servers
 - **[anthropic/](./anthropic/README.md)**: Anthropic/Claude — Claude Code, prompts/workflows, connectors, best practices
 - **[codebase/](./codebase/README.md)**: This repository's structure, development guide, and validation
 - **[deployment/](./deployment/README.md)**: Deployment guides, testing checklists, quick reference
 - **[eslint/](./eslint/README.md)**: ESLint configuration and best practices ✅
 - **[express/](./express/README.md)**: Express web framework — middleware, routing, error handling ✅
+- **[design/](./design/README.md)**: Web app design & styling system — colors, typography, layout, accessibility
 - **[prettier/](./prettier/README.md)**: Prettier formatting standards ✅
 - **[jest/](./jest/README.md)**: Jest testing framework ✅
 - **[playwright/](./playwright/README.md)**: Playwright E2E testing (MVP)
@@ -31,6 +32,7 @@ This workspace-level knowledge base captures core references, summaries, and bes
 - **[typescript/](./typescript/README.md)**: TypeScript language features
 - **[vite/](./vite/README.md)**: Vite build tool and dev server
 - **[zod/](./zod/README.md)**: Zod schema validation library — TypeScript-first, type inference, single source of truth ✅
+- **[tooling/codex-cli.md](./tooling/codex-cli.md)**: OpenAI Codex CLI — terminal coding agent, sandboxing, automation & CI
 - More technology folders being added (see [ideas/knowledge-base-updates.md](../ideas/knowledge-base-updates.md))
 
 ## 🎯 Getting Started
