@@ -51,7 +51,8 @@ test('ideas flow: navigate, capture, and persist', async ({ page }) => {
   await page.getByLabel(/enter your thought/i).fill(ideaText);
   await page.getByRole('button', { name: /capture/i }).click();
 
-  await expect(page.getByRole('status')).toHaveText(/thought captured/i);
+  const successStatus = page.getByRole('status').filter({ hasText: /thought captured/i });
+  await expect(successStatus).toBeVisible();
   await expect(page.getByText(ideaText)).toBeVisible();
 
   await page.reload();
