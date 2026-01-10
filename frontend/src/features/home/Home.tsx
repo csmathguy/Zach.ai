@@ -43,6 +43,9 @@ export const Home: FC = () => {
           This is a clean starting point for building your application. Customize this landing page
           to fit your project&apos;s needs.
         </p>
+        <Link to="/ideas" className={styles.heroCta}>
+          Go to Ideas
+        </Link>
       </section>
 
       <section className={styles.features} aria-labelledby="features-title">

@@ -58,11 +58,11 @@ test.describe('App Shell experience', () => {
     await expect(page.getByTestId('app-shell')).toBeVisible();
   });
 
-  test('Ideas placeholder route renders inside the shell', async ({ page }) => {
+  test('Ideas route renders inside the shell', async ({ page }) => {
     await page.goto('/ideas');
-    await expect(page.getByRole('heading', { name: /Ideas & Inbox/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /^ideas$/i })).toBeVisible();
     await expect(page.getByTestId('app-shell')).toBeVisible();
-    await expect(page.getByRole('link', { name: /Review Inbox work item/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /latest ideas/i })).toBeVisible();
   });
 
   test('App shell fits within a narrow viewport without horizontal overflow', async ({ page }) => {

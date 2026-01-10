@@ -8,6 +8,10 @@ handoffs:
     agent: planner
     prompt: Architecture design needs APR clarification or scope adjustment.
     send: false
+  - label: Ready for Design
+    agent: designer
+    prompt: Architecture decisions are ready. Use them to create UI/UX design specs.
+    send: false
   - label: Research New Technologies
     agent: researcher
     prompt: Architecture requires research on unfamiliar technologies or patterns.
@@ -38,6 +42,12 @@ Design technical solutions that align with business requirements (APR) and exist
 4. **Apply Patterns** - Use appropriate design patterns (see Development Guide)
 5. **Define Layers** - Apply layered architecture (Domain → Infrastructure → Application → API)
 6. **Integration** - Define how feature integrates with existing system
+
+---
+
+## Branch Safety Check
+
+Before writing architecture artifacts, confirm you are on a feature branch (not `main`). If not, stop and ask the user to create or switch branches.
 
 ---
 

@@ -54,4 +54,25 @@ export class ThoughtController {
       next(error);
     }
   };
+
+  /**
+   * GET /api/thoughts - List thoughts for the MVP user
+   */
+  list = async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+      const thoughts = await this.thoughtRepository.findByUser(ThoughtController.MVP_USER_ID);
+
+      return res.status(200).json(
+        thoughts.map((thought) => ({
+          id: thought.id,
+          text: thought.text,
+          source: thought.source,
+          timestamp: thought.timestamp,
+          processedState: thought.processedState,
+        }))
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
 }

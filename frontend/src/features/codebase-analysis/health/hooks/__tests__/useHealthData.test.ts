@@ -1,5 +1,5 @@
-import { describe, it, expect, jest, beforeEach, afterEach } from '@jest/globals';
-import { renderHook, waitFor } from '@testing-library/react';
+import { describe, it, expect, jest, beforeEach } from '@jest/globals';
+import { renderHook, waitFor, act } from '@testing-library/react';
 import { useHealthData } from '../useHealthData';
 
 // Mock fetch
@@ -40,12 +40,6 @@ describe('useHealthData', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.useFakeTimers();
-  });
-
-  afterEach(() => {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
   });
 
   it('should fetch health data on mount', async () => {
@@ -112,6 +106,7 @@ describe('useHealthData', () => {
   });
 
   it('should auto-refresh when enabled', async () => {
+    jest.useFakeTimers();
     (global.fetch as jest.MockedFunction<typeof fetch>).mockImplementation((url) => {
       if (typeof url === 'string' && url.includes('/health')) {
         return Promise.resolve({
@@ -136,15 +131,20 @@ describe('useHealthData', () => {
     });
 
     // Fast-forward 30 seconds
-    jest.advanceTimersByTime(30000);
+    await act(async () => {
+      jest.advanceTimersByTime(30000);
+    });
 
     // Should trigger another fetch
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledTimes(4);
     });
+
+    jest.useRealTimers();
   });
 
   it('should not auto-refresh when disabled', async () => {
+    jest.useFakeTimers();
     (global.fetch as jest.MockedFunction<typeof fetch>).mockImplementation((url) => {
       if (typeof url === 'string' && url.includes('/health')) {
         return Promise.resolve({
@@ -169,10 +169,14 @@ describe('useHealthData', () => {
     });
 
     // Fast-forward 30 seconds
-    jest.advanceTimersByTime(30000);
+    await act(async () => {
+      jest.advanceTimersByTime(30000);
+    });
 
     // Should NOT trigger another fetch
     expect(global.fetch).toHaveBeenCalledTimes(2);
+
+    jest.useRealTimers();
   });
 
   it('should use correct API endpoints', async () => {

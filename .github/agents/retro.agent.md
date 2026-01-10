@@ -12,7 +12,7 @@ handoffs:
 
 # Retrospective Agent Workflow
 
-**Purpose**: Synthesize all phase retrospectives (RET-001 through RET-005) into comprehensive feature-level learnings, identify cross-phase themes, consolidate action items, and provide recommendations for future features.
+**Purpose**: Synthesize all phase retrospectives (RET-001 through RET-006) into comprehensive feature-level learnings, identify cross-phase themes, consolidate action items, and provide recommendations for future features.
 
 **Reference**: [Retrospective Best Practices](../../knowledge-base/copilot/workflows-apr-retro.md#retrospective-best-practices) | [Continuous Retrospectives](../../knowledge-base/copilot/workflows-apr-retro.md#continuous-retrospectives-phase-by-phase)
 
@@ -30,15 +30,19 @@ Read the individual retrospective entries created by each agent:
    - Architect agent's retrospective
    - ADR effectiveness, contract clarity, design patterns
 
-3. **RET-003: Research Phase** (`work-items/<branch>/retro/RET-003-research-phase.md`) - **IF APPLICABLE**
+3. **RET-003: Design Phase** (`work-items/<branch>/retro/RET-003-design-phase.md`)
+   - Designer agent's retrospective
+   - UX clarity, accessibility, mobile usability
+
+4. **RET-004: Research Phase** (`work-items/<branch>/retro/RET-004-research-phase.md`) - **IF APPLICABLE**
    - Researcher agent's retrospective (may not exist if no research needed)
    - Technology evaluation, KB documentation quality
 
-4. **RET-004: Testing Phase** (`work-items/<branch>/retro/RET-004-testing-phase.md`)
+5. **RET-005: Testing Phase** (`work-items/<branch>/retro/RET-005-testing-phase.md`)
    - Tester agent's retrospective
    - Test strategy, coverage targets, specification clarity
 
-5. **RET-005: Development Phase** (`work-items/<branch>/retro/RET-005-development-phase.md`)
+6. **RET-006: Development Phase** (`work-items/<branch>/retro/RET-006-development-phase.md`)
    - Developer agent's retrospective
    - TDD cycle, implementation challenges, code quality
 
@@ -79,9 +83,9 @@ Analyze patterns that span multiple phases:
 
 ---
 
-## Step 3: Create Overall Feature Retrospective (RET-006)
+## Step 3: Create Overall Feature Retrospective (RET-007)
 
-1. **Copy Template**: Copy `work-items/_template/retro/RET-001-example-phase.md` to `work-items/<branch>/retro/RET-006-overall-feature.md`
+1. **Copy Template**: Copy `work-items/_template/retro/RET-001-example-phase.md` to `work-items/<branch>/retro/RET-007-overall-feature.md`
 
 2. **Fill All Sections** with feature-level synthesis:
    - **Overview**: Complete feature timeline, total duration vs estimate, all deliverables
@@ -91,7 +95,7 @@ Analyze patterns that span multiple phases:
    - **Action Items** 📋: High-priority improvements (synthesize all phase action items, prioritize, consolidate duplicates)
    - **Quality Assessment**: Feature-level metrics (overall coverage, total TypeScript errors, total tasks, completion rate)
    - **Handoff to Next Phase**: Lessons learned for next feature, template improvements needed, KB updates required
-   - **Related Documentation**: Link to ALL phase retrospectives (RET-001 through RET-005)
+   - **Related Documentation**: Link to ALL phase retrospectives (RET-001 through RET-006)
 
 ---
 
@@ -99,12 +103,12 @@ Analyze patterns that span multiple phases:
 
 Update `work-items/<branch>/retro/retrospective.md` with:
 
-1. **Individual Phase Retrospectives** - Add RET-006 entry:
+1. **Individual Phase Retrospectives** - Add RET-007 entry:
 
    ```markdown
-   ### RET-006: Overall Feature Retrospective
+   ### RET-007: Overall Feature Retrospective
 
-   - **File**: [RET-006-overall-feature.md](RET-006-overall-feature.md)
+   - **File**: [RET-007-overall-feature.md](RET-007-overall-feature.md)
    - **Agent**: Retro
    - **Date**: YYYY-MM-DD
    - **Status**: Complete ✅
@@ -145,7 +149,7 @@ Update `work-items/<branch>/retro/retrospective.md` with:
 
 ## Step 5: Prioritize Action Items
 
-Consolidate all action items from RET-001 through RET-006:
+Consolidate all action items from RET-001 through RET-007:
 
 ### High Priority (Complete within 1 week)
 
@@ -216,7 +220,7 @@ Evaluate the feature workflow itself:
 
 - Was the numbered entry pattern effective?
 - Did individual phase retrospectives capture learnings?
-- Did synthesis into RET-006 provide cross-phase insights?
+- Did synthesis into RET-007 provide cross-phase insights?
 - Recommendations for retrospective workflow improvements
 
 ### Template Effectiveness
@@ -231,9 +235,9 @@ Evaluate the feature workflow itself:
 
 **Retrospective phase complete when**:
 
-- [ ] Read all phase retrospectives (RET-001 through RET-005)
+- [ ] Read all phase retrospectives (RET-001 through RET-006)
 - [ ] Identified cross-phase themes (positive and negative)
-- [ ] Created RET-006-overall-feature.md with synthesis
+- [ ] Created RET-007-overall-feature.md with synthesis
 - [ ] Updated retrospective.md summary with all sections filled
 - [ ] Consolidated action items into High/Medium/Low priority
 - [ ] Proposed knowledge base updates (new entries, updates, ADR promotions)

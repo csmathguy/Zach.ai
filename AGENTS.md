@@ -23,6 +23,7 @@ This repository ships a complete Copilot/Codex agent workflow. Use this file as 
 | ------------------- | --------------------------------------------------- | ------------------------------------ | ----------------------------------------------------------------- | -------------------------------------------------- |
 | Planning            | `planner` (`.github/agents/planner.agent.md`)       | Product vision, user goals           | APR (`work-items/<feature>/plan/apr.md`), feature folder skeleton | Architect -> Developer/Test when planner hands off |
 | Architecture        | `architect` (`.github/agents/architect.agent.md`)   | APR, constraints                     | ADRs, contracts, updated architecture README                      | Researcher (if new tech), Tester, Developer        |
+| Design              | `designer` (`.github/agents/designer.agent.md`)     | APR, architecture, UX notes          | UI specs under `work-items/<feature>/design/`                     | Tester, Developer                                  |
 | Research            | `researcher` (`.github/agents/researcher.agent.md`) | Tech gaps from APR/ADRs              | KB articles under `knowledge-base/`, research findings            | Tester (for tooling guidance)                      |
 | Testing Strategy    | `tester` (`.github/agents/tester.agent.md`)         | APR, contracts                       | Test plan, TS-XXX suites, Gherkin specs                           | Developer                                          |
 | Development         | `developer` (`.github/agents/developer.agent.md`)   | APR, ADRs, contracts, test plan      | Code + updated tests following TDD                                | Tester (for validation) -> Retro                   |
@@ -44,6 +45,13 @@ This repository ships a complete Copilot/Codex agent workflow. Use this file as 
 - **Key docs**: `work-items/<feature>/architecture/*.md`, `knowledge-base/codebase/architecture-decisions/`.
 - **Deliverables**: Architecture README, ADRs, contract definitions, diagrams.
 - **Handoffs**: Researcher if new tech is needed, Tester with finalized contracts, Developer when architecture is locked.
+
+### Designer
+
+- **Purpose**: Translate APRs into UI/UX design specs for the frontend.
+- **Key docs**: `work-items/<feature>/design/*.md`, `knowledge-base/design/README.md`, `.github/instructions/design.instructions.md`.
+- **Deliverables**: Design summary, UI spec, interaction matrix, rationale log, and design-system delta.
+- **Handoffs**: Tester (accessibility and UI coverage), Developer (implementation).
 
 ### Researcher
 

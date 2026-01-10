@@ -1,6 +1,6 @@
 # Retrospective Instructions
 
-**Apply to**: At the end of each phase (Planning, Architecture, Research, Testing, Development)  
+**Apply to**: At the end of each phase (Planning, Architecture, Design, Research, Testing, Development)  
 **Reference**: [knowledge-base/copilot/workflows-apr-retro.md](../../knowledge-base/copilot/workflows-apr-retro.md)
 
 ---
@@ -17,10 +17,11 @@ Similar to ADRs (adr-###), Research Items (ri-###), and Test Suites (TS-###), re
 
 - **RET-001**: Planning Phase retrospective
 - **RET-002**: Architecture Phase retrospective
-- **RET-003**: Research Phase retrospective (if applicable)
-- **RET-004**: Testing Phase retrospective
-- **RET-005**: Development Phase retrospective
-- **RET-006**: Overall Feature retrospective (by Retro agent)
+- **RET-003**: Design Phase retrospective
+- **RET-004**: Research Phase retrospective (if applicable)
+- **RET-005**: Testing Phase retrospective
+- **RET-006**: Development Phase retrospective
+- **RET-007**: Overall Feature retrospective (by Retro agent)
 
 ---
 
@@ -28,11 +29,11 @@ Similar to ADRs (adr-###), Research Items (ri-###), and Test Suites (TS-###), re
 
 **At the END of your phase**, before handing off to the next agent:
 
-1. ✅ Complete your phase deliverables
-2. ✅ Verify handoff checklist items
-3. ✅ **Create RET-### retrospective entry**
-4. ✅ Add entry to `retrospective.md` summary file
-5. ✅ Hand off to next agent
+1. Complete your phase deliverables
+2. Verify handoff checklist items
+3. Create RET-### retrospective entry
+4. Add entry to `retrospective.md` summary file
+5. Hand off to next agent
 
 **Do NOT create retrospectives after every commit** - only at phase completion.
 
@@ -42,13 +43,14 @@ Similar to ADRs (adr-###), Research Items (ri-###), and Test Suites (TS-###), re
 
 ```
 work-items/<branch>/retro/
-├── retrospective.md           # Summary with links to all RET entries
-├── RET-001-planning-phase.md
-├── RET-002-architecture-phase.md
-├── RET-003-research-phase.md  # (if research phase occurred)
-├── RET-004-testing-phase.md
-├── RET-005-development-phase.md
-└── RET-006-overall-feature.md # (by retro agent)
+  retrospective.md           # Summary with links to all RET entries
+  RET-001-planning-phase.md
+  RET-002-architecture-phase.md
+  RET-003-design-phase.md
+  RET-004-research-phase.md  # (if research phase occurred)
+  RET-005-testing-phase.md
+  RET-006-development-phase.md
+  RET-007-overall-feature.md # (by retro agent)
 ```
 
 ---
@@ -61,12 +63,13 @@ work-items/<branch>/retro/
 
 **Copy and rename** for your phase:
 
-- Planner → `RET-001-planning-phase.md`
-- Architect → `RET-002-architecture-phase.md`
-- Researcher → `RET-003-research-phase.md`
-- Tester → `RET-004-testing-phase.md`
-- Developer → `RET-005-development-phase.md`
-- Retro Agent → `RET-006-overall-feature.md`
+- Planner -> `RET-001-planning-phase.md`
+- Architect -> `RET-002-architecture-phase.md`
+- Designer -> `RET-003-design-phase.md`
+- Researcher -> `RET-004-research-phase.md`
+- Tester -> `RET-005-testing-phase.md`
+- Developer -> `RET-006-development-phase.md`
+- Retro Agent -> `RET-007-overall-feature.md`
 
 ### Step 2: Fill Out All Sections
 
@@ -140,12 +143,11 @@ Add an entry in `work-items/<branch>/retro/retrospective.md`:
 
 - **Planner**: APR quality, requirements completeness, accessibility captured
 - **Architect**: ADR quality, contract clarity, design patterns effectiveness
+- **Designer**: UX clarity, accessibility, mobile usability, design consistency
 - **Researcher**: Research efficiency, KB documentation quality, time vs value
 - **Tester**: Test strategy completeness, contract utilization, edge cases
 - **Developer**: TDD effectiveness, SOLID compliance, code quality, technical debt
 - **Retro**: Cross-phase themes, consolidated actions, future recommendations
-
-**Action Items** should target: Template improvements, workflow enhancements, KB updates, pattern documentation
 
 ---
 
@@ -182,26 +184,18 @@ Add an entry in `work-items/<branch>/retro/retrospective.md`:
 
 ```
 Planner completes APR
-    ↓
-Planner creates RET-001
-    ↓
-Planner adds entry to retrospective.md
-    ↓
-Planner hands off to Architect
-    ↓
+    -> Planner creates RET-001
+    -> Planner adds entry to retrospective.md
+    -> Planner hands off to Architect
 Architect reads RET-001 for context
-    ↓
-Architect completes ADRs
-    ↓
-Architect creates RET-002
-    ↓
+    -> Architect completes ADRs
+    -> Architect creates RET-002
+Designer completes UI specs
+    -> Designer creates RET-003
 ... (continues for each phase)
-    ↓
-Retro Agent reads ALL RET entries
-    ↓
-Retro Agent creates RET-006 (synthesis)
-    ↓
-Retro Agent updates retrospective.md with cross-phase themes
+    -> Retro Agent reads ALL RET entries
+    -> Retro Agent creates RET-007 (synthesis)
+    -> Retro Agent updates retrospective.md with cross-phase themes
 ```
 
 ---

@@ -24,6 +24,5 @@ export const utilityNavConfig: UtilityNavItem[] = [
     description: 'Inbox and ideas',
     icon: PlaceholderIcon,
     route: '/ideas',
-    featureFlag: 'ideas.placeholder',
   },
 ];

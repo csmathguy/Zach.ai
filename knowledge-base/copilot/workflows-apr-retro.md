@@ -8,12 +8,15 @@ The complete workflow follows these phases:
 
 1. **Planning (APR)** - Business requirements, user stories, success metrics
 2. **Architecture (ADR)** - Technical design, contracts, interfaces, patterns
-3. **Research** - Knowledge base documentation for new technologies
-4. **Testing** - Test strategy, Gherkin specifications using contracts
-5. **Development** - Implementation following architecture + tests
-6. **Retrospective** - Lessons learned, improvements
+3. **Design (UX/UI)** - Frontend UX specs, accessibility, mobile behavior
+4. **Research** - Knowledge base documentation for new technologies
+5. **Testing** - Test strategy, Gherkin specifications using contracts
+6. **Development** - Implementation following architecture + tests
+7. **Retrospective** - Lessons learned, improvements
 
 **Critical Insight**: Architecture must come BEFORE testing. Testers need contracts/interfaces to write meaningful tests.
+
+**Branch Requirement**: Create the feature branch immediately after APR approval and before any artifacts or code changes. All later phases must verify they are not working on `main`.
 
 ## Product Requirements (APR/PRD) Essentials
 
@@ -61,7 +64,8 @@ Implementation notes:
 | Agent           | When to Document                                         | Purpose                                                           |
 | --------------- | -------------------------------------------------------- | ----------------------------------------------------------------- |
 | **Planner**     | After APR approval, before architect handoff             | Were requirements clear? Did stakeholders provide enough context? |
-| **Architect**   | After ADRs/contracts created, before tester handoff      | Did design decisions work? Were contracts clear for testers?      |
+| **Architect**   | After ADRs/contracts created, before designer handoff    | Did design decisions work? Were contracts clear?                  |
+| **Designer**    | After UX specs documented, before tester handoff         | Are flows usable? Accessibility/mobile covered?                   |
 | **Tester**      | After test strategy documented, before developer handoff | Were contracts sufficient? Are tests realistic and valuable?      |
 | **Developer**   | After implementation complete, before final retro        | Did architecture guide implementation? Were tests helpful?        |
 | **Retro Agent** | After feature complete                                   | Synthesize all phase retrospectives into overall learnings        |
@@ -74,6 +78,7 @@ Each agent adds to their designated section:
 
 - Planning Phase (Planner Agent)
 - Architecture Phase (Architect Agent)
+- Design Phase (Designer Agent)
 - Testing Phase (Tester Agent)
 - Development Phase (Developer Agent)
 - Overall Feature Retrospective (Retro Agent synthesizes)
@@ -91,6 +96,12 @@ Each agent adds to their designated section:
 - Did chosen patterns align with requirements?
 - Were contracts complete enough for testing?
 - What trade-offs proved correct/incorrect?
+
+**Design (Designer)**:
+
+- Are user flows clear and minimal?
+- Did we document mobile and accessibility expectations?
+- What UI states need explicit tests?
 
 **Testing (Tester)**:
 
@@ -241,10 +252,20 @@ Developers receive:
 - Create diagrams (ERD, component, sequence)
 - Document layer architecture and integration points
 - Ensure SOLID compliance
+- Confirm you are on a feature branch before writing architecture artifacts
 - **Provide contracts to tester agent**
 - **Provide ADRs to developer agent**
 - Hand off to researcher if new technologies identified
 - **Document architecture retrospective** in `work-items/<branch>/retro/retrospective.md` before handoff
+
+### Design Agent (designer)
+
+- Translate APR requirements into UI/UX specs
+- Reference `knowledge-base/design/README.md` for styling guidance
+- Document layout, component states, accessibility, and mobile behavior
+- Provide design artifacts to tester and developer agents
+- Confirm you are on a feature branch before writing design artifacts
+- **Document design retrospective** in `work-items/<branch>/retro/retrospective.md` before handoff
 
 ### Research Agent (researcher)
 
@@ -271,6 +292,9 @@ Developers receive:
 - **Receive ADRs from architect agent**
 - **Receive test plan from tester agent**
 - Review retrospective insights from previous phases
+- Confirm you are on a feature branch before writing research artifacts
+- Confirm you are on a feature branch before writing test artifacts
+- Confirm you are on a feature branch before writing code or tests
 
 **Step 1: Verify/Create Contracts**
 

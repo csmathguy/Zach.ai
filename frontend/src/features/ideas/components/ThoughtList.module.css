@@ -1,0 +1,55 @@
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-secondary);
+  padding: 1rem 0;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--color-text-secondary) 35%, transparent);
+  border-top-color: var(--color-text-accent);
+  animation: spin 0.8s linear infinite;
+}
+
+.error {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--color-feedback-danger);
+}
+
+.retry {
+  align-self: flex-start;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1rem;
+  min-height: 44px;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--color-feedback-danger) 20%, transparent);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.retry:focus-visible {
+  outline: 2px solid var(--color-feedback-danger);
+  outline-offset: 3px;
+}
+
+.empty {
+  color: var(--color-text-secondary);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

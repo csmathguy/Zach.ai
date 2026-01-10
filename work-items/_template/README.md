@@ -6,33 +6,37 @@ This is the canonical template for all work items. Copy the entire `_template/` 
 
 ```
 work-items/<feature-name>/
-├── plan/
-│   └── apr.md                    # APR (Architectural/Product Requirements)
-├── architecture/
-│   ├── README.md                 # Architecture overview
-│   ├── adr-001-decision.md       # Architecture Decision Records
-│   ├── contracts.md              # Interfaces, DTOs, domain models
-│   ├── diagrams.md               # ERD, component, sequence diagrams
-│   └── layers.md                 # Layer architecture documentation
-├── research/
-│   ├── ri-001-technology.md      # Individual research items (separate files)
-│   ├── ri-002-pattern.md
-│   └── research-findings.md      # Summary of all research
-├── tests/
-│   ├── test-plan.md              # Overall test strategy
-│   └── TS-001-test-suite.md      # Individual test suite specs
-├── dev/
-│   ├── README.md                 # Development summary & task breakdown
-│   ├── task-001-task-name.md     # Individual task files
-│   └── task-002-task-name.md     # (Create as needed)
-└── retro/
-    ├── retrospective.md                 # Summary linking to all RET entries
-    ├── RET-001-planning-phase.md        # Individual phase retrospectives
-    ├── RET-002-architecture-phase.md
-    ├── RET-003-research-phase.md        # (if research occurred)
-    ├── RET-004-testing-phase.md
-    ├── RET-005-development-phase.md
-    └── RET-006-overall-feature.md       # (by retro agent)
+  plan/
+    apr.md                    # APR (Architectural/Product Requirements)
+  architecture/
+    README.md                 # Architecture overview
+    adr-001-decision.md       # Architecture Decision Records
+    contracts.md              # Interfaces, DTOs, domain models
+    diagrams.md               # ERD, component, sequence diagrams
+    layers.md                 # Layer architecture documentation
+  design/
+    README.md                 # Design summary and key decisions
+    ui-spec.md                # UI spec: layout, states, accessibility
+  research/
+    ri-001-technology.md      # Individual research items (separate files)
+    ri-002-pattern.md
+    research-findings.md      # Summary of all research
+  tests/
+    test-plan.md              # Overall test strategy
+    TS-001-test-suite.md      # Individual test suite specs
+  dev/
+    README.md                 # Development summary and task breakdown
+    task-001-task-name.md     # Individual task files
+    task-002-task-name.md     # (Create as needed)
+  retro/
+    retrospective.md          # Summary linking to all RET entries
+    RET-001-planning-phase.md
+    RET-002-architecture-phase.md
+    RET-003-design-phase.md
+    RET-004-research-phase.md # (if research occurred)
+    RET-005-testing-phase.md
+    RET-006-development-phase.md
+    RET-007-overall-feature.md # (by retro agent)
 ```
 
 ## Phase-by-Phase Usage
@@ -46,6 +50,11 @@ work-items/<feature-name>/
 
 - Create `architecture/` folder with ADRs, contracts, diagrams
 - Document technical decisions and interfaces
+
+### Design Phase (Designer Agent)
+
+- Create `design/README.md` with design summary and key decisions
+- Create `design/ui-spec.md` covering layout, states, accessibility, mobile
 
 ### Research Phase (Researcher Agent)
 
@@ -62,30 +71,33 @@ work-items/<feature-name>/
 - Create `dev/README.md` with task breakdown and quality gates
 - Create individual `dev/task-001-*.md` files for each discrete task
 - Track dependencies, decisions, issues in README.md
-- Follow TDD: RED → GREEN → REFACTOR for each task
+- Follow TDD: RED -> GREEN -> REFACTOR for each task
 
 ### Retrospective Phase (Retro Agent)
 
 - Each agent creates individual RET-### retrospective at end of their phase:
-  - Planner → `RET-001-planning-phase.md`
-  - Architect → `RET-002-architecture-phase.md`
-  - Researcher → `RET-003-research-phase.md` (if applicable)
-  - Tester → `RET-004-testing-phase.md`
-  - Developer → `RET-005-development-phase.md`
+  - Planner -> `RET-001-planning-phase.md`
+  - Architect -> `RET-002-architecture-phase.md`
+  - Designer -> `RET-003-design-phase.md`
+  - Researcher -> `RET-004-research-phase.md` (if applicable)
+  - Tester -> `RET-005-testing-phase.md`
+  - Developer -> `RET-006-development-phase.md`
 - Retro agent synthesizes all into:
-  - `RET-006-overall-feature.md` (comprehensive synthesis)
+  - `RET-007-overall-feature.md` (comprehensive synthesis)
   - `retrospective.md` (summary with cross-phase themes and consolidated actions)
 
 ## Template Files
 
-- **`plan/apr.md`** – APR template with all required sections
-- **`research/ri-001-example-technology.md`** – Individual research item template
-- **`tests/test-plan.md`** – Test strategy template
-- **`tests/TS-001-example-test-suite.md`** – Test suite specification template
-- **`dev/README.md`** – Development summary, task breakdown, quality gates
-- **`dev/task-001-example-task.md`** – Individual task template (TDD cycle, implementation details)
-- **`retro/RET-001-example-phase.md`** – Individual phase retrospective template (copy for each agent)
-- **`retro/retrospective.md`** – Retrospective summary linking to all RET-### entries
+- **`plan/apr.md`** - APR template with all required sections
+- **`research/ri-001-example-technology.md`** - Individual research item template
+- **`tests/test-plan.md`** - Test strategy template
+- **`tests/TS-001-example-test-suite.md`** - Test suite specification template
+- **`dev/README.md`** - Development summary, task breakdown, quality gates
+- **`dev/task-001-example-task.md`** - Individual task template (TDD cycle, implementation details)
+- **`design/README.md`** - Design summary template
+- **`design/ui-spec.md`** - UI spec template
+- **`retro/RET-001-example-phase.md`** - Individual phase retrospective template (copy for each agent)
+- **`retro/retrospective.md`** - Retrospective summary linking to all RET-### entries
 
 ## How to Use
 

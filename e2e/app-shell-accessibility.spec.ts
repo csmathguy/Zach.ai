@@ -39,17 +39,11 @@ test.describe('App Shell accessibility guardrails', () => {
     await expect(page.locator('main[role="main"]')).toBeVisible();
   });
 
-  test('ideas placeholder links describe their destination', async ({ page }) => {
+  test('ideas route provides labeled inputs and actions', async ({ page }) => {
     await page.goto('/ideas');
 
-    await expect(page.getByRole('link', { name: /Inbox work item/i })).toHaveAttribute(
-      'rel',
-      /noopener/
-    );
-    await expect(page.getByRole('link', { name: /Share product feedback/i })).toHaveAttribute(
-      'rel',
-      /noopener/
-    );
+    await expect(page.getByLabel(/enter your thought/i)).toBeVisible();
+    await expect(page.getByRole('button', { name: /capture/i })).toBeVisible();
   });
 
   test('passes axe accessibility checks in light and dark modes', async ({ page }) => {
