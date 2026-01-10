@@ -8,40 +8,70 @@ import styles from './CoverageTab.module.css';
 
 type CoverageProject = 'frontend' | 'backend';
 
+const projectTabs: Array<{ project: CoverageProject; label: string }> = [
+  { project: 'frontend', label: 'Frontend' },
+  { project: 'backend', label: 'Backend' },
+];
+
+const getTabId = (project: CoverageProject) => `coverage-project-tab-${project}`;
+const coveragePanelId = 'coverage-project-panel';
+
 export const CoverageTab: FC = () => {
   const [activeProject, setActiveProject] = useState<CoverageProject>('frontend');
   const { data, loading, error, refresh } = useCoverageData(activeProject);
+  const activeTabId = getTabId(activeProject);
 
   return (
     <div className={styles.container}>
       <div className={styles.subTabs}>
+        <div className={styles.tabList} role="tablist" aria-label="Select coverage dataset">
+          {projectTabs.map(({ project, label }) => {
+            const isActive = activeProject === project;
+            return (
+              <button
+                key={project}
+                className={`${styles.subTab} ${isActive ? styles.subTabActive : ''}`}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                aria-controls={coveragePanelId}
+                id={getTabId(project)}
+                onClick={() => setActiveProject(project)}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+
         <button
-          className={`${styles.subTab} ${activeProject === 'frontend' ? styles.active : ''}`}
-          onClick={() => setActiveProject('frontend')}
+          className={styles.refreshButton}
+          type="button"
+          onClick={refresh}
+          title="Refresh coverage data"
+          aria-label="Refresh coverage data"
         >
-          Frontend
-        </button>
-        <button
-          className={`${styles.subTab} ${activeProject === 'backend' ? styles.active : ''}`}
-          onClick={() => setActiveProject('backend')}
-        >
-          Backend
-        </button>
-        <button className={styles.refreshButton} onClick={refresh} title="Refresh coverage data">
           🔄
         </button>
       </div>
 
-      <div className={styles.content}>
+      <div
+        className={styles.content}
+        role="tabpanel"
+        id={coveragePanelId}
+        aria-labelledby={activeTabId}
+        aria-live="polite"
+        aria-busy={loading}
+      >
         {loading && (
-          <div className={styles.placeholder}>
+          <div className={styles.placeholder} role="status" aria-live="polite">
             <h2>⏳ Loading Coverage Data...</h2>
           </div>
         )}
 
         {error && (
-          <div className={styles.error}>
-            <h2>❌ No Coverage Data Found</h2>
+          <div className={styles.error} role="alert">
+            <h2>⚠️ No Coverage Data Found</h2>
             <p>{error}</p>
             <div className={styles.instructions}>
               <h3>Generate Coverage Data:</h3>
@@ -54,18 +84,16 @@ export const CoverageTab: FC = () => {
           </div>
         )}
 
-        {data && (
+        {data && !loading && !error ? (
           <>
             <CoverageGauges coverage={data.total} />
-            
             <CoverageCharts data={data} />
-            
             <div className={styles.section}>
               <h3>File Coverage</h3>
               <CoverageFileTable files={data.files} />
             </div>
           </>
-        )}
+        ) : null}
       </div>
     </div>
   );

@@ -4,139 +4,183 @@
 
 .subTabs {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
   align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.tabList {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 30%, transparent);
+  background: color-mix(in srgb, var(--color-sunken) 70%, transparent);
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--color-text-secondary) 15%, transparent);
 }
 
 .subTab {
-  padding: 0.75rem 1.5rem;
-  background: #f5f5f5;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  cursor: pointer;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.25rem;
   font-size: 0.95rem;
-  font-weight: 500;
-  color: #666;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-text-primary) 70%, var(--color-text-secondary));
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .subTab:hover {
-  background: #e8e8e8;
-  border-color: #d0d0d0;
+  color: var(--color-text-primary);
+  background: color-mix(in srgb, var(--color-panel) 65%, transparent);
 }
 
-.subTab.active {
-  background: #667eea;
-  color: white;
-  border-color: #667eea;
+.subTabActive {
+  background: var(--color-panel);
+  color: var(--color-text-primary);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-text-secondary) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-text-accent) 45%, transparent);
+}
+
+.subTab:focus-visible {
+  outline: 2px solid var(--color-text-accent);
+  outline-offset: 2px;
 }
 
 .refreshButton {
   margin-left: auto;
-  padding: 0.75rem 1rem;
-  background: white;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 30%, transparent);
+  background: color-mix(in srgb, var(--color-panel) 80%, transparent);
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
   cursor: pointer;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .refreshButton:hover {
-  background: #f5f5f5;
   transform: rotate(180deg);
-  border-color: #667eea;
+  border-color: color-mix(in srgb, var(--color-text-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--color-sunken) 80%, transparent);
+}
+
+.refreshButton:focus-visible {
+  outline: 2px solid var(--color-text-accent);
+  outline-offset: 2px;
 }
 
 .content {
-  margin-top: 2rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.placeholder {
+.placeholder,
+.error {
   text-align: center;
-  padding: 4rem 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: 2px solid #e0e0e0;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  background: var(--color-panel);
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 25%, transparent);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--color-text-secondary) 18%, transparent);
 }
 
 .placeholder h2 {
-  font-size: 2rem;
+  font-size: 1.75rem;
+  color: var(--color-text-accent);
   margin-bottom: 1rem;
-  color: #667eea;
 }
 
 .error {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: 2px solid #e74c3c;
+  border-color: color-mix(in srgb, var(--color-feedback-danger) 40%, transparent);
 }
 
 .error h2 {
-  font-size: 2rem;
+  color: var(--color-feedback-danger);
   margin-bottom: 1rem;
-  color: #e74c3c;
 }
 
 .error p {
-  font-size: 1.1rem;
-  color: #666;
-  margin-bottom: 2rem;
+  color: color-mix(in srgb, var(--color-text-primary) 65%, var(--color-text-secondary));
+  margin-bottom: 1.5rem;
 }
 
 .instructions {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  display: inline-block;
+  background: color-mix(in srgb, var(--color-panel) 90%, transparent);
+  padding: 1.5rem;
+  border-radius: 12px;
   text-align: left;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 20%, transparent);
 }
 
 .instructions h3 {
   margin: 0 0 1rem 0;
-  color: #2c3e50;
-  font-size: 1.1rem;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
 }
 
 .instructions code {
-  background: #2c3e50;
-  color: #f8f9fa;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
   display: block;
-  font-family: 'Courier New', monospace;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Menlo, monospace;
   font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-sunken) 75%, transparent);
+  color: var(--color-text-primary);
   margin: 0.5rem 0;
 }
 
 .hint {
   font-size: 0.9rem;
-  color: #7f8c8d;
-  margin-top: 1rem;
+  color: color-mix(in srgb, var(--color-text-primary) 60%, var(--color-text-secondary));
+  margin-top: 0.75rem;
   font-style: italic;
+  line-height: 1.4;
 }
 
 .hint code {
-  background: #ecf0f1;
-  color: #2c3e50;
-  padding: 0.25rem 0.5rem;
+  background: color-mix(in srgb, var(--color-sunken) 80%, transparent);
+  color: var(--color-text-primary);
+  padding: 0.2rem 0.4rem;
   border-radius: 4px;
-  font-size: 0.85rem;
-  display: inline;
 }
 
 .section {
-  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .section h3 {
-  margin: 0 0 1rem 0;
-  color: #1f2937;
+  margin: 0;
+  color: var(--color-text-primary);
   font-size: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .subTabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tabList {
+    justify-content: space-between;
+  }
+
+  .refreshButton {
+    width: 100%;
+  }
 }

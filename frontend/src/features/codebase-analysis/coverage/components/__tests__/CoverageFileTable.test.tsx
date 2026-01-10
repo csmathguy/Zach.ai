@@ -314,12 +314,11 @@ describe('CoverageFileTable', () => {
     it('should show sort icons on headers', () => {
       render(<CoverageFileTable files={mockFiles} />);
 
-      // All headers should have sort indicators
-      expect(screen.getByText(/file path/i).textContent).toMatch(/⇅|↑|↓/);
-      expect(screen.getByText(/statements/i).textContent).toMatch(/⇅|↑|↓/);
-      expect(screen.getByText(/branches/i).textContent).toMatch(/⇅|↑|↓/);
-      expect(screen.getByText(/functions/i).textContent).toMatch(/⇅|↑|↓/);
-      expect(screen.getByText(/lines/i).textContent).toMatch(/⇅|↑|↓/);
+      expect(screen.getByText(/file path/i).textContent).toMatch(/↕|↑|↓/);
+      expect(screen.getByText(/statements/i).textContent).toMatch(/↕|↑|↓/);
+      expect(screen.getByText(/branches/i).textContent).toMatch(/↕|↑|↓/);
+      expect(screen.getByText(/functions/i).textContent).toMatch(/↕|↑|↓/);
+      expect(screen.getByText(/lines/i).textContent).toMatch(/↕|↑|↓/);
     });
 
     it('should change sort field when clicking different header', async () => {

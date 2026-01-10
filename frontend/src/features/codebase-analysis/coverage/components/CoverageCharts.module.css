@@ -6,16 +6,16 @@
 }
 
 .chartCard {
-  background: white;
+  background: var(--color-panel);
   border-radius: 12px;
-  border: 2px solid #e5e7eb;
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 25%, transparent);
   padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--color-text-secondary) 15%, transparent);
 }
 
 .chartCard h4 {
   margin: 0 0 1rem 0;
-  color: #1f2937;
+  color: var(--color-text-primary);
   font-size: 1.1rem;
   font-weight: 600;
   text-align: center;

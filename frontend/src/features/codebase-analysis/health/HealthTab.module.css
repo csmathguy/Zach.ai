@@ -9,76 +9,115 @@
 }
 
 .card {
-  background: white;
-  border-radius: 12px;
+  background: var(--color-panel);
+  border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: 2px solid #e0e0e0;
-  transition: transform 0.2s ease;
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 25%, transparent);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--color-text-secondary) 15%, transparent);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px color-mix(in srgb, var(--color-text-secondary) 18%, transparent);
+}
+
+.card[data-status='ok'] {
+  border-color: color-mix(in srgb, var(--color-feedback-success) 40%, transparent);
+}
+
+.card[data-status='alert'] {
+  border-color: color-mix(in srgb, var(--color-feedback-danger) 35%, transparent);
 }
 
 .cardTitle {
-  font-size: 1.1rem;
-  margin: 0 0 1rem 0;
-  color: #2c3e50;
+  font-size: 1rem;
+  margin: 0 0 0.75rem 0;
+  color: var(--color-text-primary);
   font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
 }
 
 .statusBadge {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background: #e8f8f0;
-  color: #27ae60;
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
   font-weight: 600;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border: 1px solid transparent;
+  margin-bottom: 0.85rem;
+}
+
+.statusBadge[data-variant='ok'] {
+  color: var(--color-feedback-success);
+  border-color: color-mix(in srgb, var(--color-feedback-success) 50%, transparent);
+  background: color-mix(in srgb, var(--color-feedback-success) 15%, transparent);
+}
+
+.statusBadge[data-variant='alert'] {
+  color: var(--color-feedback-danger);
+  border-color: color-mix(in srgb, var(--color-feedback-danger) 40%, transparent);
+  background: color-mix(in srgb, var(--color-feedback-danger) 15%, transparent);
+}
+
+.statusIcon {
+  font-size: 1.2rem;
+}
+
+.statusIcon[data-variant='ok'] {
+  color: var(--color-feedback-success);
+}
+
+.statusIcon[data-variant='alert'] {
+  color: var(--color-feedback-danger);
 }
 
 .infoGrid {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
 .infoItem {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  gap: 1rem;
 }
 
 .label {
-  color: #7f8c8d;
+  color: color-mix(in srgb, var(--color-text-primary) 65%, var(--color-text-secondary));
   font-size: 0.9rem;
 }
 
 .value {
-  color: #2c3e50;
+  color: var(--color-text-primary);
   font-weight: 600;
   font-size: 0.95rem;
 }
 
 .bigMetric {
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   font-weight: 700;
-  color: #667eea;
+  color: var(--color-text-primary);
   margin: 0.5rem 0;
 }
 
 .subMetric {
-  color: #7f8c8d;
+  color: color-mix(in srgb, var(--color-text-primary) 60%, var(--color-text-secondary));
   font-size: 0.9rem;
 }
 
 .progressBar {
   width: 100%;
   height: 12px;
-  background: #f0f0f0;
+  background: color-mix(in srgb, var(--color-text-secondary) 18%, transparent);
   border-radius: 6px;
   overflow: hidden;
   margin: 1rem 0 0.5rem 0;
@@ -86,34 +125,40 @@
 
 .progressFill {
   height: 100%;
-  transition: width 0.3s ease;
   border-radius: 6px;
+  transition: width 0.3s ease;
+  background: var(--color-text-accent);
+}
+
+.progressFill[data-variant='danger'] {
+  background: var(--color-feedback-danger);
 }
 
 .loading,
 .error {
   text-align: center;
   padding: 4rem 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--color-panel);
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 25%, transparent);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--color-text-secondary) 18%, transparent);
 }
 
 .loading h2 {
-  color: #667eea;
+  color: var(--color-text-accent);
 }
 
 .error h2 {
-  color: #e74c3c;
+  color: var(--color-feedback-danger);
 }
 
 .error p {
-  color: #666;
+  color: color-mix(in srgb, var(--color-text-primary) 60%, var(--color-text-secondary));
   margin: 1rem 0;
 }
 
 .errorHint {
   font-size: 0.9rem;
-  color: #7f8c8d;
+  color: color-mix(in srgb, var(--color-text-primary) 60%, var(--color-text-secondary));
   font-style: italic;
 }

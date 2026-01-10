@@ -18,6 +18,20 @@ jest.mock('../shared/DashboardTabs', () => ({
       <span data-testid="active-tab">{activeTab}</span>
     </div>
   ),
+  dashboardTabMetadata: {
+    coverage: {
+      icon: '📊',
+      label: 'Coverage',
+      labelId: 'codebase-analysis-tab-coverage',
+      panelId: 'codebase-analysis-panel-coverage',
+    },
+    health: {
+      icon: '❤️',
+      label: 'Health',
+      labelId: 'codebase-analysis-tab-health',
+      panelId: 'codebase-analysis-panel-health',
+    },
+  },
 }));
 
 jest.mock('../coverage/CoverageTab', () => ({

@@ -12,25 +12,25 @@ export function CoverageGauges({ coverage }: CoverageGaugesProps) {
       name: 'Statements',
       value: coverage.statements,
       fill: getRiskColorFromPercentage(coverage.statements),
-      icon: '📝',
+      icon: '🧾',
     },
     {
       name: 'Branches',
       value: coverage.branches,
       fill: getRiskColorFromPercentage(coverage.branches),
-      icon: '🔀',
+      icon: '🌿',
     },
     {
       name: 'Functions',
       value: coverage.functions,
       fill: getRiskColorFromPercentage(coverage.functions),
-      icon: '⚡',
+      icon: '⚙️',
     },
     {
       name: 'Lines',
       value: coverage.lines,
       fill: getRiskColorFromPercentage(coverage.lines),
-      icon: '📏',
+      icon: '🧮',
     },
   ];
 
