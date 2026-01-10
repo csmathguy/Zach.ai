@@ -23,6 +23,8 @@ handoffs:
 1. Create `features/feat-<feature-name>/` directory
 2. Copy the template structure:
    - `plan/apr.md` – APR document (copy from template and populate)
+   - `design/README.md` - Design summary placeholder
+   - `design/ui-spec.md` - UI spec placeholder
    - `tests/test-plan.md` – Test strategy placeholder
    - `dev/implementation-notes.md` – Development notes placeholder
    - `retro/retrospective.md` – Retrospective placeholder

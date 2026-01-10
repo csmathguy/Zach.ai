@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import { useCoverageData } from '../useCoverageData';
 import type { CoverageSummary } from '../../utils/coverageTypes';
@@ -25,10 +25,9 @@ describe('useCoverageData', () => {
   });
 
   it('should initialize with loading state', () => {
-    (global.fetch as jest.MockedFunction<typeof fetch>).mockResolvedValue({
-      ok: true,
-      json: async () => mockCoverageSummary,
-    } as Response);
+    (global.fetch as jest.MockedFunction<typeof fetch>).mockReturnValue(
+      new Promise(() => {}) as unknown as Promise<Response>
+    );
 
     const { result } = renderHook(() => useCoverageData('frontend'));
 
@@ -181,7 +180,9 @@ describe('useCoverageData', () => {
     expect(global.fetch).toHaveBeenCalledTimes(1);
 
     // Call refresh
-    result.current.refresh();
+    await act(async () => {
+      await result.current.refresh();
+    });
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledTimes(2);
@@ -209,7 +210,9 @@ describe('useCoverageData', () => {
       json: async () => mockCoverageSummary,
     } as Response);
 
-    result.current.refresh();
+    await act(async () => {
+      await result.current.refresh();
+    });
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);

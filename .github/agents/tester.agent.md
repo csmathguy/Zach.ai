@@ -34,6 +34,12 @@ handoffs:
 
 ---
 
+## Branch Safety Check
+
+Before creating test artifacts, confirm you are on a feature branch (not `main`). If not, stop and ask the user to create or switch branches.
+
+---
+
 ## Step 1: Copy Template and Create Test Suite Files
 
 ### Copy the Template File
@@ -126,11 +132,11 @@ For concurrency limits and serialized-worker requirements, **reference the "SQLi
 
 ---
 
-## Step 4: Create Testing Phase Retrospective (RET-004)
+## Step 4: Create Testing Phase Retrospective (RET-005)
 
 **BEFORE handing off to the developer**, create your phase retrospective:
 
-1. **Copy Template**: Copy `work-items/_template/retro/RET-001-example-phase.md` to `work-items/<branch>/retro/RET-004-testing-phase.md`
+1. **Copy Template**: Copy `work-items/_template/retro/RET-001-example-phase.md` to `work-items/<branch>/retro/RET-005-testing-phase.md`
 
 2. **Fill All Sections**:
    - **Overview**: Phase summary, duration, key deliverables (test-plan.md, TS-### files)
@@ -144,9 +150,9 @@ For concurrency limits and serialized-worker requirements, **reference the "SQLi
 3. **Update Summary**: Add entry to `work-items/<branch>/retro/retrospective.md`:
 
    ```markdown
-   ### RET-004: Testing Phase
+   ### RET-005: Testing Phase
 
-   - **File**: [RET-004-testing-phase.md](RET-004-testing-phase.md)
+   - **File**: [RET-005-testing-phase.md](RET-005-testing-phase.md)
    - **Agent**: Tester
    - **Date**: YYYY-MM-DD
    - **Status**: Complete ✅
@@ -155,7 +161,7 @@ For concurrency limits and serialized-worker requirements, **reference the "SQLi
 
 **Purpose**: This retrospective helps developers understand test expectations and provides feedback on architecture testability.
 
-**Note**: RET-003 is Research Phase (may be skipped), so Tester creates RET-004.
+**Note**: RET-004 is Research Phase (may be skipped). RET-003 is Design Phase.
 
 ---
 

@@ -22,6 +22,12 @@ handoffs:
 
 ---
 
+## Branch Safety Check
+
+Before writing code or tests, confirm you are on a feature branch (not `main`). If not, stop and ask the user to create or switch branches.
+
+---
+
 ## Step 1: Analyze Work Item & Create Task Breakdown
 
 **Purpose**: Understand the complete scope and break down work into discrete, manageable tasks before starting implementation.
@@ -393,11 +399,11 @@ Refs: work-items/<branch>/architecture/adr-01-domain-models.md"
 
 ---
 
-## Step 12: Create Development Phase Retrospective (RET-005)
+## Step 12: Create Development Phase Retrospective (RET-006)
 
 **BEFORE handing off to retro agent**, create your phase retrospective:
 
-1. **Copy Template**: Copy `work-items/_template/retro/RET-001-example-phase.md` to `work-items/<branch>/retro/RET-005-development-phase.md`
+1. **Copy Template**: Copy `work-items/_template/retro/RET-001-example-phase.md` to `work-items/<branch>/retro/RET-006-development-phase.md`
 
 2. **Fill All Sections**:
    - **Overview**: Phase summary, duration (estimated vs actual), key deliverables (dev/README.md, task-NNN files, tests)
@@ -411,9 +417,9 @@ Refs: work-items/<branch>/architecture/adr-01-domain-models.md"
 3. **Update Summary**: Add entry to `work-items/<branch>/retro/retrospective.md`:
 
    ```markdown
-   ### RET-005: Development Phase
+   ### RET-006: Development Phase
 
-   - **File**: [RET-005-development-phase.md](RET-005-development-phase.md)
+   - **File**: [RET-006-development-phase.md](RET-006-development-phase.md)
    - **Agent**: Developer
    - **Date**: YYYY-MM-DD
    - **Status**: Complete ✅
@@ -428,7 +434,7 @@ Refs: work-items/<branch>/architecture/adr-01-domain-models.md"
 
 **Ready for retrospective agent when**:
 
-- [ ] **RET-005 retrospective created** and added to retrospective.md summary
+- [ ] **RET-006 retrospective created** and added to retrospective.md summary
 - [ ] All tasks in `dev/README.md` marked ✅ Complete
 - [ ] All tests passing (🟢 GREEN maintained)
 - [ ] Test coverage meets targets (70%+ overall, 90%+ domain)

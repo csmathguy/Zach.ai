@@ -5,10 +5,16 @@ import fs from 'fs';
 import { requestLogger } from './middleware/requestLogger';
 import { errorHandler } from './middleware/errorHandler';
 import { thoughtsRouter } from './api/routes';
+import { prisma } from './infrastructure/prisma/client';
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
 const NODE_ENV = process.env.NODE_ENV || 'development';
+const MVP_USER = {
+  id: '00000000-0000-4000-8000-000000000001',
+  email: 'mvp-user@local.test',
+  name: 'MVP User',
+};
 
 // Metrics tracking
 const startTime = Date.now();
@@ -125,6 +131,26 @@ if (NODE_ENV === 'production') {
 // ERROR HANDLING (must be last middleware)
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`[backend] listening on http://localhost:${PORT} (${NODE_ENV})`);
-});
+const ensureMvpUser = async (): Promise<void> => {
+  try {
+    await prisma.user.upsert({
+      where: { id: MVP_USER.id },
+      update: {},
+      create: MVP_USER,
+    });
+  } catch (error) {
+    console.error('[backend] failed to ensure MVP user exists', error);
+  }
+};
+
+const startServer = async (): Promise<void> => {
+  if (process.env.SEED_MVP_USER !== 'false') {
+    await ensureMvpUser();
+  }
+
+  app.listen(PORT, () => {
+    console.log(`[backend] listening on http://localhost:${PORT} (${NODE_ENV})`);
+  });
+};
+
+void startServer();

@@ -1,6 +1,6 @@
 # RET-001: Example Phase Retrospective
 
-**Phase**: Planning / Architecture / Research / Testing / Development  
+**Phase**: Planning / Architecture / Design / Research / Testing / Development  
 **Agent**: [Agent Name]  
 **Date**: YYYY-MM-DD  
 **Feature**: [Feature Name from APR]

@@ -182,6 +182,7 @@ Our `.github/skills/` directory contains:
 3. **apr-planning/** - APR/PRD structure and planning workflows
 4. **retrospective/** - Retrospective analysis and continuous improvement
 5. **feature-workflow/** - Complete feature development lifecycle
+6. **ui-design-review/** - Frontend UI/UX design review and spec workflow
 
 See individual `SKILL.md` files for detailed usage instructions.
 

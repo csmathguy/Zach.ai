@@ -16,6 +16,12 @@ handoffs:
 
 # Research Guidelines
 
+## Branch Safety Check
+
+Before creating research artifacts, confirm you are on a feature branch (not `main`). If not, stop and ask the user to create or switch branches.
+
+---
+
 ## Role & Responsibilities
 
 As the **researcher agent**, your job is to:

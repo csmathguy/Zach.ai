@@ -24,48 +24,50 @@ This document provides a high-level summary of the retrospectives conducted thro
 - **File**: [RET-001-planning-phase.md](RET-001-planning-phase.md)
 - **Agent**: Planner
 - **Date**: YYYY-MM-DD
-- **Status**: Complete ✅
-- **Key Outcome**: APR created with clear requirements and success metrics
+- **Status**: Complete
 
 ### RET-002: Architecture Phase
 
 - **File**: [RET-002-architecture-phase.md](RET-002-architecture-phase.md)
 - **Agent**: Architect
 - **Date**: YYYY-MM-DD
-- **Status**: Complete ✅
-- **Key Outcome**: ADRs and contracts defined for implementation
+- **Status**: Complete
 
-### RET-003: Research Phase
+### RET-003: Design Phase
 
-- **File**: [RET-003-research-phase.md](RET-003-research-phase.md) _(if applicable)_
+- **File**: [RET-003-design-phase.md](RET-003-design-phase.md)
+- **Agent**: Designer
+- **Date**: YYYY-MM-DD
+- **Status**: Complete
+
+### RET-004: Research Phase
+
+- **File**: [RET-004-research-phase.md](RET-004-research-phase.md) _(if applicable)_
 - **Agent**: Researcher
 - **Date**: YYYY-MM-DD
-- **Status**: Complete ✅ / Skipped
+- **Status**: Complete
 - **Key Outcome**: Knowledge base updated with new technology documentation
 
-### RET-004: Testing Phase
+### RET-005: Testing Phase
 
-- **File**: [RET-004-testing-phase.md](RET-004-testing-phase.md)
+- **File**: [RET-005-testing-phase.md](RET-005-testing-phase.md)
 - **Agent**: Tester
 - **Date**: YYYY-MM-DD
-- **Status**: Complete ✅
-- **Key Outcome**: Test plan and test suites created with clear specifications
+- **Status**: Complete
 
-### RET-005: Development Phase
+### RET-006: Development Phase
 
-- **File**: [RET-005-development-phase.md](RET-005-development-phase.md)
+- **File**: [RET-006-development-phase.md](RET-006-development-phase.md)
 - **Agent**: Developer
 - **Date**: YYYY-MM-DD
-- **Status**: Complete ✅
-- **Key Outcome**: All tasks implemented following TDD, tests passing, SOLID compliant
+- **Status**: Complete
 
-### RET-006: Overall Feature
+### RET-007: Overall Feature
 
-- **File**: [RET-006-overall-feature.md](RET-006-overall-feature.md)
+- **File**: [RET-007-overall-feature.md](RET-007-overall-feature.md)
 - **Agent**: Retro
 - **Date**: YYYY-MM-DD
-- **Status**: Complete ✅
-- **Key Outcome**: Cross-phase insights synthesized, action items prioritized
+- **Status**: Complete
 
 ---
 
@@ -167,18 +169,18 @@ This document provides a high-level summary of the retrospectives conducted thro
 
 - [ ] [Action from RET-001] - Owner: [Name] - Due: [Date]
 - [ ] [Action from RET-002] - Owner: [Name] - Due: [Date]
-- [ ] [Action from RET-005] - Owner: [Name] - Due: [Date]
+- [ ] [Action from RET-006] - Owner: [Name] - Due: [Date]
 
 **Medium Priority** (Complete within 1 month):
 
-- [ ] [Template update from RET-003] - Owner: [Name] - Due: [Date]
-- [ ] [KB update from RET-004] - Owner: [Name] - Due: [Date]
-- [ ] [Workflow improvement from RET-006] - Owner: [Name] - Due: [Date]
+- [ ] [Template update from RET-004] - Owner: [Name] - Due: [Date]
+- [ ] [KB update from RET-005] - Owner: [Name] - Due: [Date]
+- [ ] [Workflow improvement from RET-007] - Owner: [Name] - Due: [Date]
 
 **Low Priority** (Nice to have):
 
 - [ ] [Enhancement from RET-001] - Owner: [Name] - Due: [Date]
-- [ ] [Exploration from RET-005] - Owner: [Name] - Due: [Date]
+- [ ] [Exploration from RET-006] - Owner: [Name] - Due: [Date]
 
 ---
 
@@ -188,12 +190,12 @@ This document provides a high-level summary of the retrospectives conducted thro
 
 1. [Technology Name] - Location: `knowledge-base/[tech]/README.md`
    - Created by: [Agent name]
-   - Documented in: RET-003
+   - Documented in: RET-006
    - Quality: [Score/10]
 
 2. [Pattern Name] - Location: `knowledge-base/[section]/[file].md`
    - Created by: [Agent name]
-   - Documented in: RET-006
+   - Documented in: RET-007
    - Quality: [Score/10]
 
 **Existing Entries Updated**:
@@ -201,12 +203,12 @@ This document provides a high-level summary of the retrospectives conducted thro
 1. [Entry Name] - Location: `knowledge-base/[path]`
    - Updates: [Summary of changes]
    - Updated by: [Agent name]
-   - Documented in: RET-004
+   - Documented in: RET-006
 
 2. [Entry Name] - Location: `knowledge-base/[path]`
    - Updates: [Summary of changes]
    - Updated by: [Agent name]
-   - Documented in: RET-005
+   - Documented in: RET-006
 
 **ADRs Promoted** (Feature-specific → Codebase):
 
@@ -227,7 +229,7 @@ This document provides a high-level summary of the retrospectives conducted thro
    - Implementation: [How to apply]
 
 2. **Recommendation 2**: Specific process change
-   - Evidence: RET-003, RET-004
+   - Evidence: RET-004, RET-005
    - Why: [Reasoning based on learnings]
    - Expected impact: [Benefit to future work]
    - Implementation: [How to apply]
@@ -252,13 +254,13 @@ This document provides a high-level summary of the retrospectives conducted thro
    - Use case: When to use
    - Benefits: What it provides
    - Trade-offs: What to watch for
-   - Source: RET-003
+   - Source: RET-004
 
 2. **Tool/Library 2**: Evaluation or recommendation
    - Use case: When to use
    - Benefits: What it provides
    - Trade-offs: What to watch for
-   - Source: RET-005
+   - Source: RET-006
 
 ---
 
@@ -285,12 +287,13 @@ All detailed phase retrospectives are linked below for reference:
 
 1. **Planning**: [RET-001-planning-phase.md](RET-001-planning-phase.md)
 2. **Architecture**: [RET-002-architecture-phase.md](RET-002-architecture-phase.md)
-3. **Research**: [RET-003-research-phase.md](RET-003-research-phase.md) _(if applicable)_
-4. **Testing**: [RET-004-testing-phase.md](RET-004-testing-phase.md)
-5. **Development**: [RET-005-development-phase.md](RET-005-development-phase.md)
-6. **Overall**: [RET-006-overall-feature.md](RET-006-overall-feature.md)
+3. **Design**: [RET-003-design-phase.md](RET-003-design-phase.md)
+4. **Research**: [RET-004-research-phase.md](RET-004-research-phase.md) _(if applicable)_
+5. **Testing**: [RET-005-testing-phase.md](RET-005-testing-phase.md)
+6. **Development**: [RET-006-development-phase.md](RET-006-development-phase.md)
+7. **Overall**: [RET-007-overall-feature.md](RET-007-overall-feature.md)
 
-**Total Retrospectives**: 5-6 (depending on whether research phase was needed)
+**Total Retrospectives**: 6-7 (depending on whether research phase was needed)
 
 ---
 

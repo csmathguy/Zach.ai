@@ -25,11 +25,12 @@
 
 ## Feature Workflow
 
-**New features follow a structured lifecycle**: Plan → Architecture → Research → Tests → Dev → Retro
+**New features follow a structured lifecycle**: Plan -> Architecture -> Design -> Research -> Tests -> Dev -> Retro
 
 - **Planning**: Use `planner` agent or `/apr` prompt to draft APR in `work-items/<branch>/plan/apr.md`
 - **Branch First**: Create feature branch (`git checkout -b feat/<name>`) immediately after APR approval, before any code edits
 - **Architecture**: Use `architect` agent to design technical solution, create ADRs in `work-items/<branch>/architecture/`
+- **Design**: Use `designer` agent to create UI/UX specs in `work-items/<branch>/design/`
 - **Research**: Use `researcher` agent to identify new technologies, update knowledge base in `work-items/<branch>/research/research-findings.md`
 - **Test Strategy**: Use `tester` agent to design tests in `work-items/<branch>/tests/test-plan.md`
 - **Implementation**: Use `developer` agent following TDD (RED-GREEN-REFACTOR); track decisions in `work-items/<branch>/dev/implementation-notes.md`
@@ -48,11 +49,12 @@
 
 **Quality Gates** (Enforce at Each Phase):
 
-### Phase 2-3: Design & Structure
+### Phase 2: Architecture
 
-- ✅ Accessibility requirements defined (WCAG 2.1 AA minimum)
-- ✅ Component structure follows SOLID principles
-- ✅ API contracts documented with TypeScript interfaces
+- �o. API contracts documented with TypeScript interfaces
+- �o. Layer structure documented for integration
+
+### Phase 3: Design & UX`r`n`r`n- �o. Accessibility requirements defined (WCAG 2.2 baseline)`r`n- �o. Mobile layout defined for key screens`r`n- �o. UI states documented (loading, empty, error, success)`r`n- �o. Interaction details documented (keyboard, focus order, validation)`r`n- �o. Content rules and error copy documented`r`n- �o. Decision rationale captured
 
 ### Phase 4-5: Implementation (TDD)
 
@@ -79,8 +81,8 @@
 - ✅ Knowledge base updated for new technologies
 - ✅ Architecture decisions recorded in implementation notes
 
-**Agents**: `planner`, `researcher`, `tester`, `developer`, `retro` (hand off between phases)
-**Skills**: `feature-workflow`, `apr-planning`, `retrospective`, `webapp-testing`
+**Agents**: `planner`, `architect`, `designer`, `researcher`, `tester`, `developer`, `retro` (hand off between phases)
+**Skills**: `feature-workflow`, `apr-planning`, `ui-design-review`, `retrospective`, `webapp-testing`
 **Reference**: [knowledge-base/copilot/workflows-apr-retro.md](../knowledge-base/copilot/workflows-apr-retro.md)
 
 ## General Principles

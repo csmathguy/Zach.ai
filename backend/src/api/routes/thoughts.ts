@@ -20,5 +20,6 @@ const requireJson = (req: Request, res: Response, next: NextFunction): void => {
 };
 
 router.post('/', requireJson, validateRequest(createThoughtSchema), thoughtController.create);
+router.get('/', thoughtController.list);
 
 export default router;

@@ -261,3 +261,112 @@ describe('POST /api/thoughts', () => {
     expect(duration).toBeLessThan(100);
   });
 });
+
+describe('GET /api/thoughts', () => {
+  let app: Express;
+
+  beforeAll(() => {
+    app = createTestApp();
+  });
+
+  beforeEach(async () => {
+    await prisma.thought.deleteMany();
+    await prisma.user.deleteMany();
+
+    await prisma.user.create({
+      data: {
+        id: MVP_USER_ID,
+        email: 'test@example.com',
+        name: 'Test User',
+      },
+    });
+  });
+
+  afterEach(async () => {
+    await prisma.thought.deleteMany();
+    await prisma.user.deleteMany();
+  });
+
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+
+  it('should return empty array when no thoughts exist', async () => {
+    const response = await request(app).get('/api/thoughts');
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual([]);
+  });
+
+  it('should return thoughts ordered by timestamp DESC', async () => {
+    await prisma.thought.createMany({
+      data: [
+        {
+          text: 'First idea',
+          source: 'text',
+          timestamp: new Date('2026-01-01T10:00:00Z'),
+          userId: MVP_USER_ID,
+        },
+        {
+          text: 'Second idea',
+          source: 'text',
+          timestamp: new Date('2026-01-01T12:00:00Z'),
+          userId: MVP_USER_ID,
+        },
+        {
+          text: 'Third idea',
+          source: 'voice',
+          timestamp: new Date('2026-01-01T11:00:00Z'),
+          userId: MVP_USER_ID,
+        },
+      ],
+    });
+
+    const response = await request(app).get('/api/thoughts');
+
+    expect(response.status).toBe(200);
+    expect(response.body.map((thought: { text: string }) => thought.text)).toEqual([
+      'Second idea',
+      'Third idea',
+      'First idea',
+    ]);
+  });
+
+  it('should return thoughts with response shape matching POST /api/thoughts', async () => {
+    await prisma.thought.create({
+      data: {
+        text: 'Idea one',
+        source: 'text',
+        userId: MVP_USER_ID,
+      },
+    });
+
+    const response = await request(app).get('/api/thoughts');
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual([
+      {
+        id: expect.any(String),
+        text: 'Idea one',
+        source: 'text',
+        timestamp: expect.any(String),
+        processedState: 'UNPROCESSED',
+      },
+    ]);
+  });
+
+  it('should return 500 on database error', async () => {
+    const findSpy = jest
+      .spyOn(prisma.thought, 'findMany')
+      .mockRejectedValueOnce(new Error('Database unavailable'));
+
+    const response = await request(app).get('/api/thoughts');
+
+    expect(response.status).toBe(500);
+    expect(response.body.error).toBe('Internal server error');
+    expect(response.body.requestId).toEqual(expect.any(String));
+    expect(response.body).not.toHaveProperty('stack');
+
+    findSpy.mockRestore();
+  });
+});
