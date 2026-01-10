@@ -9,7 +9,7 @@ export const lightThemeTokens: ThemeTokens = {
   text: {
     primary: '#1c1f24',
     secondary: '#5a6472',
-    accent: '#2b6b7f',
+    accent: '#124559',
     inverted: '#ffffff',
   },
   brand: {

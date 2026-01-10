@@ -57,25 +57,31 @@ describe('coverageThresholds', () => {
     });
   });
 
+  const EXPECTED_COLORS = {
+    high: 'var(--color-feedback-success)',
+    medium: 'var(--color-feedback-warning)',
+    low: 'var(--color-feedback-danger)',
+  } as const;
+
   describe('getRiskColorFromPercentage', () => {
-    it('should return green for high coverage', () => {
-      expect(getRiskColorFromPercentage(90)).toBe('#27ae60');
+    it('should return the semantic token for high coverage', () => {
+      expect(getRiskColorFromPercentage(90)).toBe(EXPECTED_COLORS.high);
     });
 
-    it('should return yellow for medium coverage', () => {
-      expect(getRiskColorFromPercentage(70)).toBe('#f39c12');
+    it('should return the semantic token for medium coverage', () => {
+      expect(getRiskColorFromPercentage(70)).toBe(EXPECTED_COLORS.medium);
     });
 
-    it('should return red for low coverage', () => {
-      expect(getRiskColorFromPercentage(40)).toBe('#e74c3c');
+    it('should return the semantic token for low coverage', () => {
+      expect(getRiskColorFromPercentage(40)).toBe(EXPECTED_COLORS.low);
     });
   });
 
   describe('getRiskColor', () => {
-    it('should return correct color for each risk level', () => {
-      expect(getRiskColor('high')).toBe('#27ae60');
-      expect(getRiskColor('medium')).toBe('#f39c12');
-      expect(getRiskColor('low')).toBe('#e74c3c');
+    it('should return the semantic token for each risk level', () => {
+      expect(getRiskColor('high')).toBe(EXPECTED_COLORS.high);
+      expect(getRiskColor('medium')).toBe(EXPECTED_COLORS.medium);
+      expect(getRiskColor('low')).toBe(EXPECTED_COLORS.low);
     });
   });
 

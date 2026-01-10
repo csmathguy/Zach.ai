@@ -4,12 +4,19 @@ export const ThemeStorageKey = 'app-shell-theme-preference';
 
 let storageWarningLogged = false;
 
+const logStorageWarning = (error: unknown): void => {
+  const consoleApi = typeof globalThis !== 'undefined' ? globalThis.console : undefined;
+  if (consoleApi && typeof consoleApi.warn === 'function') {
+    consoleApi.warn('Theme storage unavailable; falling back to defaults.', error);
+  }
+};
+
 const warnStorageUnavailable = (error: unknown): void => {
   if (storageWarningLogged) {
     return;
   }
   storageWarningLogged = true;
-  console.warn('Theme storage unavailable; falling back to defaults.', error);
+  logStorageWarning(error);
 };
 
 export const readStoredPreference = (): {

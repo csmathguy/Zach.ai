@@ -4,87 +4,86 @@ import { describe, it, expect, jest } from '@jest/globals';
 import { DashboardTabs } from '../DashboardTabs';
 
 describe('DashboardTabs', () => {
-  it('should render coverage and health tabs', () => {
+  it('renders coverage and health tabs', () => {
     const mockOnTabChange = jest.fn();
     render(<DashboardTabs activeTab="coverage" onTabChange={mockOnTabChange} />);
 
-    expect(screen.getByRole('button', { name: /coverage/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /health/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /coverage/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /health/i })).toBeInTheDocument();
   });
 
-  it('should highlight coverage tab when active', () => {
+  it('marks coverage tab as selected when active', () => {
     const mockOnTabChange = jest.fn();
     render(<DashboardTabs activeTab="coverage" onTabChange={mockOnTabChange} />);
 
-    const coverageTab = screen.getByRole('button', { name: /coverage/i });
-    const healthTab = screen.getByRole('button', { name: /health/i });
+    const coverageTab = screen.getByRole('tab', { name: /coverage/i });
+    const healthTab = screen.getByRole('tab', { name: /health/i });
 
-    expect(coverageTab).toHaveClass('active');
-    expect(healthTab).not.toHaveClass('active');
+    expect(coverageTab).toHaveAttribute('aria-selected', 'true');
+    expect(healthTab).toHaveAttribute('aria-selected', 'false');
   });
 
-  it('should highlight health tab when active', () => {
+  it('marks health tab as selected when active', () => {
     const mockOnTabChange = jest.fn();
     render(<DashboardTabs activeTab="health" onTabChange={mockOnTabChange} />);
 
-    const coverageTab = screen.getByRole('button', { name: /coverage/i });
-    const healthTab = screen.getByRole('button', { name: /health/i });
+    const coverageTab = screen.getByRole('tab', { name: /coverage/i });
+    const healthTab = screen.getByRole('tab', { name: /health/i });
 
-    expect(coverageTab).not.toHaveClass('active');
-    expect(healthTab).toHaveClass('active');
+    expect(coverageTab).toHaveAttribute('aria-selected', 'false');
+    expect(healthTab).toHaveAttribute('aria-selected', 'true');
   });
 
-  it('should call onTabChange with "coverage" when coverage tab is clicked', async () => {
+  it('calls onTabChange with "coverage" when coverage tab is clicked', async () => {
     const mockOnTabChange = jest.fn();
     const user = userEvent.setup();
     render(<DashboardTabs activeTab="health" onTabChange={mockOnTabChange} />);
 
-    const coverageTab = screen.getByRole('button', { name: /coverage/i });
+    const coverageTab = screen.getByRole('tab', { name: /coverage/i });
     await user.click(coverageTab);
 
     expect(mockOnTabChange).toHaveBeenCalledTimes(1);
     expect(mockOnTabChange).toHaveBeenCalledWith('coverage');
   });
 
-  it('should call onTabChange with "health" when health tab is clicked', async () => {
+  it('calls onTabChange with "health" when health tab is clicked', async () => {
     const mockOnTabChange = jest.fn();
     const user = userEvent.setup();
     render(<DashboardTabs activeTab="coverage" onTabChange={mockOnTabChange} />);
 
-    const healthTab = screen.getByRole('button', { name: /health/i });
+    const healthTab = screen.getByRole('tab', { name: /health/i });
     await user.click(healthTab);
 
     expect(mockOnTabChange).toHaveBeenCalledTimes(1);
     expect(mockOnTabChange).toHaveBeenCalledWith('health');
   });
 
-  it('should not call onTabChange when clicking already active tab', async () => {
+  it('still calls onTabChange when clicking the active tab', async () => {
     const mockOnTabChange = jest.fn();
     const user = userEvent.setup();
     render(<DashboardTabs activeTab="coverage" onTabChange={mockOnTabChange} />);
 
-    const coverageTab = screen.getByRole('button', { name: /coverage/i });
+    const coverageTab = screen.getByRole('tab', { name: /coverage/i });
     await user.click(coverageTab);
 
-    // Still gets called, but UI prevents unnecessary re-renders via React
     expect(mockOnTabChange).toHaveBeenCalledWith('coverage');
   });
 
-  it('should display emoji icons for tabs', () => {
+  it('renders emoji icons inside each tab', () => {
     const mockOnTabChange = jest.fn();
     render(<DashboardTabs activeTab="coverage" onTabChange={mockOnTabChange} />);
 
-    expect(screen.getByText('📈', { exact: false })).toBeInTheDocument();
-    expect(screen.getByText('💚', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('📊')).toBeInTheDocument();
+    expect(screen.getByText('❤️')).toBeInTheDocument();
   });
 
-  it('should handle rapid tab switching', async () => {
+  it('handles rapid tab switches', async () => {
     const mockOnTabChange = jest.fn();
     const user = userEvent.setup();
     render(<DashboardTabs activeTab="coverage" onTabChange={mockOnTabChange} />);
 
-    const healthTab = screen.getByRole('button', { name: /health/i });
-    const coverageTab = screen.getByRole('button', { name: /coverage/i });
+    const healthTab = screen.getByRole('tab', { name: /health/i });
+    const coverageTab = screen.getByRole('tab', { name: /coverage/i });
 
     await user.click(healthTab);
     await user.click(coverageTab);
@@ -96,29 +95,28 @@ describe('DashboardTabs', () => {
     expect(mockOnTabChange).toHaveBeenNthCalledWith(3, 'health');
   });
 
-  it('should be keyboard accessible', async () => {
+  it('supports keyboard activation', async () => {
     const mockOnTabChange = jest.fn();
     const user = userEvent.setup();
     render(<DashboardTabs activeTab="coverage" onTabChange={mockOnTabChange} />);
 
-    const healthTab = screen.getByRole('button', { name: /health/i });
-
-    // Focus and press Enter
+    const healthTab = screen.getByRole('tab', { name: /health/i });
     healthTab.focus();
     await user.keyboard('{Enter}');
 
     expect(mockOnTabChange).toHaveBeenCalledWith('health');
   });
 
-  it('should maintain button semantics', () => {
+  it('preserves button elements while exposing tab role', () => {
     const mockOnTabChange = jest.fn();
     render(<DashboardTabs activeTab="coverage" onTabChange={mockOnTabChange} />);
 
-    const buttons = screen.getAllByRole('button');
-    expect(buttons).toHaveLength(2);
+    const tabs = screen.getAllByRole('tab');
+    expect(tabs).toHaveLength(2);
 
-    buttons.forEach((button) => {
-      expect(button.tagName).toBe('BUTTON');
+    tabs.forEach((tab) => {
+      expect(tab.tagName).toBe('BUTTON');
+      expect(tab).toHaveAttribute('role', 'tab');
     });
   });
 });

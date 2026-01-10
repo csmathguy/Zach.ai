@@ -57,4 +57,21 @@ test.describe('App Shell experience', () => {
     await expect(page.getByRole('heading', { name: knowledgeHeroHeadingMatcher })).toBeVisible();
     await expect(page.getByTestId('app-shell')).toBeVisible();
   });
+
+  test('Ideas placeholder route renders inside the shell', async ({ page }) => {
+    await page.goto('/ideas');
+    await expect(page.getByRole('heading', { name: /Ideas & Inbox/i })).toBeVisible();
+    await expect(page.getByTestId('app-shell')).toBeVisible();
+    await expect(page.getByRole('link', { name: /Review Inbox work item/i })).toBeVisible();
+  });
+
+  test('App shell fits within a narrow viewport without horizontal overflow', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+    const hasOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > window.innerWidth
+    );
+    expect(hasOverflow).toBe(false);
+    await expect(page.getByTestId('utility-nav')).toBeVisible();
+  });
 });

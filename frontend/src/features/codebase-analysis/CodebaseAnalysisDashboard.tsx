@@ -1,11 +1,11 @@
 import type { FC } from 'react';
 import { useState } from 'react';
-import { DashboardTabs } from './shared/DashboardTabs';
+import { DashboardTabs, dashboardTabMetadata, type DashboardTabKey } from './shared/DashboardTabs';
 import { CoverageTab } from './coverage/CoverageTab';
 import { HealthTab } from './health/HealthTab';
 import styles from './CodebaseAnalysisDashboard.module.css';
 
-type TabType = 'coverage' | 'health';
+type TabType = DashboardTabKey;
 
 export const CodebaseAnalysisDashboard: FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('coverage');
@@ -20,8 +20,24 @@ export const CodebaseAnalysisDashboard: FC = () => {
       <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
       <main className={styles.content}>
-        {activeTab === 'coverage' && <CoverageTab />}
-        {activeTab === 'health' && <HealthTab />}
+        <section
+          id={dashboardTabMetadata.coverage.panelId}
+          role="tabpanel"
+          aria-labelledby={dashboardTabMetadata.coverage.labelId}
+          hidden={activeTab !== 'coverage'}
+          className={styles.panel}
+        >
+          {activeTab === 'coverage' ? <CoverageTab /> : null}
+        </section>
+        <section
+          id={dashboardTabMetadata.health.panelId}
+          role="tabpanel"
+          aria-labelledby={dashboardTabMetadata.health.labelId}
+          hidden={activeTab !== 'health'}
+          className={styles.panel}
+        >
+          {activeTab === 'health' ? <HealthTab /> : null}
+        </section>
       </main>
     </div>
   );

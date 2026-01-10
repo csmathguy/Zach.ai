@@ -276,6 +276,8 @@ Messages:
 - Only add ARIA roles when necessary and correct
 - For icon-only buttons, include `aria-label` or visible text
 
+> **Note:** For the O8 shell rollout we automated axe checks and verified keyboard flows; per product direction, screen-reader spot checks (NVDA/VoiceOver) are currently out of scope but are documented as follow-ups so we don't lose track.
+
 ### 6.3 Motion & Animation
 
 - Keep animations subtle and purposeful (e.g., button hover, small transitions)
@@ -417,3 +419,22 @@ If you’re unsure whether a design choice is acceptable, favor:
 - Simpler components
 
 …and leave a short note in the relevant work-item implementation notes so the team can review the decision.
+
+## 12. Mobile Readiness & Checklist
+
+### 12.1 Mobile-First Principles
+
+- Favor `clamp()` for padding and spacing so walls-to-edges layouts shrink gracefully between 320px and desktop widths.
+- Prefer `repeat(auto-fit, minmax(240px, 1fr))` grids and `flex-wrap` headers so cards and nav controls always stay inside the viewport.
+- Keep tap targets at least 44×44 pixels and space them with `gap`, ensuring icon buttons and CTAs remain reachable even when the viewport narrows.
+- Keep horizontal rhythm in check by capping container widths (e.g., `max-width: min(1200px, 100%)`) and verifying there is no document overflow (the Playwright mobile viewport test asserts `document.documentElement.scrollWidth <= window.innerWidth`).
+- Document mobile verification runs (`npx playwright test e2e/app-shell*.spec.ts`) before marking a shell change as complete.
+
+### 12.2 Mobile Readiness Checklist
+
+- [x] Apply `clamp()`-based padding on `body`, hero content, and shell chrome so space adjusts without introducing horizontal scroll.
+- [x] Wrap the AppShell header (utility navigation + theme toggle) while reducing padding on narrower breakpoints, keeping both controls visible without overflow.
+- [x] Convert feature and quick-start grids to responsive `auto-fit` layouts so each card can expand to the full width on small devices.
+- [x] Ensure all coverage and health cards reuse theme tokens (`var(--color-panel)`, `var(--color-text-primary)`, etc.) so dark and light skins stay cohesive on any screen.
+- [x] Validate the experience with Playwright mobile viewport assertions and capture results for documentation.
+- [ ] Screen reader spot checks (NVDA/VoiceOver) - per product direction, these remain out of scope for this release but are tracked as follow-up items.

@@ -2,6 +2,35 @@ import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
 
+interface FeatureCard {
+  icon: string;
+  title: string;
+  description: string;
+  href?: string;
+  cta?: string;
+}
+
+const featureCards: FeatureCard[] = [
+  {
+    icon: '📊',
+    title: 'Codebase Analysis',
+    description: 'Monitor test coverage and system health in a single, trusted view.',
+    href: '/codebase-analysis',
+    cta: 'View dashboard',
+  },
+  {
+    icon: '🛠️',
+    title: 'Ready to Build',
+    description:
+      'TypeScript, React, Vite, Express, and PM2 ƒ?" all wired up so you can focus on product.',
+  },
+  {
+    icon: '⚡',
+    title: 'Fast Development',
+    description: 'Hot reloads, optimized builds, and a shell that stays out of your way.',
+  },
+];
+
 export const Home: FC = () => {
   return (
     <div className={styles.container}>
@@ -12,7 +41,7 @@ export const Home: FC = () => {
         </p>
         <p className={styles.heroDescription}>
           This is a clean starting point for building your application. Customize this landing page
-          to fit your project's needs.
+          to fit your project&apos;s needs.
         </p>
       </section>
 
@@ -24,32 +53,21 @@ export const Home: FC = () => {
           Navigate between health insights, the upcoming knowledge hub, and our ideation surface.
         </p>
         <div className={styles.featureGrid}>
-          <div className={styles.featureCard}>
-            <div className={styles.featureIcon}>dY"S</div>
-            <h3 className={styles.featureTitle}>Codebase Analysis</h3>
-            <p className={styles.featureDescription}>
-              Monitor test coverage and server health in real-time
-            </p>
-            <Link to="/codebase-analysis" className={styles.featureLink}>
-              View Dashboard ƒ+'
-            </Link>
-          </div>
-
-          <div className={styles.featureCard}>
-            <div className={styles.featureIcon}>dYs?</div>
-            <h3 className={styles.featureTitle}>Ready to Build</h3>
-            <p className={styles.featureDescription}>
-              TypeScript, React, Vite, Express, PM2 - everything configured and ready to go
-            </p>
-          </div>
-
-          <div className={styles.featureCard}>
-            <div className={styles.featureIcon}>ƒs­</div>
-            <h3 className={styles.featureTitle}>Fast Development</h3>
-            <p className={styles.featureDescription}>
-              Hot module replacement, instant feedback, and optimized builds
-            </p>
-          </div>
+          {featureCards.map((feature) => (
+            <article key={feature.title} className={styles.featureCard}>
+              <div className={styles.featureIcon} aria-hidden="true">
+                {feature.icon}
+              </div>
+              <h3 className={styles.featureTitle}>{feature.title}</h3>
+              <p className={styles.featureDescription}>{feature.description}</p>
+              {feature.href ? (
+                <Link to={feature.href} className={styles.featureLink}>
+                  <span>{feature.cta}</span>
+                  <span aria-hidden="true">ƒ+-</span>
+                </Link>
+              ) : null}
+            </article>
+          ))}
         </div>
       </section>
 
@@ -61,7 +79,7 @@ export const Home: FC = () => {
             <div className={styles.stepContent}>
               <h3>Development</h3>
               <code>npm run dev</code>
-              <p>Start frontend and backend in development mode</p>
+              <p>Start frontend and backend in development mode.</p>
             </div>
           </div>
 
@@ -70,7 +88,7 @@ export const Home: FC = () => {
             <div className={styles.stepContent}>
               <h3>Build</h3>
               <code>npm run build</code>
-              <p>Create production-ready builds</p>
+              <p>Create production-ready builds.</p>
             </div>
           </div>
 
@@ -79,7 +97,7 @@ export const Home: FC = () => {
             <div className={styles.stepContent}>
               <h3>Deploy</h3>
               <code>npm run deploy</code>
-              <p>Deploy to production environment</p>
+              <p>Deploy to the production environment.</p>
             </div>
           </div>
         </div>

@@ -5,7 +5,6 @@ import { CoverageTab } from '../CoverageTab';
 import * as useCoverageDataModule from '../hooks/useCoverageData';
 import type { ParsedCoverageData } from '../utils/coverageTypes';
 
-// Mock the child components
 jest.mock('../components/CoverageGauges', () => ({
   CoverageGauges: () => <div data-testid="coverage-gauges">Coverage Gauges</div>,
 }));
@@ -43,7 +42,7 @@ describe('CoverageTab', () => {
     jest.clearAllMocks();
   });
 
-  it('should render frontend and backend sub-tabs', () => {
+  it('renders frontend and backend tabs', () => {
     jest.spyOn(useCoverageDataModule, 'useCoverageData').mockReturnValue({
       data: null,
       loading: true,
@@ -53,11 +52,11 @@ describe('CoverageTab', () => {
 
     render(<CoverageTab />);
 
-    expect(screen.getByRole('button', { name: /frontend/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /backend/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /frontend/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /backend/i })).toBeInTheDocument();
   });
 
-  it('should render refresh button', () => {
+  it('renders the refresh control with the new icon', () => {
     jest.spyOn(useCoverageDataModule, 'useCoverageData').mockReturnValue({
       data: null,
       loading: true,
@@ -72,7 +71,7 @@ describe('CoverageTab', () => {
     expect(refreshButton).toHaveTextContent('🔄');
   });
 
-  it('should show loading state', () => {
+  it('shows the loading message and icon', () => {
     jest.spyOn(useCoverageDataModule, 'useCoverageData').mockReturnValue({
       data: null,
       loading: true,
@@ -83,10 +82,10 @@ describe('CoverageTab', () => {
     render(<CoverageTab />);
 
     expect(screen.getByText(/loading coverage data/i)).toBeInTheDocument();
-    expect(screen.getByText('⏳', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText(/⏳/)).toBeInTheDocument();
   });
 
-  it('should show error state with instructions', () => {
+  it('shows the error panel when the hook errors', () => {
     jest.spyOn(useCoverageDataModule, 'useCoverageData').mockReturnValue({
       data: null,
       loading: false,
@@ -102,7 +101,7 @@ describe('CoverageTab', () => {
     expect(screen.getByText('npm run test:coverage --prefix frontend')).toBeInTheDocument();
   });
 
-  it('should display coverage data when loaded', () => {
+  it('renders coverage sections when data is present', () => {
     jest.spyOn(useCoverageDataModule, 'useCoverageData').mockReturnValue({
       data: mockData,
       loading: false,
@@ -118,7 +117,7 @@ describe('CoverageTab', () => {
     expect(screen.getByText('File Coverage')).toBeInTheDocument();
   });
 
-  it('should switch to backend when backend tab is clicked', async () => {
+  it('switches the hook to backend when the backend tab is clicked', async () => {
     const mockUseCoverageData = jest.spyOn(useCoverageDataModule, 'useCoverageData');
     mockUseCoverageData.mockReturnValue({
       data: mockData,
@@ -130,17 +129,16 @@ describe('CoverageTab', () => {
     const user = userEvent.setup();
     render(<CoverageTab />);
 
-    const backendTab = screen.getByRole('button', { name: /backend/i });
+    const backendTab = screen.getByRole('tab', { name: /backend/i });
     await user.click(backendTab);
 
-    // Check that the hook was called with 'backend' on the second render
     await waitFor(() => {
       const calls = mockUseCoverageData.mock.calls;
       expect(calls[calls.length - 1][0]).toBe('backend');
     });
   });
 
-  it('should highlight active frontend tab by default', () => {
+  it('marks the frontend tab as selected by default', () => {
     jest.spyOn(useCoverageDataModule, 'useCoverageData').mockReturnValue({
       data: null,
       loading: true,
@@ -150,14 +148,14 @@ describe('CoverageTab', () => {
 
     render(<CoverageTab />);
 
-    const frontendTab = screen.getByRole('button', { name: /frontend/i });
-    const backendTab = screen.getByRole('button', { name: /backend/i });
+    const frontendTab = screen.getByRole('tab', { name: /frontend/i });
+    const backendTab = screen.getByRole('tab', { name: /backend/i });
 
-    expect(frontendTab).toHaveClass('active');
-    expect(backendTab).not.toHaveClass('active');
+    expect(frontendTab).toHaveAttribute('aria-selected', 'true');
+    expect(backendTab).toHaveAttribute('aria-selected', 'false');
   });
 
-  it('should highlight active backend tab after switching', async () => {
+  it('updates aria state when switching tabs', async () => {
     jest.spyOn(useCoverageDataModule, 'useCoverageData').mockReturnValue({
       data: mockData,
       loading: false,
@@ -168,18 +166,18 @@ describe('CoverageTab', () => {
     const user = userEvent.setup();
     render(<CoverageTab />);
 
-    const backendTab = screen.getByRole('button', { name: /backend/i });
+    const backendTab = screen.getByRole('tab', { name: /backend/i });
     await user.click(backendTab);
 
     await waitFor(() => {
-      expect(backendTab).toHaveClass('active');
+      expect(backendTab).toHaveAttribute('aria-selected', 'true');
     });
 
-    const frontendTab = screen.getByRole('button', { name: /frontend/i });
-    expect(frontendTab).not.toHaveClass('active');
+    const frontendTab = screen.getByRole('tab', { name: /frontend/i });
+    expect(frontendTab).toHaveAttribute('aria-selected', 'false');
   });
 
-  it('should call refresh when refresh button is clicked', async () => {
+  it('calls refresh when the refresh button is pressed', async () => {
     jest.spyOn(useCoverageDataModule, 'useCoverageData').mockReturnValue({
       data: mockData,
       loading: false,
@@ -196,10 +194,9 @@ describe('CoverageTab', () => {
     expect(mockRefresh).toHaveBeenCalledTimes(1);
   });
 
-  it('should update error message when switching projects', async () => {
+  it('updates the instructions when the selected project changes', async () => {
     const mockUseCoverageData = jest.spyOn(useCoverageDataModule, 'useCoverageData');
-    
-    // Frontend with error
+
     mockUseCoverageData.mockReturnValue({
       data: null,
       loading: false,
@@ -212,11 +209,9 @@ describe('CoverageTab', () => {
 
     expect(screen.getByText('npm run test:coverage --prefix frontend')).toBeInTheDocument();
 
-    // Switch to backend
-    const backendTab = screen.getByRole('button', { name: /backend/i });
+    const backendTab = screen.getByRole('tab', { name: /backend/i });
     await user.click(backendTab);
 
-    // Re-render with backend error
     mockUseCoverageData.mockReturnValue({
       data: null,
       loading: false,
@@ -226,7 +221,6 @@ describe('CoverageTab', () => {
 
     rerender(<CoverageTab />);
 
-    // The component updates activeProject state, which changes the instructions
     await waitFor(() => {
       const codeElements = screen.getAllByText(/npm run test:coverage --prefix/);
       const hasBackend = codeElements.some((el) => el.textContent?.includes('backend'));
@@ -234,7 +228,7 @@ describe('CoverageTab', () => {
     });
   });
 
-  it('should not render coverage components when loading', () => {
+  it('hides coverage components while loading', () => {
     jest.spyOn(useCoverageDataModule, 'useCoverageData').mockReturnValue({
       data: null,
       loading: true,
@@ -249,7 +243,7 @@ describe('CoverageTab', () => {
     expect(screen.queryByTestId('coverage-file-table')).not.toBeInTheDocument();
   });
 
-  it('should not render coverage components when error', () => {
+  it('hides coverage components when there is an error', () => {
     jest.spyOn(useCoverageDataModule, 'useCoverageData').mockReturnValue({
       data: null,
       loading: false,
@@ -264,7 +258,7 @@ describe('CoverageTab', () => {
     expect(screen.queryByTestId('coverage-file-table')).not.toBeInTheDocument();
   });
 
-  it('should handle multiple refreshes', async () => {
+  it('allows multiple refresh requests', async () => {
     jest.spyOn(useCoverageDataModule, 'useCoverageData').mockReturnValue({
       data: mockData,
       loading: false,
@@ -276,7 +270,6 @@ describe('CoverageTab', () => {
     render(<CoverageTab />);
 
     const refreshButton = screen.getByTitle('Refresh coverage data');
-    
     await user.click(refreshButton);
     await user.click(refreshButton);
     await user.click(refreshButton);
@@ -284,7 +277,7 @@ describe('CoverageTab', () => {
     expect(mockRefresh).toHaveBeenCalledTimes(3);
   });
 
-  it('should display copy instructions in error state', () => {
+  it('renders the copy instructions in the error state', () => {
     jest.spyOn(useCoverageDataModule, 'useCoverageData').mockReturnValue({
       data: null,
       loading: false,

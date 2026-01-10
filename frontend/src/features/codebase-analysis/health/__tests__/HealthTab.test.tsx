@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { HealthTab } from '../HealthTab';
 import * as useHealthDataModule from '../hooks/useHealthData';
 
-// Mock the useHealthData hook
 jest.mock('../hooks/useHealthData');
 
 describe('HealthTab', () => {
@@ -83,7 +82,7 @@ describe('HealthTab', () => {
     render(<HealthTab />);
 
     expect(screen.getByText(/system status/i)).toBeInTheDocument();
-    expect(screen.getByText('🟡 Development')).toBeInTheDocument();
+    expect(screen.getByText(/🛠️ Development/i)).toBeInTheDocument();
     expect(screen.getByText('OK')).toBeInTheDocument();
   });
 
@@ -119,7 +118,7 @@ describe('HealthTab', () => {
 
     render(<HealthTab />);
 
-    expect(screen.getByText('📊 Requests')).toBeInTheDocument();
+    expect(screen.getByText(/📨 Requests/i)).toBeInTheDocument();
     expect(screen.getByText('1234')).toBeInTheDocument();
   });
 
@@ -145,7 +144,7 @@ describe('HealthTab', () => {
 
     render(<HealthTab />);
 
-    expect(screen.getByText('🟢 Production')).toBeInTheDocument();
+    expect(screen.getByText(/🟢 Production/i)).toBeInTheDocument();
   });
 
   it('should calculate memory percentage correctly', () => {
@@ -153,7 +152,6 @@ describe('HealthTab', () => {
 
     render(<HealthTab />);
 
-    // heapUsed / heapTotal * 100 = 50 / 80 * 100 = 62.5% ≈ 63%
     expect(screen.getByText(/63% of 80 MB/i)).toBeInTheDocument();
   });
 
@@ -167,7 +165,6 @@ describe('HealthTab', () => {
 
     render(<HealthTab />);
 
-    // Should render without crashing
     expect(screen.getByText(/system status/i)).toBeInTheDocument();
   });
 
@@ -181,7 +178,6 @@ describe('HealthTab', () => {
 
     render(<HealthTab />);
 
-    // Should render without crashing
     expect(screen.getByText(/uptime/i)).toBeInTheDocument();
   });
 });

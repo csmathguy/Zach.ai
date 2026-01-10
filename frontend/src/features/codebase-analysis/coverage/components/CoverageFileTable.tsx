@@ -16,14 +16,12 @@ export function CoverageFileTable({ files }: CoverageFileTableProps) {
   const [sortField, setSortField] = useState<SortField>('statements');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
-  // Filter files by search term
   const filteredFiles = useMemo(() => {
     if (!searchTerm) return files;
     const term = searchTerm.toLowerCase();
     return files.filter((file) => file.path.toLowerCase().includes(term));
   }, [files, searchTerm]);
 
-  // Sort files
   const sortedFiles = useMemo(() => {
     const sorted = [...filteredFiles].sort((a, b) => {
       let aValue: number | string;
@@ -61,8 +59,17 @@ export function CoverageFileTable({ files }: CoverageFileTableProps) {
   };
 
   const getSortIcon = (field: SortField) => {
-    if (sortField !== field) return '⇅';
+    if (sortField !== field) {
+      return '↕';
+    }
     return sortDirection === 'asc' ? '↑' : '↓';
+  };
+
+  const getSortAria = (field: SortField): 'ascending' | 'descending' | 'none' => {
+    if (sortField !== field) {
+      return 'none';
+    }
+    return sortDirection === 'asc' ? 'ascending' : 'descending';
   };
 
   if (files.length === 0) {
@@ -89,31 +96,53 @@ export function CoverageFileTable({ files }: CoverageFileTableProps) {
       </div>
 
       <div className={styles.tableWrapper}>
-        <table className={styles.table}>
+        <table className={styles.table} aria-label="File coverage by metric">
           <thead>
             <tr>
-              <th onClick={() => handleSort('path')} className={styles.sortable}>
+              <th
+                scope="col"
+                onClick={() => handleSort('path')}
+                className={styles.sortable}
+                aria-sort={getSortAria('path')}
+              >
                 File Path {getSortIcon('path')}
               </th>
-              <th onClick={() => handleSort('statements')} className={styles.sortable}>
+              <th
+                scope="col"
+                onClick={() => handleSort('statements')}
+                className={styles.sortable}
+                aria-sort={getSortAria('statements')}
+              >
                 Statements {getSortIcon('statements')}
               </th>
-              <th onClick={() => handleSort('branches')} className={styles.sortable}>
+              <th
+                scope="col"
+                onClick={() => handleSort('branches')}
+                className={styles.sortable}
+                aria-sort={getSortAria('branches')}
+              >
                 Branches {getSortIcon('branches')}
               </th>
-              <th onClick={() => handleSort('functions')} className={styles.sortable}>
+              <th
+                scope="col"
+                onClick={() => handleSort('functions')}
+                className={styles.sortable}
+                aria-sort={getSortAria('functions')}
+              >
                 Functions {getSortIcon('functions')}
               </th>
-              <th onClick={() => handleSort('lines')} className={styles.sortable}>
+              <th
+                scope="col"
+                onClick={() => handleSort('lines')}
+                className={styles.sortable}
+                aria-sort={getSortAria('lines')}
+              >
                 Lines {getSortIcon('lines')}
               </th>
             </tr>
           </thead>
           <tbody>
             {sortedFiles.map((file) => {
-              const avgCoverage =
-                (file.statements + file.branches + file.functions + file.lines) / 4;
-              const riskColor = getRiskColorFromPercentage(avgCoverage);
               const fileName = getFileName(file.path);
               const relativePath = getRelativePath(file.path);
 
@@ -144,7 +173,7 @@ export function CoverageFileTable({ files }: CoverageFileTableProps) {
       {filteredFiles.length === 0 && searchTerm && (
         <div className={styles.noResults}>
           <p>No files match "{searchTerm}"</p>
-          <button onClick={() => setSearchTerm('')} className={styles.clearButton}>
+          <button type="button" onClick={() => setSearchTerm('')} className={styles.clearButton}>
             Clear search
           </button>
         </div>

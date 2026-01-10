@@ -1,5 +1,11 @@
 import type { RiskLevel, CoverageTotals } from './coverageTypes';
 
+const COVERAGE_COLORS: Record<RiskLevel, string> = {
+  high: 'var(--color-feedback-success)',
+  medium: 'var(--color-feedback-warning)',
+  low: 'var(--color-feedback-danger)',
+};
+
 /**
  * Calculate risk level from percentage
  * Green >80%, Yellow 60-80%, Red <60%
@@ -32,14 +38,7 @@ export function getRiskColorFromPercentage(percentage: number): string {
  * Get color for risk level
  */
 export function getRiskColor(level: RiskLevel): string {
-  switch (level) {
-    case 'high':
-      return '#27ae60'; // Green
-    case 'medium':
-      return '#f39c12'; // Yellow/Orange
-    case 'low':
-      return '#e74c3c'; // Red
-  }
+  return COVERAGE_COLORS[level];
 }
 
 /**

@@ -1,8 +1,9 @@
 .tableContainer {
-  background: white;
+  background: var(--color-panel);
   border-radius: 12px;
-  border: 2px solid #e5e7eb;
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 25%, transparent);
   overflow: hidden;
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--color-text-secondary) 15%, transparent);
 }
 
 .controls {
@@ -10,28 +11,34 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background: color-mix(in srgb, var(--color-sunken) 70%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text-secondary) 20%, transparent);
   gap: 1rem;
 }
 
 .searchInput {
   flex: 1;
   padding: 0.5rem 1rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid color-mix(in srgb, var(--color-text-secondary) 30%, transparent);
   border-radius: 8px;
   font-size: 0.9rem;
+  background: var(--color-panel);
+  color: var(--color-text-primary);
   transition: all 0.2s;
+}
+
+.searchInput::placeholder {
+  color: color-mix(in srgb, var(--color-text-primary) 50%, var(--color-text-secondary));
 }
 
 .searchInput:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: var(--color-text-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-text-accent) 20%, transparent);
 }
 
 .resultCount {
-  color: #6b7280;
+  color: var(--color-text-secondary);
   font-size: 0.9rem;
   white-space: nowrap;
 }
@@ -45,12 +52,13 @@
 .table {
   width: 100%;
   border-collapse: collapse;
+  color: var(--color-text-primary);
 }
 
 .table thead {
   position: sticky;
   top: 0;
-  background: white;
+  background: var(--color-panel);
   z-index: 10;
 }
 
@@ -58,8 +66,8 @@
   padding: 0.75rem 1rem;
   text-align: left;
   font-weight: 600;
-  color: #374151;
-  border-bottom: 2px solid #e5e7eb;
+  color: var(--color-text-primary);
+  border-bottom: 2px solid color-mix(in srgb, var(--color-text-secondary) 20%, transparent);
   white-space: nowrap;
 }
 
@@ -70,22 +78,22 @@
 }
 
 .sortable:hover {
-  background: #f3f4f6;
+  background: color-mix(in srgb, var(--color-sunken) 60%, transparent);
 }
 
 .table td {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text-secondary) 12%, transparent);
   font-size: 0.9rem;
 }
 
 .row:hover {
-  background: #f9fafb;
+  background: color-mix(in srgb, var(--color-sunken) 65%, transparent);
 }
 
 .pathCell {
-  color: #1f2937;
-  font-family: 'Courier New', monospace;
+  color: var(--color-text-primary);
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Menlo, monospace;
   font-size: 0.85rem;
   max-width: 400px;
   overflow: hidden;
@@ -97,14 +105,14 @@
 .noResults {
   padding: 3rem;
   text-align: center;
-  color: #6b7280;
+  color: var(--color-text-secondary);
 }
 
 .clearButton {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
-  background: #3b82f6;
-  color: white;
+  background: var(--color-text-accent);
+  color: var(--color-text-inverted);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -113,7 +121,7 @@
 }
 
 .clearButton:hover {
-  background: #2563eb;
+  background: color-mix(in srgb, var(--color-text-accent) 90%, transparent);
 }
 
 /* Responsive */
