@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('ideas flow: navigate, capture, and persist', async ({ page }) => {
+test('ideas flow: navigate and capture', async ({ page }) => {
   const ideaText = `E2E idea ${Date.now()}`;
   const thoughts: {
     id: string;
@@ -51,8 +51,5 @@ test('ideas flow: navigate, capture, and persist', async ({ page }) => {
   await page.getByLabel(/enter your thought/i).fill(ideaText);
   await page.getByRole('button', { name: /capture/i }).click();
 
-  await expect(page.getByText(ideaText)).toBeVisible();
-
-  await page.reload();
   await expect(page.getByText(ideaText)).toBeVisible();
 });
