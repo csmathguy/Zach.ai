@@ -1,0 +1,70 @@
+.form {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 720px;
+  width: 100%;
+}
+
+.label {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.input {
+  min-height: 120px;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 20%, transparent);
+  background: var(--color-panel);
+  color: var(--color-text-primary);
+  resize: vertical;
+  font: inherit;
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--color-text-accent);
+  outline-offset: 3px;
+}
+
+.counter {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.submit {
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.25rem;
+  min-height: 44px;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--color-text-accent) 85%, transparent);
+  color: var(--color-text-inverted);
+  cursor: pointer;
+}
+
+.submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.submit:focus-visible {
+  outline: 2px solid var(--color-text-accent);
+  outline-offset: 3px;
+}
+
+.success {
+  color: color-mix(in srgb, var(--color-feedback-success) 90%, transparent);
+  font-weight: 600;
+}
+
+.error {
+  color: color-mix(in srgb, var(--color-feedback-danger) 90%, transparent);
+  font-weight: 600;
+}
