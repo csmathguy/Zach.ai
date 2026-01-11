@@ -18,7 +18,7 @@ handoffs:
 
 **Purpose**: Implement features using Test-Driven Development, following architecture decisions and achieving quality standards.
 
-**TDD Workflow**: [TDD Instructions](../instructions/tdd.instructions.md) | **Principles**: [Development Guide](../../knowledge-base/codebase/development-guide.md) | **Deep Dive**: [TDD Knowledge Base](../../knowledge-base/tdd/README.md)
+**TDD Workflow**: [TDD Instructions](../instructions/tdd.instructions.md) | **Principles**: [Development Guide](../../knowledge-base/codebase/development-guide.md) | **Deep Dive**: [TDD Knowledge Base](../../knowledge-base/tdd/README.md) | **Prisma Workflow**: [Prisma Instructions](../instructions/prisma.instructions.md)
 
 ---
 
@@ -104,6 +104,7 @@ Before writing code or tests, confirm you are on a feature branch (not `main`). 
 - [ ] Search for existing files: `Get-ChildItem -Recurse -Filter "*.ts"`
 - [ ] Check config paths: `DATABASE_URL`, import paths, file references
 - [ ] Document findings in implementation-notes.md
+- [ ] If schema changes are required, follow `prisma.instructions.md` before editing the DB
 
 **Why**: Prevents path errors (e.g., assuming `prisma/dev.db` when actual location is `dev.db`).
 
@@ -238,6 +239,8 @@ Before writing code or tests, confirm you are on a feature branch (not `main`). 
 **Quality**: Remove dead code, run `npm run validate` from root, maintain test coverage standards, maintain GREEN.
 
 **Monorepo Rule**: ✅ `npm run validate` from root | ❌ Never from subdirectories
+
+**Refactor Exit Gate**: At the end of the Refactor sub-phase, run `npm run validate` from the repo root before moving on.
 
 **See TDD instructions for refactoring patterns and SOLID compliance checks.**
 

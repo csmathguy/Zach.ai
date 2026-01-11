@@ -21,6 +21,26 @@
   margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logoutButton {
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 30%, transparent);
+  background: transparent;
+  color: var(--color-text-primary);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  border-color: color-mix(in srgb, var(--color-text-primary) 40%, transparent);
+}
+
 .main {
   background: var(--color-surface);
   border-radius: calc(var(--radius-base, 12px) + 6px);

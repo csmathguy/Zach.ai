@@ -15,7 +15,8 @@ test.describe('App Shell accessibility guardrails', () => {
       'aria-selected',
       'false'
     );
-    await expect(page.getByRole('tab', { name: 'Ideas' })).toHaveAttribute('tabindex', '-1');
+    await expect(page.getByRole('tab', { name: 'Ideas' })).toHaveAttribute('aria-selected', 'true');
+    await expect(page.getByRole('tab', { name: 'Ideas' })).toHaveAttribute('tabindex', '0');
   });
 
   test('theme toggle updates aria-pressed state', async ({ page }) => {

@@ -42,6 +42,7 @@ Design technical solutions that align with business requirements (APR) and exist
 4. **Apply Patterns** - Use appropriate design patterns (see Development Guide)
 5. **Define Layers** - Apply layered architecture (Domain → Infrastructure → Application → API)
 6. **Integration** - Define how feature integrates with existing system
+7. **Track Open Questions** - Capture unresolved architectural items in `open_questions.md`
 
 ---
 
@@ -87,6 +88,7 @@ Before writing architecture artifacts, confirm you are on a feature branch (not 
 - Identify non-functional needs (performance, security, accessibility)
 - Note technical constraints (existing architecture, tech stack)
 - List dependencies (external systems, new technologies)
+- Capture unresolved architectural questions in `work-items/<branch>/architecture/open_questions.md`
 
 ---
 

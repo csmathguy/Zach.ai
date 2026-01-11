@@ -52,6 +52,25 @@ npm run dev
 - Frontend dev server: http://localhost:5173
 - Backend dev server: http://localhost:3000
 
+## Auth & Routing (User Management)
+
+Public routes:
+
+- `/` landing page with login CTA
+- `/login` sign-in
+- `/reset` reset token request (shows delivery warning)
+- `/reset/confirm` set a new password with token
+
+Authenticated routes:
+
+- `/ideas` default post-login landing
+- `/knowledge` placeholder
+
+Admin-only routes:
+
+- `/codebase-analysis` dashboard access
+- `/admin/accounts` account management
+
 ## Testing & Quality
 
 ### Running Tests

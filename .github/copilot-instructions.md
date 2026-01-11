@@ -18,6 +18,7 @@
 - **[PM2](../knowledge-base/pm2/README.md)** - Process management
 - **[SQLite](../knowledge-base/sqlite/database-tools.md)** - Database access and management
 - **[Prisma](../knowledge-base/prisma/database-structure.md)** - ORM usage and schema
+- **[Prisma Workflow Instructions](instructions/prisma.instructions.md)** - Migrations, drift recovery, seeding
 
 **Status of Docs**: Check [ideas/knowledge-base-updates.md](../ideas/knowledge-base-updates.md) for complete list and documentation status.
 

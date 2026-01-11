@@ -67,7 +67,7 @@ test.describe('App Shell experience', () => {
 
   test('App shell fits within a narrow viewport without horizontal overflow', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/');
+    await page.goto('/ideas');
     const hasOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth > window.innerWidth
     );

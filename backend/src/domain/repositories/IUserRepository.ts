@@ -19,19 +19,25 @@ export interface IUserRepository {
    * Find user by ID
    * @returns User if found, null otherwise
    */
-  findById(id: string): Promise<User | null>;
+  getById(id: string): Promise<User | null>;
+
+  /**
+   * Find user by username
+   * @returns User if found, null otherwise
+   */
+  getByUsername(username: string): Promise<User | null>;
 
   /**
    * Find user by email
    * @returns User if found, null otherwise
    */
-  findByEmail(email: string): Promise<User | null>;
+  getByEmail(email: string): Promise<User | null>;
 
   /**
    * Find all users
    * @returns Array of users, empty array if none exist
    */
-  findAll(): Promise<User[]>;
+  listAll(): Promise<User[]>;
 
   /**
    * Update user fields (partial update)

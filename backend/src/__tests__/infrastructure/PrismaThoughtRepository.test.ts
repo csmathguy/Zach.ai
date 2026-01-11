@@ -4,12 +4,27 @@ import { PrismaThoughtRepository } from '@infrastructure/prisma/repositories/Pri
 import { Thought } from '@domain/models/Thought';
 import { User } from '@domain/models/User';
 import { PrismaUserRepository } from '@infrastructure/prisma/repositories/PrismaUserRepository';
+import type { CreateUserDto } from '@domain/types';
 
 describe('PrismaThoughtRepository', () => {
   let repository: PrismaThoughtRepository;
   let userRepository: PrismaUserRepository;
   let testUser: User;
   let originalConsoleLog: typeof console.log;
+
+  const buildUserDto = (
+    email: string,
+    name: string,
+    overrides: Partial<CreateUserDto> = {}
+  ): CreateUserDto => ({
+    username: email.split('@')[0],
+    email,
+    name,
+    passwordHash: 'hash',
+    role: 'USER',
+    status: 'ACTIVE',
+    ...overrides,
+  });
 
   beforeAll(() => {
     // Suppress Prisma error logs during tests (expected errors from error condition tests)
@@ -38,10 +53,7 @@ describe('PrismaThoughtRepository', () => {
     await prisma.user.deleteMany({});
 
     // Create test user for foreign key relations
-    testUser = await userRepository.create({
-      email: 'test@example.com',
-      name: 'Test User',
-    });
+    testUser = await userRepository.create(buildUserDto('test@example.com', 'Test User'));
   });
 
   afterEach(async () => {
@@ -166,10 +178,9 @@ describe('PrismaThoughtRepository', () => {
 
     it('should only return thoughts for specified user', async () => {
       // Create another user
-      const otherUser = await userRepository.create({
-        email: 'other@example.com',
-        name: 'Other User',
-      });
+      const otherUser = await userRepository.create(
+        buildUserDto('other@example.com', 'Other User')
+      );
 
       // Create thoughts for both users
       await repository.create({

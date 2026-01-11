@@ -29,5 +29,7 @@ applyTo: 'e2e/**/*.ts'
   - `npm run test:e2e` – standard E2E run.
   - `npm run verify:all` – full suite (typecheck, lint, format:check, unit tests, E2E).
 - The backend and frontend are started via `npm run dev` in the Playwright config `webServer` block.
+- When E2E tests depend on seeded credentials, ensure `playwright.config.ts` sets `SEED_ADMIN_USER_FORCE=true` so the admin user is updated to the env credentials each run.
+- Use exact label matches when forms contain overlapping labels (e.g., `/^Email$/i` vs `/email/i`).
 
 For deeper Playwright docs and patterns, see [knowledge-base/playwright/README.md](../../knowledge-base/playwright/README.md).

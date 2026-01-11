@@ -2,6 +2,7 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import { PrismaLibSql } from '@prisma/adapter-libsql';
+import bcrypt from 'bcrypt';
 
 // Initialize Prisma Client with adapter (required for Prisma 7.x + SQLite)
 let dbUrl = process.env.DATABASE_URL || 'file:./dev.db';
@@ -17,78 +18,77 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
-  console.log('🌱 [SEED] Checking database...');
+  console.log('dYO� [SEED] Checking database...');
 
-  // Check if data already exists (idempotent seeding)
-  const userCount = await prisma.user.count();
-
-  if (userCount > 0) {
-    console.log('✅ [SEED] Seed data already exists, skipping...');
-    console.log(`   Found ${userCount} existing users`);
+  const shouldSeedAdmin = process.env.SEED_ADMIN_USER !== 'false';
+  const forceSeedAdmin = process.env.SEED_ADMIN_USER_FORCE === 'true';
+  if (!shouldSeedAdmin) {
+    console.log('�o. [SEED] Admin seeding disabled (SEED_ADMIN_USER=false).');
     return;
   }
 
-  console.log('🌱 [SEED] Seeding database with test data...');
+  const adminUsername = process.env.ADMIN_USERNAME ?? 'admin';
+  const adminPassword = process.env.ADMIN_PASSWORD ?? 'AdminPass1!';
+  const adminName = process.env.ADMIN_NAME || 'Administrator';
+  const adminEmail = process.env.ADMIN_EMAIL ?? null;
+
+  if (!adminUsername || !adminPassword) {
+    console.log('�o. [SEED] ADMIN_USERNAME or ADMIN_PASSWORD missing, skipping admin seed.');
+    return;
+  }
+
+  const existingAdmin = await prisma.user.findFirst({
+    where: { username: adminUsername },
+  });
+
+  if (existingAdmin && !forceSeedAdmin) {
+    console.log('�o. [SEED] Admin user already exists, skipping...');
+    return;
+  }
+
+  console.log('dYO� [SEED] Seeding admin user...');
   console.log('');
 
-  // Create test user
-  const testUser = await prisma.user.create({
-    data: {
-      email: 'test@example.com',
-      name: 'Test User',
-    },
-  });
-  console.log(`✅ Created user: ${testUser.name} (${testUser.email})`);
+  const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS) || 12;
+  const passwordHash = await bcrypt.hash(adminPassword, saltRounds);
 
-  // Create a sample thought
-  const thought = await prisma.thought.create({
-    data: {
-      text: 'This is a sample thought for testing',
-      source: 'manual',
-      userId: testUser.id,
-    },
-  });
-  console.log(`✅ Created thought: "${thought.text.substring(0, 40)}..."`);
+  const adminUser = existingAdmin
+    ? await prisma.user.update({
+        where: { id: existingAdmin.id },
+        data: {
+          username: adminUsername,
+          email: adminEmail,
+          name: adminName,
+          passwordHash,
+          role: 'ADMIN',
+          status: 'ACTIVE',
+          failedLoginCount: 0,
+          lockoutUntil: null,
+          lastLoginAt: null,
+        },
+      })
+    : await prisma.user.create({
+        data: {
+          username: adminUsername,
+          email: adminEmail,
+          name: adminName,
+          passwordHash,
+          role: 'ADMIN',
+          status: 'ACTIVE',
+          failedLoginCount: 0,
+          lockoutUntil: null,
+          lastLoginAt: null,
+        },
+      });
 
-  // Create a sample project
-  const project = await prisma.project.create({
-    data: {
-      title: 'Sample Project',
-      description: 'This is a sample project for testing',
-      status: 'ACTIVE',
-    },
-  });
-  console.log(`✅ Created project: ${project.title}`);
-
-  // Create a sample action
-  const action = await prisma.action.create({
-    data: {
-      title: 'Sample Action',
-      description: 'This is a sample action for testing',
-      actionType: 'Manual',
-      status: 'TODO',
-      projectId: project.id,
-    },
-  });
-  console.log(`✅ Created action: ${action.title}`);
-
-  // Link thought to project
-  await prisma.projectThought.create({
-    data: {
-      projectId: project.id,
-      thoughtId: thought.id,
-    },
-  });
-  console.log('✅ Linked thought to project');
-
+  console.log(`�o. Created admin user: ${adminUser.username}`);
   console.log('');
-  console.log('✅ [SEED] Database seeding complete!');
-  console.log(`   Total: 1 user, 1 thought, 1 project, 1 action`);
+  console.log('�o. [SEED] Admin seeding complete!');
 }
 
 main()
   .catch((e) => {
-    console.error('❌ [SEED] Seeding failed:', e);
+    console.error('�?O [SEED] Seeding failed:', e);
     process.exit(1);
   })
   .finally(async () => {

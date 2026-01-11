@@ -18,12 +18,27 @@ import { PrismaThoughtRepository } from '@infrastructure/prisma/repositories/Pri
 import { PrismaProjectRepository } from '@infrastructure/prisma/repositories/PrismaProjectRepository';
 import { PrismaActionRepository } from '@infrastructure/prisma/repositories/PrismaActionRepository';
 import { ActionType, ActionStatus } from '@domain/models/Action';
+import type { CreateUserDto } from '@domain/types';
 
 let userRepo: PrismaUserRepository;
 let thoughtRepo: PrismaThoughtRepository;
 let projectRepo: PrismaProjectRepository;
 let actionRepo: PrismaActionRepository;
 let originalConsoleLog: typeof console.log;
+
+const buildUserDto = (
+  email: string,
+  name: string,
+  overrides: Partial<CreateUserDto> = {}
+): CreateUserDto => ({
+  username: email.split('@')[0],
+  email,
+  name,
+  passwordHash: 'hash',
+  role: 'USER',
+  status: 'ACTIVE',
+  ...overrides,
+});
 
 beforeAll(() => {
   // Suppress Prisma error logs for contract violation tests
@@ -60,27 +75,27 @@ beforeEach(async () => {
 
 describe('IUserRepository Contract Guarantees', () => {
   it('create() throws on duplicate email', async () => {
-    await userRepo.create({ email: 'duplicate@example.com', name: 'User 1' });
+    await userRepo.create(buildUserDto('duplicate@example.com', 'User 1'));
 
     await expect(
-      userRepo.create({ email: 'duplicate@example.com', name: 'User 2' })
+      userRepo.create(buildUserDto('duplicate@example.com', 'User 2', { username: 'user-two' }))
     ).rejects.toThrow();
   });
 
-  it('findById() returns null (not throws) when user not found', async () => {
-    const result = await userRepo.findById('nonexistent-id');
+  it('getById() returns null (not throws) when user not found', async () => {
+    const result = await userRepo.getById('nonexistent-id');
 
     expect(result).toBeNull();
   });
 
-  it('findByEmail() returns null (not throws) when email not found', async () => {
-    const result = await userRepo.findByEmail('nonexistent@example.com');
+  it('getByEmail() returns null (not throws) when email not found', async () => {
+    const result = await userRepo.getByEmail('nonexistent@example.com');
 
     expect(result).toBeNull();
   });
 
   it('delete() is idempotent - does not throw on second delete', async () => {
-    const user = await userRepo.create({ email: 'delete@example.com', name: 'User' });
+    const user = await userRepo.create(buildUserDto('delete@example.com', 'User'));
 
     await userRepo.delete(user.id);
     await expect(userRepo.delete(user.id)).resolves.not.toThrow();
@@ -90,8 +105,8 @@ describe('IUserRepository Contract Guarantees', () => {
     await expect(userRepo.update('nonexistent-id', { name: 'Updated' })).rejects.toThrow();
   });
 
-  it('findAll() returns empty array when no users exist', async () => {
-    const users = await userRepo.findAll();
+  it('listAll() returns empty array when no users exist', async () => {
+    const users = await userRepo.listAll();
 
     expect(users).toEqual([]);
   });
@@ -101,7 +116,7 @@ describe('IThoughtRepository Contract Guarantees', () => {
   let userId: string;
 
   beforeEach(async () => {
-    const user = await userRepo.create({ email: 'thinker@example.com', name: 'Thinker' });
+    const user = await userRepo.create(buildUserDto('thinker@example.com', 'Thinker'));
     userId = user.id;
   });
 
@@ -180,7 +195,7 @@ describe('IProjectRepository Contract Guarantees', () => {
   let userId: string;
 
   beforeEach(async () => {
-    const user = await userRepo.create({ email: 'organizer@example.com', name: 'Organizer' });
+    const user = await userRepo.create(buildUserDto('organizer@example.com', 'Organizer'));
     userId = user.id;
   });
 
@@ -256,7 +271,7 @@ describe('IActionRepository Contract Guarantees', () => {
   let projectId: string;
 
   beforeEach(async () => {
-    const user = await userRepo.create({ email: 'actor@example.com', name: 'Actor' });
+    const user = await userRepo.create(buildUserDto('actor@example.com', 'Actor'));
     const project = await projectRepo.create({ title: 'Test Project' });
     userId = user.id;
     projectId = project.id;

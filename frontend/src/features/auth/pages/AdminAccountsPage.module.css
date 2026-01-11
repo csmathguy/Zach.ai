@@ -1,0 +1,132 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+}
+
+.header p {
+  color: color-mix(in srgb, var(--color-text-secondary) 70%, transparent);
+}
+
+.section {
+  background: var(--color-panel);
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 20%, transparent);
+  padding: 1.5rem;
+}
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.helperText {
+  color: color-mix(in srgb, var(--color-text-secondary) 70%, transparent);
+  font-size: 0.95rem;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text-secondary) 20%, transparent);
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+.input,
+.select {
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 30%, transparent);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+}
+
+.primaryButton {
+  width: fit-content;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-brand-heart);
+  color: var(--color-text-inverted);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondaryButton {
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-text-secondary) 40%, transparent);
+  background: transparent;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.notice {
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-feedback-success) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-feedback-success) 35%, transparent);
+}
+
+.error {
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-feedback-danger) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-feedback-danger) 35%, transparent);
+}
+
+.loading,
+.empty {
+  color: color-mix(in srgb, var(--color-text-secondary) 70%, transparent);
+}
+
+@media (max-width: 768px) {
+  .table thead {
+    display: none;
+  }
+
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+    width: 100%;
+  }
+
+  .table tr {
+    padding: 0.75rem 0;
+  }
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text-secondary) 20%, transparent);
+  }
+}

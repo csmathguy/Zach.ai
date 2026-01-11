@@ -7,3 +7,4 @@
 export { validateRequest } from './validateRequest';
 export { requestLogger } from './requestLogger';
 export { errorHandler } from './errorHandler';
+export { createAuthMiddleware } from './authMiddleware';

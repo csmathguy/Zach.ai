@@ -1,12 +1,13 @@
 import type { FeatureFlagKey } from '@/app-shell/feature-flags/featureFlags';
 
 export interface UtilityNavItem {
-  id: 'health' | 'knowledge' | 'ideas';
+  id: string;
   label: string;
   description: string;
   icon: React.ComponentType<{ active: boolean }>;
   route: string;
   featureFlag?: FeatureFlagKey;
+  requiresRole?: 'USER' | 'ADMIN';
   onSelect?: () => void;
   target?: '_self' | '_blank';
 }

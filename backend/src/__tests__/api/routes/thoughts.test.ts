@@ -42,8 +42,12 @@ describe('POST /api/thoughts', () => {
     await prisma.user.create({
       data: {
         id: MVP_USER_ID,
+        username: 'mvp-user',
         email: 'test@example.com',
         name: 'Test User',
+        passwordHash: 'hash',
+        role: 'ADMIN',
+        status: 'ACTIVE',
       },
     });
   });
@@ -276,8 +280,12 @@ describe('GET /api/thoughts', () => {
     await prisma.user.create({
       data: {
         id: MVP_USER_ID,
+        username: 'mvp-user',
         email: 'test@example.com',
         name: 'Test User',
+        passwordHash: 'hash',
+        role: 'ADMIN',
+        status: 'ACTIVE',
       },
     });
   });

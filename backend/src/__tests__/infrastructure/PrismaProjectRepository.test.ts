@@ -4,12 +4,27 @@ import { PrismaProjectRepository } from '@infrastructure/prisma/repositories/Pri
 import { PrismaUserRepository } from '@infrastructure/prisma/repositories/PrismaUserRepository';
 import { PrismaThoughtRepository } from '@infrastructure/prisma/repositories/PrismaThoughtRepository';
 import { ProjectStatus } from '@domain/models/Project';
+import type { CreateUserDto } from '@domain/types';
 
 describe('PrismaProjectRepository', () => {
   let repository: PrismaProjectRepository;
   let userRepository: PrismaUserRepository;
   let thoughtRepository: PrismaThoughtRepository;
   let originalConsoleLog: typeof console.log;
+
+  const buildUserDto = (
+    email: string,
+    name: string,
+    overrides: Partial<CreateUserDto> = {}
+  ): CreateUserDto => ({
+    username: email.split('@')[0],
+    email,
+    name,
+    passwordHash: 'hash',
+    role: 'USER',
+    status: 'ACTIVE',
+    ...overrides,
+  });
 
   beforeAll(() => {
     // Suppress Prisma error logs during tests (expected errors from error condition tests)
@@ -234,10 +249,7 @@ describe('PrismaProjectRepository', () => {
 
   describe('linkThought()', () => {
     it('should create association between project and thought', async () => {
-      const user = await userRepository.create({
-        email: 'test@example.com',
-        name: 'Test User',
-      });
+      const user = await userRepository.create(buildUserDto('test@example.com', 'Test User'));
 
       const thought = await thoughtRepository.create({
         text: 'Test thought',
@@ -264,10 +276,7 @@ describe('PrismaProjectRepository', () => {
     });
 
     it('should be idempotent', async () => {
-      const user = await userRepository.create({
-        email: 'test@example.com',
-        name: 'Test User',
-      });
+      const user = await userRepository.create(buildUserDto('test@example.com', 'Test User'));
 
       const thought = await thoughtRepository.create({
         text: 'Test thought',
@@ -285,10 +294,7 @@ describe('PrismaProjectRepository', () => {
     });
 
     it('should throw when project not found', async () => {
-      const user = await userRepository.create({
-        email: 'test@example.com',
-        name: 'Test User',
-      });
+      const user = await userRepository.create(buildUserDto('test@example.com', 'Test User'));
 
       const thought = await thoughtRepository.create({
         text: 'Test thought',
@@ -309,10 +315,7 @@ describe('PrismaProjectRepository', () => {
 
   describe('unlinkThought()', () => {
     it('should remove association between project and thought', async () => {
-      const user = await userRepository.create({
-        email: 'test@example.com',
-        name: 'Test User',
-      });
+      const user = await userRepository.create(buildUserDto('test@example.com', 'Test User'));
 
       const thought = await thoughtRepository.create({
         text: 'Test thought',
@@ -340,10 +343,7 @@ describe('PrismaProjectRepository', () => {
     });
 
     it('should be idempotent', async () => {
-      const user = await userRepository.create({
-        email: 'test@example.com',
-        name: 'Test User',
-      });
+      const user = await userRepository.create(buildUserDto('test@example.com', 'Test User'));
 
       const thought = await thoughtRepository.create({
         text: 'Test thought',

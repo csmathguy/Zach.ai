@@ -11,6 +11,7 @@ You are in the Refactor stage. The goal is to improve design, readability, and m
 3. Refactor in small, reversible steps. Prefer a sequence of tiny refactorings over a rewrite.
 4. Preserve public API and externally observable behavior unless the task explicitly calls for an API change and tests cover it.
 5. If you discover missing test coverage that makes refactor unsafe, stop refactoring and add characterization tests first, then return to refactor.
+6. At the end of the refactor stage, run `npm run validate` from the repo root.
 
 ## Refactor loop (repeat)
 

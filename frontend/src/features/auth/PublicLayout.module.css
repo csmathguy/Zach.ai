@@ -1,0 +1,19 @@
+.shell {
+  min-height: calc(100vh - clamp(2rem, 4vw, 3rem));
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1rem, 3vw, 2rem);
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.content {
+  width: min(960px, 100%);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}

@@ -6,7 +6,7 @@
  */
 
 // User DTOs
-export type { CreateUserDto, UpdateUserDto } from './user.types';
+export type { CreateUserDto, UpdateUserDto, UserRole, UserStatus } from './user.types';
 
 // Thought DTOs
 export type { CreateThoughtDto } from './thought.types';
@@ -16,3 +16,7 @@ export type { CreateProjectDto, UpdateProjectDto } from './project.types';
 
 // Action DTOs
 export type { CreateActionDto, UpdateActionDto } from './action.types';
+
+// Auth/session types
+export type { Session } from './session.types';
+export type { PasswordResetToken } from './passwordResetToken.types';

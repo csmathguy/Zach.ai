@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { requestLogger } from './middleware/requestLogger';
 import { errorHandler } from './middleware/errorHandler';
-import { thoughtsRouter } from './api/routes';
+import { thoughtsRouter, authRouter, adminRouter, accountRouter } from './api/routes';
 import { prisma } from './infrastructure/prisma/client';
 
 const app = express();
@@ -12,8 +12,15 @@ const PORT = Number(process.env.PORT || 3000);
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const MVP_USER = {
   id: '00000000-0000-4000-8000-000000000001',
+  username: 'mvp-user',
   email: 'mvp-user@local.test',
   name: 'MVP User',
+  passwordHash: 'mvp-user-disabled',
+  role: 'ADMIN',
+  status: 'ACTIVE',
+  failedLoginCount: 0,
+  lockoutUntil: null,
+  lastLoginAt: null,
 };
 
 // Metrics tracking
@@ -107,6 +114,9 @@ app.get('/api/metrics', (_req, res) => {
 
 // Thoughts API endpoint
 app.use('/api/thoughts', thoughtsRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/admin', adminRouter);
+app.use('/api/me', accountRouter);
 
 // In production, serve built frontend. Prefer snapshot dir if available/env-provided.
 if (NODE_ENV === 'production') {
