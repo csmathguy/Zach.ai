@@ -3,7 +3,9 @@
 #   - Add -GenerateCoverage switch parameter
 #   - Call generate-coverage.ps1 -Project all before build
 #   - Ensure coverage files are included in frontend build
-param()
+param(
+  [switch]$SeedAdmin
+)
 
 Push-Location (Split-Path $PSScriptRoot)
 try {
@@ -64,31 +66,27 @@ try {
     & "$PSScriptRoot/database/db-backup.ps1" -DatabasePath $prodDbPath
   }
   
-  # Run migrations from source backend (has prisma CLI) but target deployed database
-  Push-Location backend
-  try {
-    $dbUrl = "file:$prodDbPath"
-    Write-Host "[deploy] Using production database: $dbUrl" -ForegroundColor Cyan
-    
-    if (-not (Test-Path $prodDbPath)) {
-      Write-Host "[deploy] Production database not found, running migrations to create..." -ForegroundColor Yellow
-    } else {
-      Write-Host "[deploy] Production database exists, running migrations..." -ForegroundColor Yellow
-    }
-    
-    # Set DATABASE_URL as environment variable for Prisma
-    $env:DATABASE_URL = $dbUrl
-    npx prisma migrate deploy
-    
-    if ($LASTEXITCODE -ne 0) { throw "Database migration failed" }
-    
-    Write-Host "[deploy] Production database ready at $prodDbPath" -ForegroundColor Green
-  } finally { 
-    Remove-Variable -Name DATABASE_URL -ErrorAction SilentlyContinue
-    Pop-Location 
-  }
-  
+  # Run migrations using shared db-migrate script
+  $dbMigrateScript = Join-Path $PSScriptRoot "database/db-migrate.ps1"
+  Write-Host "[deploy] Applying migrations via $dbMigrateScript ..." -ForegroundColor Cyan
+  & $dbMigrateScript -Environment production -DatabasePath $prodDbPath
+  if ($LASTEXITCODE -ne 0) { throw "Database migration failed" }
   Write-Host "[deploy] Production database ready at $deployRoot/backend/prod.db" -ForegroundColor Green
+
+  if ($SeedAdmin) {
+    Write-Host "[deploy] Seeding admin user..." -ForegroundColor Cyan
+    Push-Location backend
+    try {
+      $env:DATABASE_URL = "file:$prodDbPath"
+      npx prisma db seed
+      if ($LASTEXITCODE -ne 0) { throw "Database seeding failed" }
+    } finally {
+      Remove-Item env:DATABASE_URL -ErrorAction SilentlyContinue
+      Pop-Location
+    }
+  } else {
+    Write-Host "[deploy] Skipping admin seed (pass -SeedAdmin to enable)." -ForegroundColor Yellow
+  }
 
   Write-Host "[deploy] Snapshot created at: $deployRoot" -ForegroundColor Green
   Write-Host "[deploy] Starting/reloading PM2 process..." -ForegroundColor Cyan
