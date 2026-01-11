@@ -23,7 +23,9 @@ param(
     [ValidateSet('development', 'production')]
     [string]$Environment = 'development',
     
-    [string]$Name
+    [string]$Name,
+
+    [string]$DatabasePath
 )
 
 $ErrorActionPreference = "Stop"
@@ -33,6 +35,15 @@ $repoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $backendPath = Join-Path $repoRoot "backend"
 Push-Location $backendPath
 
+function Resolve-FullPath {
+    param([string]$PathToResolve)
+    if (-not $PathToResolve) { return $null }
+    if ([System.IO.Path]::IsPathRooted($PathToResolve)) {
+        return [System.IO.Path]::GetFullPath($PathToResolve)
+    }
+    return [System.IO.Path]::GetFullPath((Join-Path $repoRoot $PathToResolve))
+}
+
 try {
     if ($Environment -eq 'production') {
         Write-Host "[DB-MIGRATE] Running PRODUCTION migrations..." -ForegroundColor Cyan
@@ -40,15 +51,30 @@ try {
         Write-Host "[INFO] Only pending migrations will be applied" -ForegroundColor Yellow
         Write-Host ""
         
-        # Check if database exists (backend/dev.db)
-        $dbExists = Test-Path "dev.db"
-        
-        if (-not $dbExists) {
-            Write-Host "[INFO] Database not found - initializing with schema..." -ForegroundColor Yellow
+        $databaseEnvPath = $null
+        if ($DatabasePath) {
+            $fullDbPath = Resolve-FullPath -PathToResolve $DatabasePath
+            $databaseEnvPath = "file:$fullDbPath"
+            Write-Host "[INFO] Target database path: $fullDbPath" -ForegroundColor Cyan
+            if (Test-Path $fullDbPath) {
+                Write-Host "[INFO] Database exists - applying pending migrations only..." -ForegroundColor Yellow
+            } else {
+                $dbDir = Split-Path $fullDbPath -Parent
+                if ($dbDir -and -not (Test-Path $dbDir)) {
+                    New-Item -ItemType Directory -Force -Path $dbDir | Out-Null
+                }
+                Write-Host "[INFO] Database not found - it will be created during migration." -ForegroundColor Yellow
+            }
+            $env:DATABASE_URL = $databaseEnvPath
         } else {
-            Write-Host "[INFO] Database exists - applying pending migrations only..." -ForegroundColor Yellow
+            $devDbPath = Join-Path $backendPath "dev.db"
+            if (-not (Test-Path $devDbPath)) {
+                Write-Host "[INFO] Database not found - initializing with schema..." -ForegroundColor Yellow
+            } else {
+                Write-Host "[INFO] Database exists - applying pending migrations only..." -ForegroundColor Yellow
+            }
         }
-        
+
         # Run production migrations (safe, preserves data)
         npx prisma migrate deploy
         
@@ -56,7 +82,10 @@ try {
             Write-Host "[ERROR] Migration failed!" -ForegroundColor Red
             exit 1
         }
-        
+        if ($databaseEnvPath) {
+            Write-Host "[SUCCESS] Migrations applied to $databaseEnvPath" -ForegroundColor Green
+        }
+
         Write-Host ""
         Write-Host "[SUCCESS] Production migrations complete" -ForegroundColor Green
         Write-Host "[SUCCESS] Existing data preserved" -ForegroundColor Green
@@ -83,5 +112,8 @@ try {
     Write-Host "[ERROR] Migration error: $_" -ForegroundColor Red
     exit 1
 } finally {
+    if ($DatabasePath -and (Test-Path env:DATABASE_URL)) {
+        Remove-Item env:DATABASE_URL
+    }
     Pop-Location
 }
