@@ -9,7 +9,7 @@ export default defineConfig({
   webServer: {
     command: 'npm run db:seed --prefix backend && npm run dev',
     port: 5173,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
     timeout: 120000,
     env: {
       ADMIN_USERNAME: process.env.ADMIN_USERNAME ?? 'admin',

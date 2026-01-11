@@ -27,8 +27,8 @@ async function main() {
     return;
   }
 
-  const adminUsername = process.env.ADMIN_USERNAME;
-  const adminPassword = process.env.ADMIN_PASSWORD;
+  const adminUsername = process.env.ADMIN_USERNAME ?? 'admin';
+  const adminPassword = process.env.ADMIN_PASSWORD ?? 'AdminPass1!';
   const adminName = process.env.ADMIN_NAME || 'Administrator';
   const adminEmail = process.env.ADMIN_EMAIL ?? null;
 
