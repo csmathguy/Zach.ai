@@ -8,26 +8,32 @@ This is the canonical template for all work items. Copy the entire `_template/` 
 work-items/<feature-name>/
   plan/
     apr.md                    # APR (Architectural/Product Requirements)
+    open_questions.md         # Planning questions to resolve early
   architecture/
     README.md                 # Architecture overview
     adr-001-decision.md       # Architecture Decision Records
     contracts.md              # Interfaces, DTOs, domain models
     diagrams.md               # ERD, component, sequence diagrams
     layers.md                 # Layer architecture documentation
+    open_questions.md         # Architecture questions to resolve
   design/
     README.md                 # Design summary and key decisions
     ui-spec.md                # UI spec: layout, states, accessibility
+    open_questions.md         # Design questions to resolve
   research/
     ri-001-technology.md      # Individual research items (separate files)
     ri-002-pattern.md
     research-findings.md      # Summary of all research
+    open_questions.md         # Research questions to resolve
   tests/
     test-plan.md              # Overall test strategy
     TS-001-test-suite.md      # Individual test suite specs
+    open_questions.md         # Testing questions to resolve
   dev/
     README.md                 # Development summary and task breakdown
     task-001-task-name.md     # Individual task files
     task-002-task-name.md     # (Create as needed)
+    open_questions.md         # Development questions to resolve
   retro/
     retrospective.md          # Summary linking to all RET entries
     RET-001-planning-phase.md
@@ -37,6 +43,7 @@ work-items/<feature-name>/
     RET-005-testing-phase.md
     RET-006-development-phase.md
     RET-007-overall-feature.md # (by retro agent)
+    open_questions.md         # Retrospective follow-ups (if any)
 ```
 
 ## Phase-by-Phase Usage

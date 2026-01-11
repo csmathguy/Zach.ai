@@ -8,6 +8,17 @@ describe('PrismaUserRepository', () => {
   let repository: PrismaUserRepository;
   let originalConsoleLog: typeof console.log;
 
+  const buildUserDto = (overrides: Partial<CreateUserDto> = {}): CreateUserDto => ({
+    username: 'test-user',
+    email: 'test@example.com',
+    phone: null,
+    name: 'Test User',
+    passwordHash: 'hash',
+    role: 'USER',
+    status: 'ACTIVE',
+    ...overrides,
+  });
+
   beforeAll(() => {
     // Suppress Prisma error logs during tests (expected errors from error condition tests)
     originalConsoleLog = console.log;
@@ -40,10 +51,7 @@ describe('PrismaUserRepository', () => {
 
   describe('create()', () => {
     it('should create user and save to database', async () => {
-      const dto: CreateUserDto = {
-        email: 'test@example.com',
-        name: 'Test User',
-      };
+      const dto = buildUserDto();
 
       const user = await repository.create(dto);
 
@@ -58,31 +66,41 @@ describe('PrismaUserRepository', () => {
       expect(dbUser).toBeDefined();
       if (dbUser) {
         expect(dbUser.email).toBe('test@example.com');
+        expect(dbUser.username).toBe('test-user');
       }
     });
 
     it('should throw on duplicate email', async () => {
-      const dto: CreateUserDto = {
+      const dto = buildUserDto({
         email: 'duplicate@example.com',
-        name: 'User One',
-      };
+        username: 'user-one',
+      });
 
       await repository.create(dto);
 
       await expect(
-        repository.create({ email: 'duplicate@example.com', name: 'User Two' })
+        repository.create(
+          buildUserDto({
+            email: 'duplicate@example.com',
+            username: 'user-two',
+            name: 'User Two',
+          })
+        )
       ).rejects.toThrow();
     });
   });
 
-  describe('findById()', () => {
+  describe('getById()', () => {
     it('should return user when found', async () => {
       const created = await repository.create({
-        email: 'find@example.com',
-        name: 'Find User',
+        ...buildUserDto({
+          email: 'find@example.com',
+          username: 'find-user',
+          name: 'Find User',
+        }),
       });
 
-      const found = await repository.findById(created.id);
+      const found = await repository.getById(created.id);
 
       expect(found).toBeInstanceOf(User);
       if (found) {
@@ -92,20 +110,23 @@ describe('PrismaUserRepository', () => {
     });
 
     it('should return null when user not found', async () => {
-      const found = await repository.findById('00000000-0000-0000-0000-000000000000');
+      const found = await repository.getById('00000000-0000-0000-0000-000000000000');
 
       expect(found).toBeNull();
     });
   });
 
-  describe('findByEmail()', () => {
+  describe('getByEmail()', () => {
     it('should return user when email exists', async () => {
       await repository.create({
-        email: 'findbyemail@example.com',
-        name: 'Email User',
+        ...buildUserDto({
+          email: 'findbyemail@example.com',
+          username: 'email-user',
+          name: 'Email User',
+        }),
       });
 
-      const found = await repository.findByEmail('findbyemail@example.com');
+      const found = await repository.getByEmail('findbyemail@example.com');
 
       expect(found).toBeInstanceOf(User);
       if (found) {
@@ -114,26 +135,32 @@ describe('PrismaUserRepository', () => {
     });
 
     it('should return null when email not found', async () => {
-      const found = await repository.findByEmail('nonexistent@example.com');
+      const found = await repository.getByEmail('nonexistent@example.com');
 
       expect(found).toBeNull();
     });
   });
 
-  describe('findAll()', () => {
+  describe('listAll()', () => {
     it('should return all users', async () => {
-      await repository.create({ email: 'user1@example.com', name: 'User 1' });
-      await repository.create({ email: 'user2@example.com', name: 'User 2' });
-      await repository.create({ email: 'user3@example.com', name: 'User 3' });
+      await repository.create(
+        buildUserDto({ email: 'user1@example.com', username: 'user1', name: 'User 1' })
+      );
+      await repository.create(
+        buildUserDto({ email: 'user2@example.com', username: 'user2', name: 'User 2' })
+      );
+      await repository.create(
+        buildUserDto({ email: 'user3@example.com', username: 'user3', name: 'User 3' })
+      );
 
-      const users = await repository.findAll();
+      const users = await repository.listAll();
 
       expect(users).toHaveLength(3);
       expect(users[0]).toBeInstanceOf(User);
     });
 
     it('should return empty array when no users exist', async () => {
-      const users = await repository.findAll();
+      const users = await repository.listAll();
 
       expect(users).toEqual([]);
       expect(users).toHaveLength(0);
@@ -143,8 +170,11 @@ describe('PrismaUserRepository', () => {
   describe('update()', () => {
     it('should update user fields', async () => {
       const created = await repository.create({
-        email: 'update@example.com',
-        name: 'Old Name',
+        ...buildUserDto({
+          email: 'update@example.com',
+          username: 'update-user',
+          name: 'Old Name',
+        }),
       });
 
       const updateDto: UpdateUserDto = {
@@ -161,8 +191,11 @@ describe('PrismaUserRepository', () => {
 
     it('should update email', async () => {
       const created = await repository.create({
-        email: 'old@example.com',
-        name: 'Test User',
+        ...buildUserDto({
+          email: 'old@example.com',
+          username: 'old-user',
+          name: 'Test User',
+        }),
       });
 
       const updated = await repository.update(created.id, {
@@ -171,6 +204,21 @@ describe('PrismaUserRepository', () => {
 
       expect(updated.email).toBe('new@example.com');
       expect(updated.name).toBe('Test User');
+    });
+
+    it('should update phone', async () => {
+      const created = await repository.create(
+        buildUserDto({
+          phone: '5551112222',
+          username: 'phone-user',
+        })
+      );
+
+      const updated = await repository.update(created.id, {
+        phone: '5553334444',
+      });
+
+      expect(updated.phone).toBe('5553334444');
     });
 
     it('should throw when user not found', async () => {
@@ -183,20 +231,26 @@ describe('PrismaUserRepository', () => {
   describe('delete()', () => {
     it('should delete user from database', async () => {
       const created = await repository.create({
-        email: 'delete@example.com',
-        name: 'Delete User',
+        ...buildUserDto({
+          email: 'delete@example.com',
+          username: 'delete-user',
+          name: 'Delete User',
+        }),
       });
 
       await repository.delete(created.id);
 
-      const found = await repository.findById(created.id);
+      const found = await repository.getById(created.id);
       expect(found).toBeNull();
     });
 
     it('should be idempotent (no error if already deleted)', async () => {
       const created = await repository.create({
-        email: 'idempotent@example.com',
-        name: 'Idempotent User',
+        ...buildUserDto({
+          email: 'idempotent@example.com',
+          username: 'idempotent-user',
+          name: 'Idempotent User',
+        }),
       });
 
       await repository.delete(created.id);

@@ -40,14 +40,15 @@ handoffs:
 - The template structure is flat at root level (no nested feature-branch-name folder). See `work-items/_template/README.md` for complete documentation.
 - Ensure every APR includes:
   1. **Overview & Objective** – Why we're building this and what success looks like
-  2. **Goals & Success Metrics** – Outcomes, non-goals, quantitative criteria
-  3. **Scope** – In/out of scope functionality, dependencies, timeline
-  4. **Feature Breakdown** – Description, user stories, acceptance criteria per capability
-  5. **UX / Flow Notes** – User workflow, design references, accessibility
-  6. **System Requirements & Constraints** – Environments, performance budgets, compliance
-  7. **Assumptions / Constraints / Dependencies** – Preconditions, limits, external services
-  8. **Risks & Mitigations** – Known risks plus rollback plans
-  9. **Validation & Rollout Plan** – Test strategy (unit/integration/E2E), telemetry, release approach
+  2. **Open Questions (near the top)** – Follow-ups and decisions needed, surfaced early for faster iteration
+  3. **Goals & Success Metrics** – Outcomes, non-goals, quantitative criteria
+  4. **Scope** – In/out of scope functionality, dependencies, timeline
+  5. **Feature Breakdown** – Description, user stories, acceptance criteria per capability
+  6. **UX / Flow Notes** – User workflow, design references, accessibility
+  7. **System Requirements & Constraints** – Environments, performance budgets, compliance
+  8. **Assumptions / Constraints / Dependencies** – Preconditions, limits, external services
+  9. **Risks & Mitigations** – Known risks plus rollback plans
+  10. **Validation & Rollout Plan** – Test strategy (unit/integration/E2E), telemetry, release approach
 
 ## Step 3: Branch Creation (Critical)
 

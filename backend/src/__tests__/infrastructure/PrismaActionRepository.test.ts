@@ -49,8 +49,12 @@ describe('PrismaActionRepository', () => {
     await prisma.user.create({
       data: {
         id: testUserId,
+        username: 'test-user',
         email: 'test@example.com',
         name: 'Test User',
+        passwordHash: 'hash',
+        role: 'USER',
+        status: 'ACTIVE',
       },
     });
 

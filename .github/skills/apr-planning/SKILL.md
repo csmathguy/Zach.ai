@@ -40,18 +40,18 @@ Create or update `work-items/<feature-name>/plan/apr.md` following [ProductPlan 
 **Required Sections:**
 
 1. **Overview** - Working name, problem statement, stakeholders
-2. **Goals & Success Metrics** - Business outcomes, non-goals, success criteria
-3. **Scope** - In-scope features, out-of-scope items
-4. **Feature Breakdown** - Numbered features with:
+2. **Open Questions (near the top)** - Decisions needed, follow-ups
+3. **Goals & Success Metrics** - Business outcomes, non-goals, success criteria
+4. **Scope** - In-scope features, out-of-scope items
+5. **Feature Breakdown** - Numbered features with:
    - Description
    - Use cases
    - Acceptance criteria
    - Test notes
-5. **UX/Flow Notes** - User journey, agent handoffs
-6. **Architecture** - System impact, dependencies, constraints, assumptions
-7. **Risks & Mitigations** - Table with risk → mitigation mapping
-8. **Validation & Rollout** - Test strategy, manual QA, release plan
-9. **Open Questions** - Decisions needed, follow-ups
+6. **UX/Flow Notes** - User journey, agent handoffs
+7. **Architecture** - System impact, dependencies, constraints, assumptions
+8. **Risks & Mitigations** - Table with risk → mitigation mapping
+9. **Validation & Rollout** - Test strategy, manual QA, release plan
 
 ### 3. Reference Documentation
 

@@ -24,7 +24,14 @@
 
 ---
 
-## 2. Goals & Success Metrics
+## 2. Open Questions
+
+- [ ] Question 1: [Answer needed from whom?]
+- [ ] Question 2: [Answer needed from whom?]
+
+---
+
+## 3. Goals & Success Metrics
 
 ### Business Goals
 
@@ -53,7 +60,7 @@
 
 ---
 
-## 3. Scope
+## 4. Scope
 
 ### In Scope
 
@@ -76,7 +83,7 @@
 
 ---
 
-## 4. Feature Breakdown
+## 5. Feature Breakdown
 
 ### 4.1 [Feature Component 1]
 
@@ -104,7 +111,7 @@
 
 ---
 
-## 5. UX / Flow Notes
+## 6. UX / Flow Notes
 
 ### User Workflow
 
@@ -127,7 +134,7 @@
 
 ---
 
-## 6. System Requirements & Constraints
+## 7. System Requirements & Constraints
 
 ### Target Environments
 
@@ -153,7 +160,7 @@
 
 ---
 
-## 7. Assumptions / Constraints / Dependencies
+## 8. Assumptions / Constraints / Dependencies
 
 ### Assumptions
 
@@ -173,7 +180,7 @@
 
 ---
 
-## 8. Risks & Mitigations
+## 9. Risks & Mitigations
 
 | Risk   | Impact | Probability | Mitigation       | Rollback Plan |
 | ------ | ------ | ----------- | ---------------- | ------------- |
@@ -182,7 +189,7 @@
 
 ---
 
-## 9. Validation & Rollout Plan
+## 10. Validation & Rollout Plan
 
 ### Test Strategy
 
@@ -207,7 +214,7 @@
 
 ---
 
-## 10. Architecture Decisions
+## 11. Architecture Decisions
 
 ### Key Technical Decisions
 
@@ -217,13 +224,6 @@
 ### Architecture References
 
 - See `work-items/<feature>/architecture/` for detailed ADRs
-
----
-
-## 11. Open Questions
-
-- [ ] Question 1: [Answer needed from whom?]
-- [ ] Question 2: [Answer needed from whom?]
 
 ---
 

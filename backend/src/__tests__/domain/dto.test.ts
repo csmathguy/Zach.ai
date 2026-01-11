@@ -20,20 +20,29 @@ import type {
 
 describe('User DTOs', () => {
   describe('CreateUserDto', () => {
-    it('should accept email and name', () => {
+    it('should accept required user fields', () => {
       const dto: CreateUserDto = {
+        username: 'test-user',
         email: 'test@example.com',
         name: 'Test User',
+        passwordHash: 'hash',
+        role: 'USER',
+        status: 'ACTIVE',
       };
 
+      expect(dto.username).toBe('test-user');
       expect(dto.email).toBe('test@example.com');
       expect(dto.name).toBe('Test User');
     });
 
-    it('should not allow additional properties beyond email and name', () => {
+    it('should not allow additional properties beyond defined fields', () => {
       const dto: CreateUserDto = {
+        username: 'test-user',
         email: 'test@example.com',
         name: 'Test User',
+        passwordHash: 'hash',
+        role: 'USER',
+        status: 'ACTIVE',
         // Should not allow extra properties (TypeScript will error)
         extraField: 'should fail',
       } as CreateUserDto;
@@ -61,10 +70,12 @@ describe('User DTOs', () => {
       expect(dto.email).toBeUndefined();
     });
 
-    it('should allow updating both fields', () => {
+    it('should allow updating multiple fields', () => {
       const dto: UpdateUserDto = {
         email: 'new@example.com',
         name: 'New Name',
+        role: 'ADMIN',
+        status: 'DISABLED',
       };
 
       expect(dto.email).toBe('new@example.com');

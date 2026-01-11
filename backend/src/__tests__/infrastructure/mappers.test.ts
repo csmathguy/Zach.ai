@@ -34,16 +34,27 @@ describe('User Mapper', () => {
     it('should convert Prisma User to Domain User', () => {
       const prismaUser: PrismaUser = {
         id: '123e4567-e89b-12d3-a456-426614174000',
+        username: 'test-user',
         email: 'test@example.com',
+        phone: '5551112222',
         name: 'Test User',
+        passwordHash: 'hash',
+        role: 'USER',
+        status: 'ACTIVE',
+        failedLoginCount: 0,
+        lockoutUntil: null,
+        lastLoginAt: null,
         createdAt: new Date('2024-01-01T00:00:00.000Z'),
+        updatedAt: new Date('2024-01-01T00:00:00.000Z'),
       };
 
       const domainUser = userMapper.toDomain(prismaUser);
 
       expect(domainUser).toBeInstanceOf(User);
       expect(domainUser.id).toBe('123e4567-e89b-12d3-a456-426614174000');
+      expect(domainUser.username).toBe('test-user');
       expect(domainUser.email).toBe('test@example.com');
+      expect(domainUser.phone).toBe('5551112222');
       expect(domainUser.name).toBe('Test User');
       expect(domainUser.createdAt).toEqual(new Date('2024-01-01T00:00:00.000Z'));
     });
@@ -52,9 +63,18 @@ describe('User Mapper', () => {
       const now = new Date();
       const prismaUser: PrismaUser = {
         id: '123e4567-e89b-12d3-a456-426614174000',
+        username: 'test-user',
         email: 'test@example.com',
+        phone: null,
         name: 'Test User',
+        passwordHash: 'hash',
+        role: 'USER',
+        status: 'ACTIVE',
+        failedLoginCount: 0,
+        lockoutUntil: null,
+        lastLoginAt: null,
         createdAt: now,
+        updatedAt: now,
       };
 
       const domainUser = userMapper.toDomain(prismaUser);
@@ -66,29 +86,49 @@ describe('User Mapper', () => {
   describe('toPrisma', () => {
     it('should convert CreateUserDto to Prisma input format', () => {
       const dto: CreateUserDto = {
+        username: 'new-user',
         email: 'new@example.com',
+        phone: '5552223333',
         name: 'New User',
+        passwordHash: 'hash',
+        role: 'USER',
+        status: 'ACTIVE',
       };
 
       const prismaInput = userMapper.toPrisma(dto) as Record<string, unknown>;
 
+      expect(prismaInput.username).toBe('new-user');
       expect(prismaInput.email).toBe('new@example.com');
+      expect(prismaInput.phone).toBe('5552223333');
       expect(prismaInput.name).toBe('New User');
+      expect(prismaInput.passwordHash).toBe('hash');
+      expect(prismaInput.role).toBe('USER');
+      expect(prismaInput.status).toBe('ACTIVE');
       expect(prismaInput.id).toBeUndefined(); // ID should not be in DTO
       expect(prismaInput.createdAt).toBeUndefined(); // CreatedAt is auto-generated
     });
 
     it('should pass through all fields from DTO', () => {
       const dto: CreateUserDto = {
+        username: 'test-user',
         email: 'test@example.com',
+        phone: null,
         name: 'Test',
+        passwordHash: 'hash',
+        role: 'USER',
+        status: 'ACTIVE',
       };
 
       const prismaInput = userMapper.toPrisma(dto) as Record<string, unknown>;
 
       expect(prismaInput).toEqual({
+        username: 'test-user',
         email: 'test@example.com',
+        phone: null,
         name: 'Test',
+        passwordHash: 'hash',
+        role: 'USER',
+        status: 'ACTIVE',
       });
     });
   });

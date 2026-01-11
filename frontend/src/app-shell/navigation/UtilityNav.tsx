@@ -4,10 +4,19 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { isFeatureEnabled } from '@/app-shell/feature-flags/featureFlags';
 import { utilityNavConfig } from '@/app-shell/navigation/utilityNavConfig';
 import type { UtilityNavItem, UtilityNavProps } from '@/app-shell/navigation/types';
+import { useOptionalAuth } from '@/features/auth/AuthContext';
 import styles from '@/app-shell/navigation/UtilityNav.module.css';
 
-const filterItems = (items: UtilityNavItem[]): UtilityNavItem[] =>
-  items.filter((item) => !item.featureFlag || isFeatureEnabled(item.featureFlag));
+const filterItems = (items: UtilityNavItem[], role?: 'USER' | 'ADMIN'): UtilityNavItem[] =>
+  items.filter((item) => {
+    if (item.featureFlag && !isFeatureEnabled(item.featureFlag)) {
+      return false;
+    }
+    if (item.requiresRole && item.requiresRole !== role) {
+      return false;
+    }
+    return true;
+  });
 
 const resolveActiveIndex = (items: UtilityNavItem[], path: string): number =>
   Math.max(
@@ -25,8 +34,10 @@ const clampIndex = (items: UtilityNavItem[], index: number): number => {
 export const UtilityNav = ({ items }: UtilityNavProps): JSX.Element => {
   const location = useLocation();
   const navigate = useNavigate();
+  const auth = useOptionalAuth();
+  const role = auth?.user?.role;
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const navItems = useMemo(() => filterItems(items ?? utilityNavConfig), [items]);
+  const navItems = useMemo(() => filterItems(items ?? utilityNavConfig, role), [items, role]);
   const currentPath = `${location.pathname}${location.search}`;
   const [activeIndex, setActiveIndex] = useState(() => resolveActiveIndex(navItems, currentPath));
 

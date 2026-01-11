@@ -130,6 +130,8 @@ private toDomain(prismaUser: any): User {
 4. Run tests immediately - revert if anything breaks
 5. Re-assess - did coupling/readability/duplication improve?
 
+**Refactor Exit Gate**: When the refactor pass is complete, run `npm run validate` from the repo root before moving to the next RED-GREEN-REFACTOR cycle or task.
+
 **Deep Dive**: [knowledge-base/tdd/README.md - Complete Workflow Example](../../knowledge-base/tdd/README.md#tdd-example-complete-workflow)
 
 ---

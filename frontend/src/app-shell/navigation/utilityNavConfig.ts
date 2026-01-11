@@ -9,6 +9,7 @@ export const utilityNavConfig: UtilityNavItem[] = [
     description: 'System health and metrics',
     icon: PlaceholderIcon,
     route: '/codebase-analysis?panel=health',
+    requiresRole: 'ADMIN',
   },
   {
     id: 'knowledge',
@@ -24,5 +25,20 @@ export const utilityNavConfig: UtilityNavItem[] = [
     description: 'Inbox and ideas',
     icon: PlaceholderIcon,
     route: '/ideas',
+  },
+  {
+    id: 'account',
+    label: 'My Account',
+    description: 'Update your profile details',
+    icon: PlaceholderIcon,
+    route: '/account',
+  },
+  {
+    id: 'account-management',
+    label: 'Account Management',
+    description: 'User access and roles',
+    icon: PlaceholderIcon,
+    route: '/admin/accounts',
+    requiresRole: 'ADMIN',
   },
 ];

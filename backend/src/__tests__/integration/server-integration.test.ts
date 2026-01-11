@@ -69,8 +69,12 @@ describe('Server Integration Tests', () => {
     await prisma.user.create({
       data: {
         id: MVP_USER_ID,
+        username: 'mvp-user',
         email: 'test@example.com',
         name: 'Test User',
+        passwordHash: 'hash',
+        role: 'ADMIN',
+        status: 'ACTIVE',
       },
     });
   });

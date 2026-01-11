@@ -27,6 +27,7 @@ This feature has the following ADRs:
 - **Contracts**: See [contracts.md](contracts.md) for all interfaces, domain models, and DTOs
 - **Diagrams**: See [diagrams.md](diagrams.md) for ERD, component, and sequence diagrams
 - **Layers**: See [layers.md](layers.md) for layer architecture details
+- **Open Questions**: See [open_questions.md](open_questions.md) for unresolved architectural decisions
 
 ---
 

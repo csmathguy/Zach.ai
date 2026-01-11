@@ -70,7 +70,7 @@ This repository ships a complete Copilot/Codex agent workflow. Use this file as 
 ### Developer
 
 - **Purpose**: Implement features via TDD, adhering to SOLID and validation gates.
-- **Key docs**: `.github/agents/developer.agent.md`, `.github/instructions/tdd.instructions.md`, `.github/instructions/testing.instructions.md`, `.github/instructions/typescript.instructions.md`, `knowledge-base/tdd/README.md`.
+- **Key docs**: `.github/agents/developer.agent.md`, `.github/instructions/tdd.instructions.md`, `.github/instructions/testing.instructions.md`, `.github/instructions/typescript.instructions.md`, `.github/instructions/prisma.instructions.md`, `knowledge-base/tdd/README.md`.
 - **Deliverables**: Production code + tests, dev task files under `work-items/<feature>/dev/`, validation summary before handoff.
 - **Handoffs**: Tester (run test suite) and Retro (capture lessons).
 

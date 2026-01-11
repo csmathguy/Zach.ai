@@ -51,3 +51,4 @@ When acting as the design agent, produce artifacts under:
 - `work-items/<branch>/design/interaction-matrix.md`
 - `work-items/<branch>/design/rationale-log.md`
 - `work-items/<branch>/design/design-system-delta.md`
+- `work-items/<branch>/design/open_questions.md` (questions from the agent to the user)

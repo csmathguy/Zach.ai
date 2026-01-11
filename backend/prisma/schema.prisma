@@ -15,15 +15,58 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid())
-  email     String   @unique
+  username  String   @unique
+  email     String?  @unique
+  phone     String?
   name      String
+  passwordHash String
+  role      String   @default("USER") // 'USER', 'ADMIN'
+  status    String   @default("ACTIVE") // 'ACTIVE', 'DISABLED', 'LOCKED'
+  failedLoginCount Int @default(0)
+  lockoutUntil DateTime?
+  lastLoginAt DateTime?
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
   thoughts        Thought[]
   assignedActions ActionAssignee[]
+  sessions        Session[]
+  resetTokens     PasswordResetToken[] @relation("ResetTokenUser")
+  issuedResetTokens PasswordResetToken[] @relation("ResetTokenAdmin")
 
   @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model PasswordResetToken {
+  id              String   @id @default(uuid())
+  userId          String
+  createdByUserId String
+  tokenHash       String   @unique
+  expiresAt       DateTime
+  usedAt          DateTime?
+  createdAt       DateTime @default(now())
+
+  user      User @relation("ResetTokenUser", fields: [userId], references: [id], onDelete: Cascade)
+  createdBy User @relation("ResetTokenAdmin", fields: [createdByUserId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdByUserId])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
 }
 
 model Thought {

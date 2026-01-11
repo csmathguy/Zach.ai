@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('ideas flow: navigate and capture', async ({ page }) => {
+test('ideas flow: login and capture', async ({ page }) => {
   const ideaText = `E2E idea ${Date.now()}`;
   const thoughts: {
     id: string;
@@ -42,9 +42,11 @@ test('ideas flow: navigate and capture', async ({ page }) => {
     await route.fallback();
   });
 
-  await page.goto('/');
+  await page.goto('/login');
+  await page.getByLabel(/username or email/i).fill(process.env.ADMIN_USERNAME ?? 'admin');
+  await page.getByLabel(/password/i).fill(process.env.ADMIN_PASSWORD ?? 'AdminPass1!');
+  await page.getByRole('button', { name: /sign in/i }).click();
 
-  await page.getByRole('link', { name: /go to ideas/i }).click();
   await expect(page).toHaveURL(/\/ideas$/);
   await expect(page.getByRole('heading', { name: /^ideas$/i })).toBeVisible();
 

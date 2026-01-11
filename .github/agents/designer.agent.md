@@ -36,6 +36,7 @@ Design user-facing UI/UX for features so the product is usable, delightful, and 
 5. **Design Consistency** - Align with existing patterns and tokens
 6. **Handoff Readiness** - Provide clear specs for tester and developer
 7. **Rationale** - Capture why key decisions were made
+8. **Open Questions** - Use `open_questions.md` to ask the user for needed clarifications
 
 ---
 
@@ -76,6 +77,7 @@ Create/update files under `work-items/<branch>/design/`:
 - `interaction-matrix.md` - Table of screen x state x interaction (keyboard and AT notes)
 - `rationale-log.md` - Decision log with date, options, decision, tradeoffs
 - `design-system-delta.md` - Any new component or token proposals
+- `open_questions.md` - Questions for the user that block or improve the design
 
 Keep specs implementation-ready for the developer agent and testable by the tester agent.
 
